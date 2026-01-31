@@ -10,19 +10,23 @@
         {
           "tokens": [
             {
+              "chord": null,
+              "lyric": "Sing a"
+            },
+            {
               "chord": "F",
-              "lyric": "Sing a loud Ho"
+              "lyric": " loud"
             },
             {
               "chord": "C7",
-              "lyric": "sanna to the "
+              "lyric": " Hosanna to the "
             },
             {
               "chord": "Dm",
               "lyric": "Lord,"
             }
           ],
-          "raw": "[F]Sing a loud Ho[C7]sanna to the [Dm]Lord,"
+          "raw": "Sing a[F] loud[C7] Hosanna to the [Dm]Lord,"
         },
         {
           "tokens": [
@@ -392,5 +396,5 @@
     }
   ],
   "sourcePath": "songs/song-of-the-victors.pro",
-  "source": "{title: Song of the Victors}\n{key: F}\n{reviewed: false}\n\n{section: Verse 1}\n[F]Sing a loud Ho[C7]sanna to the [Dm]Lord,\n[Bb]Offer everything with [F]humble heart.\n[Gm]Come at[Am]tend the Lord, O re[F]joice in Him\n[C7]Who brings new life to all the [F]world.\n[Dm]Let us go de[Am]termined to seek and find\n[F]All the promised [Bb]glory of the [F]Lord.\n\n{section: Chorus}\n[Gm]There we'll [Am]sing new songs in the [Dm]Garden fair,\n[Am]Songs of freedom [Dm]bright with happi[Am]ness.\n[Bb]There we'll sing new [Am]songs in the Garden fair,\n[F]Songs of freedom [C7]bright with happi[F]ness.\n\n{section: Verse 2}\nThere are clouds of darkness on the path,\nSinful night enveloping the land.\nBrush the clouds aside and behold the light\nThat shines in beauty everywhere.\nLet us go determined to seek and find\nOur new world of joyfulness and peace.\n\n{section: Verse 3}\nOh, my brothers all rejoice today,\nYou who sing the song of our new life.\nOffer praise on high, blessed for evermore,\nAs chosen people of the Lord.\nLet us go determined to seek and find\nAll the brilliant glory of our dreams.\n\n{section: Verse 4}\nWe uphold the standard of the Lord,\nTo restore His true ideal.\nFreely give your love, share the Father's joy,\nAnd beauty will return to you.\nLet us go determined to seek and find\nHarmony within the Garden bright.\n"
+  "source": "{title: Song of the Victors}\n{key: F}\n{reviewed: false}\n\n{section: Verse 1}\nSing a[F] loud[C7] Hosanna to the [Dm]Lord,\n[Bb]Offer everything with [F]humble heart.\n[Gm]Come at[Am]tend the Lord, O re[F]joice in Him\n[C7]Who brings new life to all the [F]world.\n[Dm]Let us go de[Am]termined to seek and find\n[F]All the promised [Bb]glory of the [F]Lord.\n\n{section: Chorus}\n[Gm]There we'll [Am]sing new songs in the [Dm]Garden fair,\n[Am]Songs of freedom [Dm]bright with happi[Am]ness.\n[Bb]There we'll sing new [Am]songs in the Garden fair,\n[F]Songs of freedom [C7]bright with happi[F]ness.\n\n{section: Verse 2}\nThere are clouds of darkness on the path,\nSinful night enveloping the land.\nBrush the clouds aside and behold the light\nThat shines in beauty everywhere.\nLet us go determined to seek and find\nOur new world of joyfulness and peace.\n\n{section: Verse 3}\nOh, my brothers all rejoice today,\nYou who sing the song of our new life.\nOffer praise on high, blessed for evermore,\nAs chosen people of the Lord.\nLet us go determined to seek and find\nAll the brilliant glory of our dreams.\n\n{section: Verse 4}\nWe uphold the standard of the Lord,\nTo restore His true ideal.\nFreely give your love, share the Father's joy,\nAnd beauty will return to you.\nLet us go determined to seek and find\nHarmony within the Garden bright.\n"
 }
