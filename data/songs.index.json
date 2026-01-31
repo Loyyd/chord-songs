@@ -43,7 +43,7 @@
     "id": "amazing-grace",
     "title": "Amazing Grace",
     "key": "E",
-    "reviewed": false,
+    "reviewed": true,
     "sections": [
       "[E]Amazing Grace, how swee[A]t the soun[E]d,",
       "That saved a wretch like m[B7]e.",
