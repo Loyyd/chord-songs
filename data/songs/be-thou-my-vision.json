@@ -2,7 +2,7 @@
   "id": "be-thou-my-vision",
   "title": "Be Thou My Vision",
   "key": "D",
-  "reviewed": false,
+  "reviewed": true,
   "sections": [
     {
       "name": "Verse 1",
@@ -262,5 +262,5 @@
     }
   ],
   "sourcePath": "songs/be-thou-my-vision.pro",
-  "source": "{title: Be Thou My Vision}\n{key: D}\n{reviewed: false}\n\n{section: Verse 1}\n[D]Be Thou my visio[Bm]n, O[G] Lord [D]of my [A]heart; [D]\n[A]Naught be all els[D]e to me, sav[G]e that Thou art[A]--\n[G]Thou my best thoug[D]ht, by day or by nig[G]ht,[A]\n[D]Waking or sleeping, Thy pre[G]sence m[A]y light[D].\n\n{section: Verse 2}\nBe Thou my wisdom and Thou my true word,\nI ever with Thee and Thou with me, Lord;\nThou my great Father, and I Thy true son;\nThou in me dwelling, and I with Thee one.\n\n{section: Verse 3}\nRiches I heed not, nor man's empty praise,\nThou mine inheritance, now and always;\nThou and Thou only, first in my heart,\nHigh king of heaven, my treasure Thou art.\n\n{section: Verse 4}\nHigh king of heaven, my victory won,\nMay I reach heaven's joys, O bright heaven's son!\nHeart of my own heart, whatever befall,\nStill be my vision, O ruler of all.\n"
+  "source": "{title: Be Thou My Vision}\n{key: D}\n{reviewed: true}\n\n{section: Verse 1}\n[D]Be Thou my visio[Bm]n, O[G] Lord [D]of my [A]heart; [D]\n[A]Naught be all els[D]e to me, sav[G]e that Thou art[A]--\n[G]Thou my best thoug[D]ht, by day or by nig[G]ht,[A]\n[D]Waking or sleeping, Thy pre[G]sence m[A]y light[D].\n\n{section: Verse 2}\nBe Thou my wisdom and Thou my true word,\nI ever with Thee and Thou with me, Lord;\nThou my great Father, and I Thy true son;\nThou in me dwelling, and I with Thee one.\n\n{section: Verse 3}\nRiches I heed not, nor man's empty praise,\nThou mine inheritance, now and always;\nThou and Thou only, first in my heart,\nHigh king of heaven, my treasure Thou art.\n\n{section: Verse 4}\nHigh king of heaven, my victory won,\nMay I reach heaven's joys, O bright heaven's son!\nHeart of my own heart, whatever befall,\nStill be my vision, O ruler of all.\n"
 }
