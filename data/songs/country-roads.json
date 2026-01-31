@@ -2,7 +2,7 @@
   "id": "country-roads",
   "title": "Country Roads",
   "key": "A",
-  "reviewed": false,
+  "reviewed": true,
   "sections": [
     {
       "name": "Verse 1",
@@ -316,5 +316,5 @@
     }
   ],
   "sourcePath": "songs/country-roads.pro",
-  "source": "{title: Country Roads}\n{key: A}\n{reviewed: false}\n\n{section: Verse 1}\n[A]Almost heaven, [F#m]West Virginia,\n[E]Blue Ridge Mountains, [D]Shenandoah [A]River.\nLife is [F#m]old there, older than the trees,\n[E]Younger than the mountains,[D] blowin' like a br[A]eeze.\n\n{section: Chorus}\nCountry r[A]oads, take me [E]home,\nTo the pl[F#m]ace where I be[D]long:\nWest Vir[A]ginia, mountain mo[E]mma,\nTake me[D] home, country ro[A]ads.\n\n{section: Verse 2}\nAll my mem'ries, gather 'round her,\nMiner's lady, stranger to blue water.\nDark and dusty, painted on the sky,\nMisty taste of moonshine, teardrop in my eye.\n\n{section: Bridge}\n[F#m]I hear her[E] voice, in the[A] mornin' hours she calls me,\n[D]The radio[A] reminds me of[E] my home far away.\n[F#m]And drivin' down[G] the road,\nI get[D] a feelin' that I[A] should have been[E] home yesterday,\nYes[E7]terday.\n\n"
+  "source": "{title: Country Roads}\n{key: A}\n{reviewed: true}\n\n{section: Verse 1}\n[A]Almost heaven, [F#m]West Virginia,\n[E]Blue Ridge Mountains, [D]Shenandoah [A]River.\nLife is [F#m]old there, older than the trees,\n[E]Younger than the mountains,[D] blowin' like a br[A]eeze.\n\n{section: Chorus}\nCountry r[A]oads, take me [E]home,\nTo the pl[F#m]ace where I be[D]long:\nWest Vir[A]ginia, mountain mo[E]mma,\nTake me[D] home, country ro[A]ads.\n\n{section: Verse 2}\nAll my mem'ries, gather 'round her,\nMiner's lady, stranger to blue water.\nDark and dusty, painted on the sky,\nMisty taste of moonshine, teardrop in my eye.\n\n{section: Bridge}\n[F#m]I hear her[E] voice, in the[A] mornin' hours she calls me,\n[D]The radio[A] reminds me of[E] my home far away.\n[F#m]And drivin' down[G] the road,\nI get[D] a feelin' that I[A] should have been[E] home yesterday,\nYes[E7]terday.\n\n"
 }
