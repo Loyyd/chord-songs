@@ -2,7 +2,7 @@
   "id": "by-and-by",
   "title": "By and By",
   "key": "F",
-  "reviewed": false,
+  "reviewed": true,
   "sections": [
     {
       "name": "Chorus",
@@ -358,5 +358,5 @@
     }
   ],
   "sourcePath": "songs/by-and-by.pro",
-  "source": "{title: By and By}\n{key: F}\n{reviewed: false}\n\n{section: Chorus}\n[F]By and by, wh[Bb]en the morning come[F]s,\nAll the saints of G[G]od are gathered ho[C7]me.\nWe'l[F]l tell the story ho[Bb]w we've overco[F]me,\nAnd we'll understand it bet[C7]ter by and b[F]y.\n\n{section: Verse 1}\nWe are to[F]ssed and driven on the rest[Bb]less seas of time;[F]\nSomber skies and howling tempest\nOft su[G]cceed a bright sunsh[C7]ine.\nIn that land[F] of perfect day[F7],\nWhen the mist[Bb]s have rolled away,[F]\nWe will understand it bet[C7]ter bye and bye.[F]\n\n{section: Verse 2}\nWe are often destitute\nOf the things that life demands;\nWant of shelter and of food,\nThirsty hills and barren lands.\nWe are trusting in the Lord\nAnd according to His word,\nWe will understand it better bye and bye.\n\n{section: Verse 3}\nTrials dark on every hand,\nAnd we cannot understand\nAll the ways the God would lead us\nTo that blessed promised land.\nBut He guides us with His eye\nAnd we'll follow Him on high;\nAnd we'll understand it better bye and bye.\n"
+  "source": "{title: By and By}\n{key: F}\n{reviewed: true}\n\n{section: Chorus}\n[F]By and by, wh[Bb]en the morning come[F]s,\nAll the saints of G[G]od are gathered ho[C7]me.\nWe'l[F]l tell the story ho[Bb]w we've overco[F]me,\nAnd we'll understand it bet[C7]ter by and b[F]y.\n\n{section: Verse 1}\nWe are to[F]ssed and driven on the rest[Bb]less seas of time;[F]\nSomber skies and howling tempest\nOft su[G]cceed a bright sunsh[C7]ine.\nIn that land[F] of perfect day[F7],\nWhen the mist[Bb]s have rolled away,[F]\nWe will understand it bet[C7]ter bye and bye.[F]\n\n{section: Verse 2}\nWe are often destitute\nOf the things that life demands;\nWant of shelter and of food,\nThirsty hills and barren lands.\nWe are trusting in the Lord\nAnd according to His word,\nWe will understand it better bye and bye.\n\n{section: Verse 3}\nTrials dark on every hand,\nAnd we cannot understand\nAll the ways the God would lead us\nTo that blessed promised land.\nBut He guides us with His eye\nAnd we'll follow Him on high;\nAnd we'll understand it better bye and bye.\n"
 }
