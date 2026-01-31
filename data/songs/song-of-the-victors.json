@@ -19,87 +19,107 @@
             },
             {
               "chord": "C7",
-              "lyric": " Hosanna to the "
+              "lyric": " Hosanna to the L"
             },
             {
               "chord": "Dm",
-              "lyric": "Lord,"
+              "lyric": "ord,"
             }
           ],
-          "raw": "Sing a[F] loud[C7] Hosanna to the [Dm]Lord,"
+          "raw": "Sing a[F] loud[C7] Hosanna to the L[Dm]ord,"
         },
         {
           "tokens": [
             {
+              "chord": null,
+              "lyric": "Offer everyth"
+            },
+            {
               "chord": "Bb",
-              "lyric": "Offer everything with "
+              "lyric": "ing with humble "
             },
             {
               "chord": "F",
-              "lyric": "humble heart."
+              "lyric": "heart."
             }
           ],
-          "raw": "[Bb]Offer everything with [F]humble heart."
+          "raw": "Offer everyth[Bb]ing with humble [F]heart."
         },
         {
           "tokens": [
             {
+              "chord": null,
+              "lyric": "Come "
+            },
+            {
               "chord": "Gm",
-              "lyric": "Come at"
+              "lyric": "attend the L"
             },
             {
               "chord": "Am",
-              "lyric": "tend the Lord, O re"
+              "lyric": "ord, O re"
             },
             {
               "chord": "F",
               "lyric": "joice in Him"
             }
           ],
-          "raw": "[Gm]Come at[Am]tend the Lord, O re[F]joice in Him"
+          "raw": "Come [Gm]attend the L[Am]ord, O re[F]joice in Him"
         },
         {
           "tokens": [
             {
+              "chord": null,
+              "lyric": "Who brings "
+            },
+            {
               "chord": "C7",
-              "lyric": "Who brings new life to all the "
+              "lyric": "new life to all the "
             },
             {
               "chord": "F",
               "lyric": "world."
             }
           ],
-          "raw": "[C7]Who brings new life to all the [F]world."
+          "raw": "Who brings [C7]new life to all the [F]world."
         },
         {
           "tokens": [
             {
+              "chord": null,
+              "lyric": "Let us "
+            },
+            {
               "chord": "Dm",
-              "lyric": "Let us go de"
+              "lyric": "go determined to "
             },
             {
               "chord": "Am",
-              "lyric": "termined to seek and find"
+              "lyric": "seek and find"
             }
           ],
-          "raw": "[Dm]Let us go de[Am]termined to seek and find"
+          "raw": "Let us [Dm]go determined to [Am]seek and find"
         },
         {
           "tokens": [
             {
+              "chord": null,
+              "lyric": "All the p"
+            },
+            {
               "chord": "F",
-              "lyric": "All the promised "
+              "lyric": "romised g"
             },
             {
               "chord": "Bb",
-              "lyric": "glory of the "
+              "lyric": "lory of the "
             },
             {
               "chord": "F",
               "lyric": "Lord."
             }
           ],
-          "raw": "[F]All the promised [Bb]glory of the [F]Lord."
+          "raw": "All the p[F]romised g[Bb]lory of the [F]Lord."
         },
         {
           "tokens": [
@@ -118,66 +138,82 @@
         {
           "tokens": [
             {
+              "chord": null,
+              "lyric": "Ther"
+            },
+            {
               "chord": "Gm",
-              "lyric": "There we'll "
+              "lyric": "e we'll sing "
             },
             {
               "chord": "Am",
-              "lyric": "sing new songs in the "
+              "lyric": "new songs "
             },
             {
               "chord": "Dm",
-              "lyric": "Garden fair,"
+              "lyric": "in the Garden fair,"
             }
           ],
-          "raw": "[Gm]There we'll [Am]sing new songs in the [Dm]Garden fair,"
+          "raw": "Ther[Gm]e we'll sing [Am]new songs [Dm]in the Garden fair,"
         },
         {
           "tokens": [
             {
+              "chord": null,
+              "lyric": "Songs of "
+            },
+            {
               "chord": "Am",
-              "lyric": "Songs of freedom "
+              "lyric": "freedom brig"
             },
             {
               "chord": "Dm",
-              "lyric": "bright with happi"
+              "lyric": "ht with "
             },
             {
               "chord": "Am",
-              "lyric": "ness."
+              "lyric": "happiness."
             }
           ],
-          "raw": "[Am]Songs of freedom [Dm]bright with happi[Am]ness."
+          "raw": "Songs of [Am]freedom brig[Dm]ht with [Am]happiness."
         },
         {
           "tokens": [
+            {
+              "chord": null,
+              "lyric": "Ther"
+            },
             {
               "chord": "Bb",
-              "lyric": "There we'll sing new "
+              "lyric": "e we'll sing new songs "
             },
             {
               "chord": "Am",
-              "lyric": "songs in the Garden fair,"
+              "lyric": "in the Garden fair,"
             }
           ],
-          "raw": "[Bb]There we'll sing new [Am]songs in the Garden fair,"
+          "raw": "Ther[Bb]e we'll sing new songs [Am]in the Garden fair,"
         },
         {
           "tokens": [
             {
+              "chord": null,
+              "lyric": "So"
+            },
+            {
               "chord": "F",
-              "lyric": "Songs of freedom "
+              "lyric": "ngs of fre"
             },
             {
               "chord": "C7",
-              "lyric": "bright with happi"
+              "lyric": "edom bright "
             },
             {
               "chord": "F",
-              "lyric": "ness."
+              "lyric": "with happiness."
             }
           ],
-          "raw": "[F]Songs of freedom [C7]bright with happi[F]ness."
+          "raw": "So[F]ngs of fre[C7]edom bright [F]with happiness."
         },
         {
           "tokens": [
@@ -396,5 +432,5 @@
     }
   ],
   "sourcePath": "songs/song-of-the-victors.pro",
-  "source": "{title: Song of the Victors}\n{key: F}\n{reviewed: false}\n\n{section: Verse 1}\nSing a[F] loud[C7] Hosanna to the [Dm]Lord,\n[Bb]Offer everything with [F]humble heart.\n[Gm]Come at[Am]tend the Lord, O re[F]joice in Him\n[C7]Who brings new life to all the [F]world.\n[Dm]Let us go de[Am]termined to seek and find\n[F]All the promised [Bb]glory of the [F]Lord.\n\n{section: Chorus}\n[Gm]There we'll [Am]sing new songs in the [Dm]Garden fair,\n[Am]Songs of freedom [Dm]bright with happi[Am]ness.\n[Bb]There we'll sing new [Am]songs in the Garden fair,\n[F]Songs of freedom [C7]bright with happi[F]ness.\n\n{section: Verse 2}\nThere are clouds of darkness on the path,\nSinful night enveloping the land.\nBrush the clouds aside and behold the light\nThat shines in beauty everywhere.\nLet us go determined to seek and find\nOur new world of joyfulness and peace.\n\n{section: Verse 3}\nOh, my brothers all rejoice today,\nYou who sing the song of our new life.\nOffer praise on high, blessed for evermore,\nAs chosen people of the Lord.\nLet us go determined to seek and find\nAll the brilliant glory of our dreams.\n\n{section: Verse 4}\nWe uphold the standard of the Lord,\nTo restore His true ideal.\nFreely give your love, share the Father's joy,\nAnd beauty will return to you.\nLet us go determined to seek and find\nHarmony within the Garden bright.\n"
+  "source": "{title: Song of the Victors}\n{key: F}\n{reviewed: false}\n\n{section: Verse 1}\nSing a[F] loud[C7] Hosanna to the L[Dm]ord,\nOffer everyth[Bb]ing with humble [F]heart.\nCome [Gm]attend the L[Am]ord, O re[F]joice in Him\nWho brings [C7]new life to all the [F]world.\nLet us [Dm]go determined to [Am]seek and find\nAll the p[F]romised g[Bb]lory of the [F]Lord.\n\n{section: Chorus}\nTher[Gm]e we'll sing [Am]new songs [Dm]in the Garden fair,\nSongs of [Am]freedom brig[Dm]ht with [Am]happiness.\nTher[Bb]e we'll sing new songs [Am]in the Garden fair,\nSo[F]ngs of fre[C7]edom bright [F]with happiness.\n\n{section: Verse 2}\nThere are clouds of darkness on the path,\nSinful night enveloping the land.\nBrush the clouds aside and behold the light\nThat shines in beauty everywhere.\nLet us go determined to seek and find\nOur new world of joyfulness and peace.\n\n{section: Verse 3}\nOh, my brothers all rejoice today,\nYou who sing the song of our new life.\nOffer praise on high, blessed for evermore,\nAs chosen people of the Lord.\nLet us go determined to seek and find\nAll the brilliant glory of our dreams.\n\n{section: Verse 4}\nWe uphold the standard of the Lord,\nTo restore His true ideal.\nFreely give your love, share the Father's joy,\nAnd beauty will return to you.\nLet us go determined to seek and find\nHarmony within the Garden bright.\n"
 }
