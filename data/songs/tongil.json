@@ -2,7 +2,7 @@
   "id": "tongil",
   "title": "Tongil",
   "key": "D",
-  "reviewed": false,
+  "reviewed": true,
   "sections": [
     {
       "name": "Korean",
@@ -250,5 +250,5 @@
     }
   ],
   "sourcePath": "songs/tongil.pro",
-  "source": "{title: Tongil}\n{key: D}\n{reviewed: false}\n\n{section: Korean}\n[D]Urie [G]so wonun tong[D]il,\n[G]Ggumedo s[A]o wonun tong[D]il[A7]\n[D]I mogsum[G] bachoso[D] tongil\n[G]Ton-gi-ri y[A7]oo-r[D]a  [D7] \nI [G]kyo re salinun tong[D]il,\n[G]I nara c[D]hanunde ton[A7]gil\n[D]Tongiri o[G]so o[D]ra\nTon-gi-ri[A7] yo-or[D]a\n\n{section: English}\nOur cherished hopes are for unity\nEven our dreams are for unity,\nWe'd give our lives for unity,\nCome along unity.\nUnity saving the people,\nUnity saving all nations\nCome here quickly unity\nCome along unity.\n"
+  "source": "{title: Tongil}\n{key: D}\n{reviewed: true}\n\n{section: Korean}\n[D]Urie [G]so wonun tong[D]il,\n[G]Ggumedo s[A]o wonun tong[D]il[A7]\n[D]I mogsum[G] bachoso[D] tongil\n[G]Ton-gi-ri y[A7]oo-r[D]a  [D7] \nI [G]kyo re salinun tong[D]il,\n[G]I nara c[D]hanunde ton[A7]gil\n[D]Tongiri o[G]so o[D]ra\nTon-gi-ri[A7] yo-or[D]a\n\n{section: English}\nOur cherished hopes are for unity\nEven our dreams are for unity,\nWe'd give our lives for unity,\nCome along unity.\nUnity saving the people,\nUnity saving all nations\nCome here quickly unity\nCome along unity.\n"
 }
