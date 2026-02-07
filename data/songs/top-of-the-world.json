@@ -11,142 +11,107 @@
           "tokens": [
             {
               "chord": null,
-              "lyric": "Such a feelings coming over me"
-            }
-          ],
-          "raw": "Such a feelings coming over me"
-        },
-        {
-          "tokens": [
-            {
-              "chord": "A#",
-              "lyric": "Not a "
-            },
-            {
-              "chord": "C7",
-              "lyric": "cloud in the sky"
-            }
-          ],
-          "raw": "[A#]Not a [C7]cloud in the sky"
-        },
-        {
-          "tokens": [
-            {
-              "chord": "Am",
-              "lyric": "Got the "
-            },
-            {
-              "chord": "Dm",
-              "lyric": "sun in my eyes"
-            }
-          ],
-          "raw": "[Am]Got the [Dm]sun in my eyes"
-        },
-        {
-          "tokens": [
-            {
-              "chord": "Gm",
-              "lyric": "And I won't be "
-            },
-            {
-              "chord": "C7",
-              "lyric": "surprised if it's a dream"
-            }
-          ],
-          "raw": "[Gm]And I won't be [C7]surprised if it's a dream"
-        },
-        {
-          "tokens": [
-            {
-              "chord": "F",
-              "lyric": "Everything I "
-            },
-            {
-              "chord": "C7",
-              "lyric": "want the "
+              "lyric": "S"
             },
             {
               "chord": "F",
-              "lyric": "world to be"
-            }
-          ],
-          "raw": "[F]Everything I [C7]want the [F]world to be"
-        },
-        {
-          "tokens": [
-            {
-              "chord": "Am",
-              "lyric": "    "
+              "lyric": "uch a feelings comin"
             },
             {
-              "chord": "Gm",
-              "lyric": "   "
+              "chord": "C",
+              "lyric": "g over "
             },
             {
-              "chord": "C7",
+              "chord": "Bb",
+              "lyric": "me  "
+            },
+            {
+              "chord": "F",
               "lyric": "  "
-            },
-            {
-              "chord": "F",
-              "lyric": "   "
-            },
-            {
-              "chord": "F7",
-              "lyric": ""
             }
           ],
-          "raw": "[Am]    [Gm]   [C7]  [F]   [F7]"
+          "raw": "S[F]uch a feelings comin[C]g over [Bb]me  [F]  "
         },
         {
           "tokens": [
             {
               "chord": null,
-              "lyric": "Is now coming "
-            },
-            {
-              "chord": "A#",
-              "lyric": "true "
-            },
-            {
-              "chord": "C7",
-              "lyric": "especially "
-            },
-            {
-              "chord": "Am",
-              "lyric": "for "
-            },
-            {
-              "chord": "Dm",
-              "lyric": "me"
+              "lyric": "There is wonder in most everything I see"
             }
           ],
-          "raw": "Is now coming [A#]true [C7]especially [Am]for [Dm]me"
+          "raw": "There is wonder in most everything I see"
         },
         {
           "tokens": [
             {
-              "chord": "Gm",
-              "lyric": "And the reason is "
-            },
-            {
-              "chord": "C7",
-              "lyric": "clear, it's because you are here"
+              "chord": null,
+              "lyric": "Not a cloud in the sky"
             }
           ],
-          "raw": "[Gm]And the reason is [C7]clear, it's because you are here"
+          "raw": "Not a cloud in the sky"
         },
         {
           "tokens": [
             {
-              "chord": "Gm",
-              "lyric": "You're the nearest thing to "
-            },
-            {
-              "chord": "C7",
-              "lyric": "heaven that I've seen"
+              "chord": null,
+              "lyric": "Got the sun in my eyes"
             }
           ],
-          "raw": "[Gm]You're the nearest thing to [C7]heaven that I've seen"
+          "raw": "Got the sun in my eyes"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "And I won't be surprised if it's a dream"
+            }
+          ],
+          "raw": "And I won't be surprised if it's a dream"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "Everything I want the world to be"
+            }
+          ],
+          "raw": "Everything I want the world to be"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": ""
+            }
+          ],
+          "raw": ""
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "Is now coming true especially for me"
+            }
+          ],
+          "raw": "Is now coming true especially for me"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "And the reason is clear, it's because you are here"
+            }
+          ],
+          "raw": "And the reason is clear, it's because you are here"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "You're the nearest thing to heaven that I've seen"
+            }
+          ],
+          "raw": "You're the nearest thing to heaven that I've seen"
         },
         {
           "tokens": [
@@ -165,78 +130,38 @@
         {
           "tokens": [
             {
-              "chord": "F",
-              "lyric": "I'm on the "
-            },
-            {
-              "chord": "F7",
-              "lyric": "top of the "
-            },
-            {
-              "chord": "A#",
-              "lyric": "world looking down on creation"
+              "chord": null,
+              "lyric": "I'm on the top of the world looking down on creation"
             }
           ],
-          "raw": "[F]I'm on the [F7]top of the [A#]world looking down on creation"
+          "raw": "I'm on the top of the world looking down on creation"
         },
         {
           "tokens": [
             {
-              "chord": "F",
-              "lyric": "And the "
-            },
-            {
-              "chord": "C7",
-              "lyric": "only explanation "
-            },
-            {
-              "chord": "F",
-              "lyric": "I "
-            },
-            {
-              "chord": "F7",
-              "lyric": "can find"
+              "chord": null,
+              "lyric": "And the only explanation I can find"
             }
           ],
-          "raw": "[F]And the [C7]only explanation [F]I [F7]can find"
+          "raw": "And the only explanation I can find"
         },
         {
           "tokens": [
             {
-              "chord": "A#",
-              "lyric": "Is the "
-            },
-            {
-              "chord": "C7",
-              "lyric": "love that I've "
-            },
-            {
-              "chord": "F",
-              "lyric": "found ever "
-            },
-            {
-              "chord": "A#",
-              "lyric": "since you've been around"
+              "chord": null,
+              "lyric": "Is the love that I've found ever since you've been around"
             }
           ],
-          "raw": "[A#]Is the [C7]love that I've [F]found ever [A#]since you've been around"
+          "raw": "Is the love that I've found ever since you've been around"
         },
         {
           "tokens": [
             {
-              "chord": "F",
-              "lyric": "Your "
-            },
-            {
-              "chord": "C7",
-              "lyric": "love's put me "
-            },
-            {
-              "chord": "F",
-              "lyric": "at the top of the world"
+              "chord": null,
+              "lyric": "Your love's put me at the top of the world"
             }
           ],
-          "raw": "[F]Your [C7]love's put me [F]at the top of the world"
+          "raw": "Your love's put me at the top of the world"
         },
         {
           "tokens": [
@@ -346,5 +271,5 @@
     }
   ],
   "sourcePath": "songs/top-of-the-world.pro",
-  "source": "{title: Top Of The World}\n{artist: Carpenters}\n{key: F}\n{reviewed: false}\n\n{section: Verse 1}\nSuch a feelings coming over me\n[A#]Not a [C7]cloud in the sky\n[Am]Got the [Dm]sun in my eyes\n[Gm]And I won't be [C7]surprised if it's a dream\n[F]Everything I [C7]want the [F]world to be\n[Am]    [Gm]   [C7]  [F]   [F7]\nIs now coming [A#]true [C7]especially [Am]for [Dm]me\n[Gm]And the reason is [C7]clear, it's because you are here\n[Gm]You're the nearest thing to [C7]heaven that I've seen\n\n{section: Chorus}\n[F]I'm on the [F7]top of the [A#]world looking down on creation\n[F]And the [C7]only explanation [F]I [F7]can find\n[A#]Is the [C7]love that I've [F]found ever [A#]since you've been around\n[F]Your [C7]love's put me [F]at the top of the world\n\n{section: Verse 2}\nSomething in the wind has learned my name\nAnd it's telling me that things are not the same\nIn the leaves on the trees\nAnd the touch of the breeze\nThere's a pleasing sense of happiness for me\nThere is only one wish on my mind\nWhen this day is through I hope that I will find\nThat tomorrow will be just the same for you and me\nAll I need will be mine if you are here\n"
+  "source": "{title: Top Of The World}\n{artist: Carpenters}\n{key: F}\n{reviewed: false}\n\n{section: Verse 1}\nS[F]uch a feelings comin[C]g over [Bb]me  [F]  \nThere is wonder in most everything I see\nNot a cloud in the sky\nGot the sun in my eyes\nAnd I won't be surprised if it's a dream\nEverything I want the world to be\n            \nIs now coming true especially for me\nAnd the reason is clear, it's because you are here\nYou're the nearest thing to heaven that I've seen\n\n{section: Chorus}\nI'm on the top of the world looking down on creation\nAnd the only explanation I can find\nIs the love that I've found ever since you've been around\nYour love's put me at the top of the world\n\n{section: Verse 2}\nSomething in the wind has learned my name\nAnd it's telling me that things are not the same\nIn the leaves on the trees\nAnd the touch of the breeze\nThere's a pleasing sense of happiness for me\nThere is only one wish on my mind\nWhen this day is through I hope that I will find\nThat tomorrow will be just the same for you and me\nAll I need will be mine if you are here\n"
 }
