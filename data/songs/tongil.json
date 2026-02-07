@@ -5,7 +5,7 @@
   "reviewed": false,
   "sections": [
     {
-      "name": "Verse 1",
+      "name": "Korean",
       "lines": [
         {
           "tokens": [
@@ -43,20 +43,6 @@
           ],
           "raw": "[G]Ton-gi-ri yoo-ra"
         },
-        {
-          "tokens": [
-            {
-              "chord": null,
-              "lyric": ""
-            }
-          ],
-          "raw": ""
-        }
-      ]
-    },
-    {
-      "name": "Verse 2",
-      "lines": [
         {
           "tokens": [
             {
@@ -105,7 +91,7 @@
       ]
     },
     {
-      "name": "Verse 3",
+      "name": "English",
       "lines": [
         {
           "tokens": [
@@ -143,20 +129,6 @@
           ],
           "raw": "[A7]Come along unity."
         },
-        {
-          "tokens": [
-            {
-              "chord": null,
-              "lyric": ""
-            }
-          ],
-          "raw": ""
-        }
-      ]
-    },
-    {
-      "name": "Verse 4",
-      "lines": [
         {
           "tokens": [
             {
@@ -206,5 +178,5 @@
     }
   ],
   "sourcePath": "songs/tongil.pro",
-  "source": "{title: Tongil}\n{key: D}\n{reviewed: false}\n\n{section: Verse 1}\n[D]Urie so wonun tongil,\n[G]Ggumedo so wonun tongil\n[D]I mogsum bachoso tongil\n[G]Ton-gi-ri yoo-ra\n\n{section: Verse 2}\n[A7]I kyo re salinun tongil,\n[D]I nara chanunde tongil\n[G]Tongiri oso ora\n[A7]Ton-gi-ri yo-ora\n\n{section: Verse 3}\n[D]Our cherished hopes are for unity\n[G]Even our dreams are for unity,\n[D]We'd give our lives for unity,\n[A7]Come along unity.\n\n{section: Verse 4}\n[D]Unity saving the people,\n[G]Unity saving all nations\n[D]Come here quickly unity\n[A7]Come along unity.\n"
+  "source": "{title: Tongil}\n{key: D}\n{reviewed: false}\n\n{section: Korean}\n[D]Urie so wonun tongil,\n[G]Ggumedo so wonun tongil\n[D]I mogsum bachoso tongil\n[G]Ton-gi-ri yoo-ra\n[A7]I kyo re salinun tongil,\n[D]I nara chanunde tongil\n[G]Tongiri oso ora\n[A7]Ton-gi-ri yo-ora\n\n{section: English}\n[D]Our cherished hopes are for unity\n[G]Even our dreams are for unity,\n[D]We'd give our lives for unity,\n[A7]Come along unity.\n[D]Unity saving the people,\n[G]Unity saving all nations\n[D]Come here quickly unity\n[A7]Come along unity.\n"
 }
