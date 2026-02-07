@@ -11,73 +11,145 @@
           "tokens": [
             {
               "chord": "D",
-              "lyric": "Urie so wonun tongil,"
+              "lyric": "Urie "
+            },
+            {
+              "chord": "G",
+              "lyric": "so wonun tong"
+            },
+            {
+              "chord": "D",
+              "lyric": "il,"
             }
           ],
-          "raw": "[D]Urie so wonun tongil,"
+          "raw": "[D]Urie [G]so wonun tong[D]il,"
         },
         {
           "tokens": [
             {
               "chord": "G",
-              "lyric": "Ggumedo so wonun tongil"
+              "lyric": "Ggumedo s"
+            },
+            {
+              "chord": "A",
+              "lyric": "o wonun tong"
+            },
+            {
+              "chord": "D",
+              "lyric": "il"
+            },
+            {
+              "chord": "A7",
+              "lyric": ""
             }
           ],
-          "raw": "[G]Ggumedo so wonun tongil"
+          "raw": "[G]Ggumedo s[A]o wonun tong[D]il[A7]"
         },
         {
           "tokens": [
             {
               "chord": "D",
-              "lyric": "I mogsum bachoso tongil"
+              "lyric": "I mogsum"
+            },
+            {
+              "chord": "G",
+              "lyric": " bachoso"
+            },
+            {
+              "chord": "D",
+              "lyric": " tongil"
             }
           ],
-          "raw": "[D]I mogsum bachoso tongil"
+          "raw": "[D]I mogsum[G] bachoso[D] tongil"
         },
         {
           "tokens": [
             {
               "chord": "G",
-              "lyric": "Ton-gi-ri yoo-ra"
+              "lyric": "Ton-gi-ri y"
+            },
+            {
+              "chord": "A7",
+              "lyric": "oo-r"
+            },
+            {
+              "chord": "D",
+              "lyric": "a  "
+            },
+            {
+              "chord": "D7",
+              "lyric": " "
             }
           ],
-          "raw": "[G]Ton-gi-ri yoo-ra"
+          "raw": "[G]Ton-gi-ri y[A7]oo-r[D]a  [D7] "
         },
         {
           "tokens": [
             {
-              "chord": "A7",
-              "lyric": "I kyo re salinun tongil,"
+              "chord": null,
+              "lyric": "I "
+            },
+            {
+              "chord": "G",
+              "lyric": "kyo re salinun tong"
+            },
+            {
+              "chord": "D",
+              "lyric": "il,"
             }
           ],
-          "raw": "[A7]I kyo re salinun tongil,"
+          "raw": "I [G]kyo re salinun tong[D]il,"
+        },
+        {
+          "tokens": [
+            {
+              "chord": "G",
+              "lyric": "I nara c"
+            },
+            {
+              "chord": "D",
+              "lyric": "hanunde ton"
+            },
+            {
+              "chord": "A7",
+              "lyric": "gil"
+            }
+          ],
+          "raw": "[G]I nara c[D]hanunde ton[A7]gil"
         },
         {
           "tokens": [
             {
               "chord": "D",
-              "lyric": "I nara chanunde tongil"
-            }
-          ],
-          "raw": "[D]I nara chanunde tongil"
-        },
-        {
-          "tokens": [
+              "lyric": "Tongiri o"
+            },
             {
               "chord": "G",
-              "lyric": "Tongiri oso ora"
+              "lyric": "so o"
+            },
+            {
+              "chord": "D",
+              "lyric": "ra"
             }
           ],
-          "raw": "[G]Tongiri oso ora"
+          "raw": "[D]Tongiri o[G]so o[D]ra"
         },
         {
           "tokens": [
             {
+              "chord": null,
+              "lyric": "Ton-gi-ri"
+            },
+            {
               "chord": "A7",
-              "lyric": "Ton-gi-ri yo-ora"
+              "lyric": " yo-or"
+            },
+            {
+              "chord": "D",
+              "lyric": "a"
             }
           ],
-          "raw": "[A7]Ton-gi-ri yo-ora"
+          "raw": "Ton-gi-ri[A7] yo-or[D]a"
         },
         {
           "tokens": [
@@ -96,74 +168,74 @@
         {
           "tokens": [
             {
-              "chord": "D",
+              "chord": null,
               "lyric": "Our cherished hopes are for unity"
             }
           ],
-          "raw": "[D]Our cherished hopes are for unity"
+          "raw": "Our cherished hopes are for unity"
         },
         {
           "tokens": [
             {
-              "chord": "G",
+              "chord": null,
               "lyric": "Even our dreams are for unity,"
             }
           ],
-          "raw": "[G]Even our dreams are for unity,"
+          "raw": "Even our dreams are for unity,"
         },
         {
           "tokens": [
             {
-              "chord": "D",
+              "chord": null,
               "lyric": "We'd give our lives for unity,"
             }
           ],
-          "raw": "[D]We'd give our lives for unity,"
+          "raw": "We'd give our lives for unity,"
         },
         {
           "tokens": [
             {
-              "chord": "A7",
+              "chord": null,
               "lyric": "Come along unity."
             }
           ],
-          "raw": "[A7]Come along unity."
+          "raw": "Come along unity."
         },
         {
           "tokens": [
             {
-              "chord": "D",
+              "chord": null,
               "lyric": "Unity saving the people,"
             }
           ],
-          "raw": "[D]Unity saving the people,"
+          "raw": "Unity saving the people,"
         },
         {
           "tokens": [
             {
-              "chord": "G",
+              "chord": null,
               "lyric": "Unity saving all nations"
             }
           ],
-          "raw": "[G]Unity saving all nations"
+          "raw": "Unity saving all nations"
         },
         {
           "tokens": [
             {
-              "chord": "D",
+              "chord": null,
               "lyric": "Come here quickly unity"
             }
           ],
-          "raw": "[D]Come here quickly unity"
+          "raw": "Come here quickly unity"
         },
         {
           "tokens": [
             {
-              "chord": "A7",
+              "chord": null,
               "lyric": "Come along unity."
             }
           ],
-          "raw": "[A7]Come along unity."
+          "raw": "Come along unity."
         },
         {
           "tokens": [
@@ -178,5 +250,5 @@
     }
   ],
   "sourcePath": "songs/tongil.pro",
-  "source": "{title: Tongil}\n{key: D}\n{reviewed: false}\n\n{section: Korean}\n[D]Urie so wonun tongil,\n[G]Ggumedo so wonun tongil\n[D]I mogsum bachoso tongil\n[G]Ton-gi-ri yoo-ra\n[A7]I kyo re salinun tongil,\n[D]I nara chanunde tongil\n[G]Tongiri oso ora\n[A7]Ton-gi-ri yo-ora\n\n{section: English}\n[D]Our cherished hopes are for unity\n[G]Even our dreams are for unity,\n[D]We'd give our lives for unity,\n[A7]Come along unity.\n[D]Unity saving the people,\n[G]Unity saving all nations\n[D]Come here quickly unity\n[A7]Come along unity.\n"
+  "source": "{title: Tongil}\n{key: D}\n{reviewed: false}\n\n{section: Korean}\n[D]Urie [G]so wonun tong[D]il,\n[G]Ggumedo s[A]o wonun tong[D]il[A7]\n[D]I mogsum[G] bachoso[D] tongil\n[G]Ton-gi-ri y[A7]oo-r[D]a  [D7] \nI [G]kyo re salinun tong[D]il,\n[G]I nara c[D]hanunde ton[A7]gil\n[D]Tongiri o[G]so o[D]ra\nTon-gi-ri[A7] yo-or[D]a\n\n{section: English}\nOur cherished hopes are for unity\nEven our dreams are for unity,\nWe'd give our lives for unity,\nCome along unity.\nUnity saving the people,\nUnity saving all nations\nCome here quickly unity\nCome along unity.\n"
 }
