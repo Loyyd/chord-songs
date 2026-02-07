@@ -2,7 +2,7 @@
   "id": "shining-fatherland",
   "title": "Shining Fatherland",
   "key": "Bm",
-  "reviewed": false,
+  "reviewed": true,
   "sections": [
     {
       "name": "Verse 1",
@@ -292,5 +292,5 @@
     }
   ],
   "sourcePath": "songs/shining-fatherland.pro",
-  "source": "{title: Shining Fatherland}\n{key: Bm}\n{reviewed: false}\n\n{section: Verse 1}\n[Bm]Sunlight beaming forth in the East, from th[Em]e Fatherland;[Bm]\nBringing tid[G]ings of [D]a new world to famili[Em]es in the field[D].\n[Em]Let us hasten to send[Bm] the news all [F#m]throughou[Em7]t the world[F#m],   [A7]\n[D]Eden's gl[G]ory sp[A]reading forev[Bm]er the ho[Em]pe of joy and peac[D]e.\n\n{section: Chorus}\n[D]Dawn, go[G]lden da[D]wn, thro[F#m]ughout the shining Fat[Em7]herland,[A7]\n[D]Tells the t[G]idings[A] of the [Bm]rising[Em] sun that brings [D]us life.\n\n{section: Verse 2}\nHarvest quickly men of the fields, hasten to harvest now;\nCrops are ripened and ready to bring into the heavenly barn.\nSaints and angels and heavenly hosts gather to speed the task;\nAll will share the harvest of joy at the banquet of our Lord.\n\n{section: Verse 3}\nWhen the woes of six thousand years are gone from the Father's heart,\nSons and daughters shall live with great joy, our True Parents' own\nSaints and sages and men of good faith all waited for this day;\nLoyal men of hope and fidelity yearned to see this day.\n"
+  "source": "{title: Shining Fatherland}\n{key: Bm}\n{reviewed: true}\n\n{section: Verse 1}\n[Bm]Sunlight beaming forth in the East, from th[Em]e Fatherland;[Bm]\nBringing tid[G]ings of [D]a new world to famili[Em]es in the field[D].\n[Em]Let us hasten to send[Bm] the news all [F#m]throughou[Em7]t the world[F#m],   [A7]\n[D]Eden's gl[G]ory sp[A]reading forev[Bm]er the ho[Em]pe of joy and peac[D]e.\n\n{section: Chorus}\n[D]Dawn, go[G]lden da[D]wn, thro[F#m]ughout the shining Fat[Em7]herland,[A7]\n[D]Tells the t[G]idings[A] of the [Bm]rising[Em] sun that brings [D]us life.\n\n{section: Verse 2}\nHarvest quickly men of the fields, hasten to harvest now;\nCrops are ripened and ready to bring into the heavenly barn.\nSaints and angels and heavenly hosts gather to speed the task;\nAll will share the harvest of joy at the banquet of our Lord.\n\n{section: Verse 3}\nWhen the woes of six thousand years are gone from the Father's heart,\nSons and daughters shall live with great joy, our True Parents' own\nSaints and sages and men of good faith all waited for this day;\nLoyal men of hope and fidelity yearned to see this day.\n"
 }
