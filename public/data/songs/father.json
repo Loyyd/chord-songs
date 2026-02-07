@@ -2,7 +2,7 @@
   "id": "father",
   "title": "Father",
   "key": "D",
-  "reviewed": false,
+  "reviewed": true,
   "sections": [
     {
       "name": "Verse 1",
@@ -522,5 +522,5 @@
     }
   ],
   "sourcePath": "songs/father.pro",
-  "source": "{title: Father}\n{key: D}\n{reviewed: false}\n\n{section: Verse 1}\n[D]Father, you went through the [Bm]nights alone, \nopened the wa[G]y t[F#m]o fre[Em]e the e[A7]arth;\n[D]Father, together we'll [Bm]walk hand in hand\nAnd settle[G] peace[F#m] down [Em]on God's ea[A7]rth\n\n{section: Chorus}\nIt's a new [D]dawn, I see it gro[Bm]w;\nStronger and [G]clearer[E] day by d[A7]ay.\nSaving the p[D]eople,\nBringing the w[G]hole wid[F#m]e wor[Em]ld into[A7] new h[D]ope.\n\n{section: Verse 2}\nFather, wherever you go, we'll go;\nFollow your tracks which lead us home.\nFather, a unified world is at hand,\nNo one will ever stop you now.\n\n{section: Chorus}\nIt's a new [D]dawn, I see it gro[Bm]w;\nStronger and [G]clearer[E] day by d[A7]ay.\nSaving the p[D]eople,\nBringing the w[G]hole w[F#m]ide w[Em]orld i[A7]nto new [D]hope.[B7]\n\n{section: Verse 3}\n[E]Father, you need us to [C#m]work and fight,\nTo conquer the s[A]ins [G#m]which [F#m]rule the w[B7]orld.\n[E]Father, we know that our [C#m]time is short,\nAnd want to g[A]ive [G#m]our [F#m]lives to [B7]you.\n\n{section: Chorus}\nIt's a new [E]dawn, I see it grow[C#m];\nStronger and c[A]learer [F#]day by day[B7].\nSaving the p[E]eople,\nBringing the wh[A]ole w[G#m]ide w[F#m]orld i[B7]nto new [E]hope.\n"
+  "source": "{title: Father}\n{key: D}\n{reviewed: true}\n\n{section: Verse 1}\n[D]Father, you went through the [Bm]nights alone, \nopened the wa[G]y t[F#m]o fre[Em]e the e[A7]arth;\n[D]Father, together we'll [Bm]walk hand in hand\nAnd settle[G] peace[F#m] down [Em]on God's ea[A7]rth\n\n{section: Chorus}\nIt's a new [D]dawn, I see it gro[Bm]w;\nStronger and [G]clearer[E] day by d[A7]ay.\nSaving the p[D]eople,\nBringing the w[G]hole wid[F#m]e wor[Em]ld into[A7] new h[D]ope.\n\n{section: Verse 2}\nFather, wherever you go, we'll go;\nFollow your tracks which lead us home.\nFather, a unified world is at hand,\nNo one will ever stop you now.\n\n{section: Chorus}\nIt's a new [D]dawn, I see it gro[Bm]w;\nStronger and [G]clearer[E] day by d[A7]ay.\nSaving the p[D]eople,\nBringing the w[G]hole w[F#m]ide w[Em]orld i[A7]nto new [D]hope.[B7]\n\n{section: Verse 3}\n[E]Father, you need us to [C#m]work and fight,\nTo conquer the s[A]ins [G#m]which [F#m]rule the w[B7]orld.\n[E]Father, we know that our [C#m]time is short,\nAnd want to g[A]ive [G#m]our [F#m]lives to [B7]you.\n\n{section: Chorus}\nIt's a new [E]dawn, I see it grow[C#m];\nStronger and c[A]learer [F#]day by day[B7].\nSaving the p[E]eople,\nBringing the wh[A]ole w[G#m]ide w[F#m]orld i[B7]nto new [E]hope.\n"
 }

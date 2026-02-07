@@ -1,0 +1,447 @@
+{
+  "id": "top-of-the-world",
+  "title": "Top Of The World",
+  "key": "F",
+  "reviewed": true,
+  "sections": [
+    {
+      "name": "Verse 1",
+      "lines": [
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "S"
+            },
+            {
+              "chord": "F",
+              "lyric": "uch a feelings comin"
+            },
+            {
+              "chord": "C",
+              "lyric": "g over "
+            },
+            {
+              "chord": "Bb",
+              "lyric": "me  "
+            },
+            {
+              "chord": "F",
+              "lyric": "  "
+            }
+          ],
+          "raw": "S[F]uch a feelings comin[C]g over [Bb]me  [F]  "
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "There is won"
+            },
+            {
+              "chord": "Am",
+              "lyric": "der in most ever"
+            },
+            {
+              "chord": "Gm",
+              "lyric": "ythi"
+            },
+            {
+              "chord": "C7",
+              "lyric": "ng I s"
+            },
+            {
+              "chord": "F",
+              "lyric": "ee  "
+            },
+            {
+              "chord": "F7",
+              "lyric": " "
+            }
+          ],
+          "raw": "There is won[Am]der in most ever[Gm]ythi[C7]ng I s[F]ee  [F7] "
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "Not a cl"
+            },
+            {
+              "chord": "Bb",
+              "lyric": "oud in the sk"
+            },
+            {
+              "chord": "C",
+              "lyric": "y"
+            }
+          ],
+          "raw": "Not a cl[Bb]oud in the sk[C]y"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "Got the sun"
+            },
+            {
+              "chord": "Am",
+              "lyric": " in my ey"
+            },
+            {
+              "chord": "D",
+              "lyric": "es"
+            }
+          ],
+          "raw": "Got the sun[Am] in my ey[D]es"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "And I wo"
+            },
+            {
+              "chord": "Gm7",
+              "lyric": "n't be surp"
+            },
+            {
+              "chord": "Bbm7",
+              "lyric": "rised if it's a dre"
+            },
+            {
+              "chord": "C",
+              "lyric": "am  "
+            },
+            {
+              "chord": "C7",
+              "lyric": ""
+            }
+          ],
+          "raw": "And I wo[Gm7]n't be surp[Bbm7]rised if it's a dre[C]am  [C7]"
+        },
+        {
+          "tokens": [
+            {
+              "chord": "F",
+              "lyric": "Everything I wa"
+            },
+            {
+              "chord": "C",
+              "lyric": "nt the wo"
+            },
+            {
+              "chord": "Bb",
+              "lyric": "rld to "
+            },
+            {
+              "chord": "F",
+              "lyric": "be"
+            }
+          ],
+          "raw": "[F]Everything I wa[C]nt the wo[Bb]rld to [F]be"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": ""
+            }
+          ],
+          "raw": ""
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "Is now com"
+            },
+            {
+              "chord": "Am",
+              "lyric": "ing true espe"
+            },
+            {
+              "chord": "Gm",
+              "lyric": "ciall"
+            },
+            {
+              "chord": "C7",
+              "lyric": "y for m"
+            },
+            {
+              "chord": "F",
+              "lyric": "e  "
+            },
+            {
+              "chord": "F7",
+              "lyric": ""
+            }
+          ],
+          "raw": "Is now com[Am]ing true espe[Gm]ciall[C7]y for m[F]e  [F7]"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "And the re"
+            },
+            {
+              "chord": "Bb",
+              "lyric": "ason is cl"
+            },
+            {
+              "chord": "C",
+              "lyric": "ear, it's beca"
+            },
+            {
+              "chord": "Am",
+              "lyric": "use you are her"
+            },
+            {
+              "chord": "D",
+              "lyric": "e"
+            }
+          ],
+          "raw": "And the re[Bb]ason is cl[C]ear, it's beca[Am]use you are her[D]e"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "You're the nea"
+            },
+            {
+              "chord": "Gm7",
+              "lyric": "rest thing to heav"
+            },
+            {
+              "chord": "Bbm7",
+              "lyric": "en that I've seen"
+            },
+            {
+              "chord": "C7",
+              "lyric": ""
+            }
+          ],
+          "raw": "You're the nea[Gm7]rest thing to heav[Bbm7]en that I've seen[C7]"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": ""
+            }
+          ],
+          "raw": ""
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "I'm on the to"
+            },
+            {
+              "chord": "F",
+              "lyric": "p of the world looking d"
+            },
+            {
+              "chord": "Bb",
+              "lyric": "own on creation"
+            }
+          ],
+          "raw": "I'm on the to[F]p of the world looking d[Bb]own on creation"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "And the o"
+            },
+            {
+              "chord": "F",
+              "lyric": "nly explanat"
+            },
+            {
+              "chord": "Bb",
+              "lyric": "ion I c"
+            },
+            {
+              "chord": "C7",
+              "lyric": "an fi"
+            },
+            {
+              "chord": "F",
+              "lyric": "nd "
+            },
+            {
+              "chord": "F7",
+              "lyric": ""
+            }
+          ],
+          "raw": "And the o[F]nly explanat[Bb]ion I c[C7]an fi[F]nd [F7]"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "Is the lov"
+            },
+            {
+              "chord": "Bb",
+              "lyric": "e that I've foun"
+            },
+            {
+              "chord": "C7",
+              "lyric": "d ever since "
+            },
+            {
+              "chord": "F",
+              "lyric": "you've been a"
+            },
+            {
+              "chord": "Bb",
+              "lyric": "round"
+            }
+          ],
+          "raw": "Is the lov[Bb]e that I've foun[C7]d ever since [F]you've been a[Bb]round"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "Your love's p"
+            },
+            {
+              "chord": "F",
+              "lyric": "ut me at the top "
+            },
+            {
+              "chord": "Gm7",
+              "lyric": "of the"
+            },
+            {
+              "chord": "C7",
+              "lyric": " world"
+            },
+            {
+              "chord": "F",
+              "lyric": ""
+            }
+          ],
+          "raw": "Your love's p[F]ut me at the top [Gm7]of the[C7] world[F]"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": ""
+            }
+          ],
+          "raw": ""
+        }
+      ]
+    },
+    {
+      "name": "Verse 2",
+      "lines": [
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "Something in the wind has learned my name"
+            }
+          ],
+          "raw": "Something in the wind has learned my name"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "And it's telling me that things are not the same"
+            }
+          ],
+          "raw": "And it's telling me that things are not the same"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "In the leaves on the trees"
+            }
+          ],
+          "raw": "In the leaves on the trees"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "And the touch of the breeze"
+            }
+          ],
+          "raw": "And the touch of the breeze"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "There's a pleasing sense of happiness for me"
+            }
+          ],
+          "raw": "There's a pleasing sense of happiness for me"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "There is only one wish on my mind"
+            }
+          ],
+          "raw": "There is only one wish on my mind"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "When this day is through I hope that I will find"
+            }
+          ],
+          "raw": "When this day is through I hope that I will find"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "That tomorrow will be just the same for you and me"
+            }
+          ],
+          "raw": "That tomorrow will be just the same for you and me"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "All I need will be mine if you are here"
+            }
+          ],
+          "raw": "All I need will be mine if you are here"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": ""
+            }
+          ],
+          "raw": ""
+        }
+      ]
+    }
+  ],
+  "sourcePath": "songs/top-of-the-world.pro",
+  "source": "{title: Top Of The World}\n{artist: Carpenters}\n{key: F}\n{reviewed: true}\n\n{section: Verse 1}\nS[F]uch a feelings comin[C]g over [Bb]me  [F]  \nThere is won[Am]der in most ever[Gm]ythi[C7]ng I s[F]ee  [F7] \nNot a cl[Bb]oud in the sk[C]y\nGot the sun[Am] in my ey[D]es\nAnd I wo[Gm7]n't be surp[Bbm7]rised if it's a dre[C]am  [C7]\n[F]Everything I wa[C]nt the wo[Bb]rld to [F]be\n            \nIs now com[Am]ing true espe[Gm]ciall[C7]y for m[F]e  [F7]\nAnd the re[Bb]ason is cl[C]ear, it's beca[Am]use you are her[D]e\nYou're the nea[Gm7]rest thing to heav[Bbm7]en that I've seen[C7]\n\n{section: Chorus}\nI'm on the to[F]p of the world looking d[Bb]own on creation\nAnd the o[F]nly explanat[Bb]ion I c[C7]an fi[F]nd [F7]\nIs the lov[Bb]e that I've foun[C7]d ever since [F]you've been a[Bb]round\nYour love's p[F]ut me at the top [Gm7]of the[C7] world[F]\n\n{section: Verse 2}\nSomething in the wind has learned my name\nAnd it's telling me that things are not the same\nIn the leaves on the trees\nAnd the touch of the breeze\nThere's a pleasing sense of happiness for me\nThere is only one wish on my mind\nWhen this day is through I hope that I will find\nThat tomorrow will be just the same for you and me\nAll I need will be mine if you are here\n"
+}

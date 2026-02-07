@@ -1,6 +1,6 @@
 {title: Amazing Grace}
 {key: E}
-{reviewed: false}
+{reviewed: true}
 
 {section: Verse 1}
 [E]Amazing Grace, how swee[A]t the soun[E]d,

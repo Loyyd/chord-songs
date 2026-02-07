@@ -2,7 +2,7 @@
   "id": "christ-is-here",
   "title": "Christ Is Here",
   "key": "Am",
-  "reviewed": false,
+  "reviewed": true,
   "sections": [
     {
       "name": "Chorus 2x",
@@ -275,5 +275,5 @@
     }
   ],
   "sourcePath": "songs/christ-is-here.pro",
-  "source": "{title: Christ Is Here}\n{key: Am}\n{reviewed: false}\n\n{section: Chorus 2x}\n[Am]I want to sing, A[D]llel[Am]uia.[D] \nI want to s[Am]ing, Al[D]leluia.[Am]\nChrist is her[D]e, Christ is her[Am]e! [D]   [Am]   [D]\n\n{section: Verse 1}\n[Am]I sought him in [D]ashes, down lo[Am]ng, narrow s[D]treets,\nDown p[Am]aths paved with sor[D]row[Am].  [D]\nBut se[C]arching in sorrow, I foun[D]d him in joy[E],\n[Am]Allelu[D]!  [Am]   [D] \n\n{section: Verse 2}\nHow many have fasted and prayed for this hour, But we have the blessing.\nOf serving the Father through loving His son.\nAllelu!\n\n{section: Verse 3}\nLord, we are not worthy, we are not complete, And yet we are chosen.\nHow gladly I'll give Him my heart, hands and voice.\nAllelu!\n"
+  "source": "{title: Christ Is Here}\n{key: Am}\n{reviewed: true}\n\n{section: Chorus 2x}\n[Am]I want to sing, A[D]llel[Am]uia.[D] \nI want to s[Am]ing, Al[D]leluia.[Am]\nChrist is her[D]e, Christ is her[Am]e! [D]   [Am]   [D]\n\n{section: Verse 1}\n[Am]I sought him in [D]ashes, down lo[Am]ng, narrow s[D]treets,\nDown p[Am]aths paved with sor[D]row[Am].  [D]\nBut se[C]arching in sorrow, I foun[D]d him in joy[E],\n[Am]Allelu[D]!  [Am]   [D] \n\n{section: Verse 2}\nHow many have fasted and prayed for this hour, But we have the blessing.\nOf serving the Father through loving His son.\nAllelu!\n\n{section: Verse 3}\nLord, we are not worthy, we are not complete, And yet we are chosen.\nHow gladly I'll give Him my heart, hands and voice.\nAllelu!\n"
 }

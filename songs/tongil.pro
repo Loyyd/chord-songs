@@ -1,27 +1,23 @@
 {title: Tongil}
 {key: D}
-{reviewed: false}
+{reviewed: true}
 
-{section: Verse 1}
-[D]Urie so wonun tongil,
-[G]Ggumedo so wonun tongil
-[D]I mogsum bachoso tongil
-[G]Ton-gi-ri yoo-ra
+{section: Korean}
+[D]Urie [G]so wonun tong[D]il,
+[G]Ggumedo s[A]o wonun tong[D]il[A7]
+[D]I mogsum[G] bachoso[D] tongil
+[G]Ton-gi-ri y[A7]oo-r[D]a  [D7] 
+I [G]kyo re salinun tong[D]il,
+[G]I nara c[D]hanunde ton[A7]gil
+[D]Tongiri o[G]so o[D]ra
+Ton-gi-ri[A7] yo-or[D]a
 
-{section: Verse 2}
-[A7]I kyo re salinun tongil,
-[D]I nara chanunde tongil
-[G]Tongiri oso ora
-[A7]Ton-gi-ri yo-ora
-
-{section: Verse 3}
-[D]Our cherished hopes are for unity
-[G]Even our dreams are for unity,
-[D]We'd give our lives for unity,
-[A7]Come along unity.
-
-{section: Verse 4}
-[D]Unity saving the people,
-[G]Unity saving all nations
-[D]Come here quickly unity
-[A7]Come along unity.
+{section: English}
+Our cherished hopes are for unity
+Even our dreams are for unity,
+We'd give our lives for unity,
+Come along unity.
+Unity saving the people,
+Unity saving all nations
+Come here quickly unity
+Come along unity.

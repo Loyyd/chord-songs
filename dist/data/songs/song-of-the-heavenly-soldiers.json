@@ -2,7 +2,7 @@
   "id": "song-of-the-heavenly-soldiers",
   "title": "Song of the Heavenly Soldiers",
   "key": "A",
-  "reviewed": false,
+  "reviewed": true,
   "sections": [
     {
       "name": "Verse 1",
@@ -11,69 +11,105 @@
           "tokens": [
             {
               "chord": "A",
-              "lyric": "Beautiful morning sunrise, calm above the "
+              "lyric": "Beautiful mor"
             },
             {
               "chord": "E7",
-              "lyric": "land of our "
+              "lyric": "ning sunris"
             },
             {
               "chord": "A",
-              "lyric": "hope;"
-            }
-          ],
-          "raw": "[A]Beautiful morning sunrise, calm above the [E7]land of our [A]hope;"
-        },
-        {
-          "tokens": [
+              "lyric": "e, calm a"
+            },
             {
               "chord": "D",
-              "lyric": "Robed in white chosen people, "
+              "lyric": "bove the land of"
             },
             {
               "chord": "E7",
-              "lyric": "fighting for the "
+              "lyric": " our hope;  "
             },
             {
               "chord": "A",
-              "lyric": "land of God."
+              "lyric": ""
             }
           ],
-          "raw": "[D]Robed in white chosen people, [E7]fighting for the [A]land of God."
+          "raw": "[A]Beautiful mor[E7]ning sunris[A]e, calm a[D]bove the land of[E7] our hope;  [A]"
         },
         {
           "tokens": [
+            {
+              "chord": "E7",
+              "lyric": "Robed in white chosen peopl"
+            },
+            {
+              "chord": "A",
+              "lyric": "e, figh"
+            },
+            {
+              "chord": "D",
+              "lyric": "ting for the lan"
+            },
+            {
+              "chord": "E7",
+              "lyric": "d of Go"
+            },
+            {
+              "chord": "A",
+              "lyric": "d."
+            }
+          ],
+          "raw": "[E7]Robed in white chosen peopl[A]e, figh[D]ting for the lan[E7]d of Go[A]d."
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "To"
+            },
             {
               "chord": "A7",
-              "lyric": "Towering high the snow white "
+              "lyric": "wering high the sno"
             },
             {
               "chord": "D",
-              "lyric": "mountain stands aloft in "
+              "lyric": "w white mountain stand"
             },
             {
               "chord": "Bm",
-              "lyric": "majesty."
+              "lyric": "s aloft in majest"
+            },
+            {
+              "chord": "E7",
+              "lyric": "y."
             }
           ],
-          "raw": "[A7]Towering high the snow white [D]mountain stands aloft in [Bm]majesty."
+          "raw": "To[A7]wering high the sno[D]w white mountain stand[Bm]s aloft in majest[E7]y."
         },
         {
           "tokens": [
             {
-              "chord": "E7",
-              "lyric": "Ruling with power over the world, "
-            },
-            {
               "chord": "A",
-              "lyric": "shining o'er the "
+              "lyric": "Ruling with power ove"
             },
             {
               "chord": "F#m",
-              "lyric": "universe."
+              "lyric": "r the world, s"
+            },
+            {
+              "chord": "Bm7",
+              "lyric": "hining o'er the uni"
+            },
+            {
+              "chord": "E7",
+              "lyric": "verse. "
+            },
+            {
+              "chord": "A",
+              "lyric": ""
             }
           ],
-          "raw": "[E7]Ruling with power over the world, [A]shining o'er the [F#m]universe."
+          "raw": "[A]Ruling with power ove[F#m]r the world, s[Bm7]hining o'er the uni[E7]verse. [A]"
         },
         {
           "tokens": [
@@ -93,35 +129,55 @@
           "tokens": [
             {
               "chord": "A",
-              "lyric": "Marching on Heavenly Soldiers, marching on with His "
+              "lyric": "Marching on Heavenly S"
             },
             {
               "chord": "D",
-              "lyric": "love,"
+              "lyric": "oldie"
+            },
+            {
+              "chord": "A",
+              "lyric": "rs, mar"
+            },
+            {
+              "chord": "F#m",
+              "lyric": "ching on "
+            },
+            {
+              "chord": "Bm7",
+              "lyric": "with H"
+            },
+            {
+              "chord": "E7",
+              "lyric": "is love,"
             }
           ],
-          "raw": "[A]Marching on Heavenly Soldiers, marching on with His [D]love,"
+          "raw": "[A]Marching on Heavenly S[D]oldie[A]rs, mar[F#m]ching on [Bm7]with H[E7]is love,"
         },
         {
           "tokens": [
             {
-              "chord": "A",
-              "lyric": "Uniting in life eternal "
-            },
-            {
               "chord": "F#m",
-              "lyric": "with our God in "
+              "lyric": "Unitin"
             },
             {
-              "chord": "Bm7",
-              "lyric": "Heaven and "
+              "chord": "D",
+              "lyric": "g in "
+            },
+            {
+              "chord": "Bm",
+              "lyric": "life eterna"
             },
             {
               "chord": "E7",
-              "lyric": "earth."
+              "lyric": "l with our God in Heav"
+            },
+            {
+              "chord": "A",
+              "lyric": "en and earth."
             }
           ],
-          "raw": "[A]Uniting in life eternal [F#m]with our God in [Bm7]Heaven and [E7]earth."
+          "raw": "[F#m]Unitin[D]g in [Bm]life eterna[E7]l with our God in Heav[A]en and earth."
         },
         {
           "tokens": [
@@ -140,38 +196,38 @@
         {
           "tokens": [
             {
-              "chord": "A",
+              "chord": null,
               "lyric": "Heavenly soldiers fighting strongly for the victory;"
             }
           ],
-          "raw": "[A]Heavenly soldiers fighting strongly for the victory;"
+          "raw": "Heavenly soldiers fighting strongly for the victory;"
         },
         {
           "tokens": [
             {
-              "chord": "A",
+              "chord": null,
               "lyric": "Bringing lost souls to harvest from the fallen world of fear, Freely"
             }
           ],
-          "raw": "[A]Bringing lost souls to harvest from the fallen world of fear, Freely"
+          "raw": "Bringing lost souls to harvest from the fallen world of fear, Freely"
         },
         {
           "tokens": [
             {
-              "chord": "A",
+              "chord": null,
               "lyric": "giving love and beauty to them from our Parents' heart."
             }
           ],
-          "raw": "[A]giving love and beauty to them from our Parents' heart."
+          "raw": "giving love and beauty to them from our Parents' heart."
         },
         {
           "tokens": [
             {
-              "chord": "A",
+              "chord": null,
               "lyric": "Spreading the word over the world, rescuing the family of God."
             }
           ],
-          "raw": "[A]Spreading the word over the world, rescuing the family of God."
+          "raw": "Spreading the word over the world, rescuing the family of God."
         },
         {
           "tokens": [
@@ -190,88 +246,38 @@
         {
           "tokens": [
             {
-              "chord": "A",
-              "lyric": "Marching on Heavenly soldiers, marching on with His love,"
-            }
-          ],
-          "raw": "[A]Marching on Heavenly soldiers, marching on with His love,"
-        },
-        {
-          "tokens": [
-            {
-              "chord": "A",
-              "lyric": "Uniting in life eternal with our God in Heaven and earth."
-            }
-          ],
-          "raw": "[A]Uniting in life eternal with our God in Heaven and earth."
-        },
-        {
-          "tokens": [
-            {
-              "chord": "A",
+              "chord": null,
               "lyric": "Sanctified, brave crusaders, join in our True Parents' fight;"
             }
           ],
-          "raw": "[A]Sanctified, brave crusaders, join in our True Parents' fight;"
-        },
-        {
-          "tokens": [
-            {
-              "chord": "A",
-              "lyric": "Lifting high the rod of iron, smashing evils of the world!"
-            }
-          ],
-          "raw": "[A]Lifting high the rod of iron, smashing evils of the world!"
+          "raw": "Sanctified, brave crusaders, join in our True Parents' fight;"
         },
         {
           "tokens": [
             {
               "chord": null,
-              "lyric": ""
+              "lyric": "Lifting high the rod of iron, smashing evils of the world!"
             }
           ],
-          "raw": ""
-        }
-      ]
-    },
-    {
-      "name": "Verse 4",
-      "lines": [
+          "raw": "Lifting high the rod of iron, smashing evils of the world!"
+        },
         {
           "tokens": [
             {
-              "chord": "A",
+              "chord": null,
               "lyric": "Now restoring Eden's glory, on the earth eternally,"
             }
           ],
-          "raw": "[A]Now restoring Eden's glory, on the earth eternally,"
+          "raw": "Now restoring Eden's glory, on the earth eternally,"
         },
         {
           "tokens": [
             {
-              "chord": "A",
+              "chord": null,
               "lyric": "Praising our God, Heavenly Father, giving joy to comfort His heart"
             }
           ],
-          "raw": "[A]Praising our God, Heavenly Father, giving joy to comfort His heart"
-        },
-        {
-          "tokens": [
-            {
-              "chord": "A",
-              "lyric": "Marching on Heavenly soldiers, marching on with His love."
-            }
-          ],
-          "raw": "[A]Marching on Heavenly soldiers, marching on with His love."
-        },
-        {
-          "tokens": [
-            {
-              "chord": "A",
-              "lyric": "Uniting in life eternal with our God in Heaven and earth."
-            }
-          ],
-          "raw": "[A]Uniting in life eternal with our God in Heaven and earth."
+          "raw": "Praising our God, Heavenly Father, giving joy to comfort His heart"
         },
         {
           "tokens": [
@@ -286,5 +292,5 @@
     }
   ],
   "sourcePath": "songs/song-of-the-heavenly-soldiers.pro",
-  "source": "{title: Song of the Heavenly Soldiers}\n{key: A}\n{reviewed: false}\n\n{section: Verse 1}\n[A]Beautiful morning sunrise, calm above the [E7]land of our [A]hope;\n[D]Robed in white chosen people, [E7]fighting for the [A]land of God.\n[A7]Towering high the snow white [D]mountain stands aloft in [Bm]majesty.\n[E7]Ruling with power over the world, [A]shining o'er the [F#m]universe.\n\n{section: Chorus}\n[A]Marching on Heavenly Soldiers, marching on with His [D]love,\n[A]Uniting in life eternal [F#m]with our God in [Bm7]Heaven and [E7]earth.\n\n{section: Verse 2}\n[A]Heavenly soldiers fighting strongly for the victory;\n[A]Bringing lost souls to harvest from the fallen world of fear, Freely\n[A]giving love and beauty to them from our Parents' heart.\n[A]Spreading the word over the world, rescuing the family of God.\n\n{section: Verse 3}\n[A]Marching on Heavenly soldiers, marching on with His love,\n[A]Uniting in life eternal with our God in Heaven and earth.\n[A]Sanctified, brave crusaders, join in our True Parents' fight;\n[A]Lifting high the rod of iron, smashing evils of the world!\n\n{section: Verse 4}\n[A]Now restoring Eden's glory, on the earth eternally,\n[A]Praising our God, Heavenly Father, giving joy to comfort His heart\n[A]Marching on Heavenly soldiers, marching on with His love.\n[A]Uniting in life eternal with our God in Heaven and earth.\n"
+  "source": "{title: Song of the Heavenly Soldiers}\n{key: A}\n{reviewed: true}\n\n{section: Verse 1}\n[A]Beautiful mor[E7]ning sunris[A]e, calm a[D]bove the land of[E7] our hope;  [A]\n[E7]Robed in white chosen peopl[A]e, figh[D]ting for the lan[E7]d of Go[A]d.\nTo[A7]wering high the sno[D]w white mountain stand[Bm]s aloft in majest[E7]y.\n[A]Ruling with power ove[F#m]r the world, s[Bm7]hining o'er the uni[E7]verse. [A]\n\n{section: Chorus}\n[A]Marching on Heavenly S[D]oldie[A]rs, mar[F#m]ching on [Bm7]with H[E7]is love,\n[F#m]Unitin[D]g in [Bm]life eterna[E7]l with our God in Heav[A]en and earth.\n\n{section: Verse 2}\nHeavenly soldiers fighting strongly for the victory;\nBringing lost souls to harvest from the fallen world of fear, Freely\ngiving love and beauty to them from our Parents' heart.\nSpreading the word over the world, rescuing the family of God.\n\n{section: Verse 3}\nSanctified, brave crusaders, join in our True Parents' fight;\nLifting high the rod of iron, smashing evils of the world!\nNow restoring Eden's glory, on the earth eternally,\nPraising our God, Heavenly Father, giving joy to comfort His heart\n"
 }

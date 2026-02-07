@@ -1,20 +1,20 @@
 {title: Song of the Victors}
 {key: F}
-{reviewed: false}
+{reviewed: true}
 
 {section: Verse 1}
-[F]Sing a loud Ho[C7]sanna to the [Dm]Lord,
-[Bb]Offer everything with [F]humble heart.
-[Gm]Come at[Am]tend the Lord, O re[F]joice in Him
-[C7]Who brings new life to all the [F]world.
-[Dm]Let us go de[Am]termined to seek and find
-[F]All the promised [Bb]glory of the [F]Lord.
+Sing a[F] loud[C7] Hosanna to the L[Dm]ord,
+Offer everyth[Bb]ing with humble [F]heart.
+Come [Gm]attend the L[Am]ord, O re[F]joice in Him
+Who brings [C7]new life to all the [F]world.
+Let us [Dm]go determined to [Am]seek and find
+All the p[F]romised g[Bb]lory of the [F]Lord.
 
 {section: Chorus}
-[Gm]There we'll [Am]sing new songs in the [Dm]Garden fair,
-[Am]Songs of freedom [Dm]bright with happi[Am]ness.
-[Bb]There we'll sing new [Am]songs in the Garden fair,
-[F]Songs of freedom [C7]bright with happi[F]ness.
+Ther[Gm]e we'll sing [Am]new songs [Dm]in the Garden fair,
+Songs of [Am]freedom brig[Dm]ht with [Am]happiness.
+Ther[Bb]e we'll sing new songs [Am]in the Garden fair,
+So[F]ngs of fre[C7]edom bright [F]with happiness.
 
 {section: Verse 2}
 There are clouds of darkness on the path,

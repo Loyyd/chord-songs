@@ -2,7 +2,7 @@
   "id": "dobedu-song",
   "title": "Dobedu Song",
   "key": "F",
-  "reviewed": false,
+  "reviewed": true,
   "sections": [
     {
       "name": "Verse 1",
@@ -10,38 +10,70 @@
         {
           "tokens": [
             {
-              "chord": "F",
-              "lyric": "Ingenoius minds strong enough to strive"
-            }
-          ],
-          "raw": "[F]Ingenoius minds strong enough to strive"
-        },
-        {
-          "tokens": [
+              "chord": "G",
+              "lyric": "Ingenoius m"
+            },
+            {
+              "chord": "D",
+              "lyric": "inds strong "
+            },
             {
               "chord": "C",
-              "lyric": "For brilliant days that are filled with delight"
+              "lyric": "enough to s"
+            },
+            {
+              "chord": "G",
+              "lyric": "trive"
             }
           ],
-          "raw": "[C]For brilliant days that are filled with delight"
+          "raw": "[G]Ingenoius m[D]inds strong [C]enough to s[G]trive"
         },
         {
           "tokens": [
             {
-              "chord": "Bb",
-              "lyric": "You're ingenious"
+              "chord": "G",
+              "lyric": "For brilliant day"
+            },
+            {
+              "chord": "D",
+              "lyric": "s that are fill"
+            },
+            {
+              "chord": "C",
+              "lyric": "ed with deli"
+            },
+            {
+              "chord": "G",
+              "lyric": "ght"
             }
           ],
-          "raw": "[Bb]You're ingenious"
+          "raw": "[G]For brilliant day[D]s that are fill[C]ed with deli[G]ght"
         },
         {
           "tokens": [
             {
-              "chord": "F",
-              "lyric": "Keep it real!"
+              "chord": "D",
+              "lyric": "You're ingen"
+            },
+            {
+              "chord": "C",
+              "lyric": "ious"
             }
           ],
-          "raw": "[F]Keep it real!"
+          "raw": "[D]You're ingen[C]ious"
+        },
+        {
+          "tokens": [
+            {
+              "chord": "D",
+              "lyric": "Keep it r"
+            },
+            {
+              "chord": "C",
+              "lyric": "eal!"
+            }
+          ],
+          "raw": "[D]Keep it r[C]eal!"
         },
         {
           "tokens": [
@@ -60,38 +92,79 @@
         {
           "tokens": [
             {
-              "chord": "F",
-              "lyric": "It's a beautiful sight when you just Do the things you wanna do"
+              "chord": null,
+              "lyric": "It's a beautiful s"
+            },
+            {
+              "chord": "G",
+              "lyric": "ight "
             }
           ],
-          "raw": "[F]It's a beautiful sight when you just Do the things you wanna do"
+          "raw": "It's a beautiful s[G]ight "
         },
         {
           "tokens": [
+            {
+              "chord": null,
+              "lyric": "when y"
+            },
+            {
+              "chord": "D",
+              "lyric": "ou just D"
+            },
+            {
+              "chord": "Em",
+              "lyric": "o the things you wanna do"
+            }
+          ],
+          "raw": "when y[D]ou just D[Em]o the things you wanna do"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "Setting go"
+            },
             {
               "chord": "C",
-              "lyric": "Setting goals and taking one more step to the Du"
+              "lyric": "als and taking one more step to the "
             }
           ],
-          "raw": "[C]Setting goals and taking one more step to the Du"
+          "raw": "Setting go[C]als and taking one more step to the "
         },
         {
           "tokens": [
             {
-              "chord": "Dm",
-              "lyric": "Just Be you, it is true"
+              "chord": "G",
+              "lyric": "Du just Be y"
+            },
+            {
+              "chord": "D",
+              "lyric": "ou, it is tr"
+            },
+            {
+              "chord": "Em",
+              "lyric": "ue"
             }
           ],
-          "raw": "[Dm]Just Be you, it is true"
+          "raw": "[G]Du just Be y[D]ou, it is tr[Em]ue"
         },
         {
           "tokens": [
             {
-              "chord": "Bb",
-              "lyric": "For there's no other Divine You"
+              "chord": null,
+              "lyric": "For there's no o"
+            },
+            {
+              "chord": "C",
+              "lyric": "ther Divine Y"
+            },
+            {
+              "chord": "G",
+              "lyric": "ou"
             }
           ],
-          "raw": "[Bb]For there's no other Divine You"
+          "raw": "For there's no o[C]ther Divine Y[G]ou"
         },
         {
           "tokens": [
@@ -110,38 +183,38 @@
         {
           "tokens": [
             {
-              "chord": "F",
+              "chord": null,
               "lyric": "Inspiring hearts create space in our home"
             }
           ],
-          "raw": "[F]Inspiring hearts create space in our home"
+          "raw": "Inspiring hearts create space in our home"
         },
         {
           "tokens": [
             {
-              "chord": "C",
+              "chord": null,
               "lyric": "Discover doors to new rooms only filled with God's tunes"
             }
           ],
-          "raw": "[C]Discover doors to new rooms only filled with God's tunes"
+          "raw": "Discover doors to new rooms only filled with God's tunes"
         },
         {
           "tokens": [
             {
-              "chord": "Bb",
+              "chord": null,
               "lyric": "You're inspiring"
             }
           ],
-          "raw": "[Bb]You're inspiring"
+          "raw": "You're inspiring"
         },
         {
           "tokens": [
             {
-              "chord": "F",
+              "chord": null,
               "lyric": "Keep it real!"
             }
           ],
-          "raw": "[F]Keep it real!"
+          "raw": "Keep it real!"
         },
         {
           "tokens": [
@@ -160,65 +233,100 @@
         {
           "tokens": [
             {
+              "chord": "Em",
+              "lyric": "         "
+            },
+            {
               "chord": "C",
+              "lyric": "    "
+            },
+            {
+              "chord": "G",
+              "lyric": "   ("
+            },
+            {
+              "chord": "D",
+              "lyric": "4x)"
+            }
+          ],
+          "raw": "[Em]         [C]    [G]   ([D]4x)"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": ""
+            }
+          ],
+          "raw": ""
+        }
+      ]
+    },
+    {
+      "name": "Bridge",
+      "lines": [
+        {
+          "tokens": [
+            {
+              "chord": null,
               "lyric": "Hea - ven gives me strength to Fol - low my own con - science"
             }
           ],
-          "raw": "[C]Hea - ven gives me strength to Fol - low my own con - science"
+          "raw": "Hea - ven gives me strength to Fol - low my own con - science"
         },
         {
           "tokens": [
             {
-              "chord": "Dm",
+              "chord": null,
               "lyric": "We've gone through hardships on the way to the persons of today"
             }
           ],
-          "raw": "[Dm]We've gone through hardships on the way to the persons of today"
+          "raw": "We've gone through hardships on the way to the persons of today"
         },
         {
           "tokens": [
             {
-              "chord": "Bb",
+              "chord": null,
               "lyric": "Watch the growth of our own personalities"
             }
           ],
-          "raw": "[Bb]Watch the growth of our own personalities"
+          "raw": "Watch the growth of our own personalities"
         },
         {
           "tokens": [
             {
-              "chord": "F",
+              "chord": null,
               "lyric": "In future we will not despair 'cause we're certainly aware"
             }
           ],
-          "raw": "[F]In future we will not despair 'cause we're certainly aware"
+          "raw": "In future we will not despair 'cause we're certainly aware"
         },
         {
           "tokens": [
             {
-              "chord": "C",
+              "chord": null,
               "lyric": "Of the visionary self and its prodigies"
             }
           ],
-          "raw": "[C]Of the visionary self and its prodigies"
+          "raw": "Of the visionary self and its prodigies"
         },
         {
           "tokens": [
             {
-              "chord": "Dm",
+              "chord": null,
               "lyric": "We'll march as soldiers to the place where the will of iron blazes"
             }
           ],
-          "raw": "[Dm]We'll march as soldiers to the place where the will of iron blazes"
+          "raw": "We'll march as soldiers to the place where the will of iron blazes"
         },
         {
           "tokens": [
             {
-              "chord": "Bb",
+              "chord": null,
               "lyric": "Never cross the bridge of our insecurity"
             }
           ],
-          "raw": "[Bb]Never cross the bridge of our insecurity"
+          "raw": "Never cross the bridge of our insecurity"
         },
         {
           "tokens": [
@@ -237,74 +345,74 @@
         {
           "tokens": [
             {
-              "chord": "F",
+              "chord": null,
               "lyric": "And on the day we comprehend that we're irreplaceable who is unique"
             }
           ],
-          "raw": "[F]And on the day we comprehend that we're irreplaceable who is unique"
+          "raw": "And on the day we comprehend that we're irreplaceable who is unique"
         },
         {
           "tokens": [
             {
-              "chord": "C",
+              "chord": null,
               "lyric": "It's a beautiful sight when you just do the things you wanna do"
             }
           ],
-          "raw": "[C]It's a beautiful sight when you just do the things you wanna do"
+          "raw": "It's a beautiful sight when you just do the things you wanna do"
         },
         {
           "tokens": [
             {
-              "chord": "Dm",
+              "chord": null,
               "lyric": "Setting goals and taking one more step to the du"
             }
           ],
-          "raw": "[Dm]Setting goals and taking one more step to the du"
+          "raw": "Setting goals and taking one more step to the du"
         },
         {
           "tokens": [
             {
-              "chord": "Bb",
+              "chord": null,
               "lyric": "Just be you, it is true, it is true..."
             }
           ],
-          "raw": "[Bb]Just be you, it is true, it is true..."
+          "raw": "Just be you, it is true, it is true..."
         },
         {
           "tokens": [
             {
-              "chord": "F",
+              "chord": null,
               "lyric": "It's a beautiful sight when you just do the things you wanna do"
             }
           ],
-          "raw": "[F]It's a beautiful sight when you just do the things you wanna do"
+          "raw": "It's a beautiful sight when you just do the things you wanna do"
         },
         {
           "tokens": [
             {
-              "chord": "C",
+              "chord": null,
               "lyric": "Setting goals and taking one more step to the du"
             }
           ],
-          "raw": "[C]Setting goals and taking one more step to the du"
+          "raw": "Setting goals and taking one more step to the du"
         },
         {
           "tokens": [
             {
-              "chord": "Dm",
+              "chord": null,
               "lyric": "Just be you, it is true"
             }
           ],
-          "raw": "[Dm]Just be you, it is true"
+          "raw": "Just be you, it is true"
         },
         {
           "tokens": [
             {
-              "chord": "Bb",
+              "chord": null,
               "lyric": "For there's no other Divine You!"
             }
           ],
-          "raw": "[Bb]For there's no other Divine You!"
+          "raw": "For there's no other Divine You!"
         },
         {
           "tokens": [
@@ -319,5 +427,5 @@
     }
   ],
   "sourcePath": "songs/dobedu-song.pro",
-  "source": "{title: Dobedu Song}\n{key: F}\n{reviewed: false}\n\n{section: Verse 1}\n[F]Ingenoius minds strong enough to strive\n[C]For brilliant days that are filled with delight\n[Bb]You're ingenious\n[F]Keep it real!\n\n{section: Chorus}\n[F]It's a beautiful sight when you just Do the things you wanna do\n[C]Setting goals and taking one more step to the Du\n[Dm]Just Be you, it is true\n[Bb]For there's no other Divine You\n\n{section: Verse 2}\n[F]Inspiring hearts create space in our home\n[C]Discover doors to new rooms only filled with God's tunes\n[Bb]You're inspiring\n[F]Keep it real!\n\n{section: Bridge}\n[C]Hea - ven gives me strength to Fol - low my own con - science\n[Dm]We've gone through hardships on the way to the persons of today\n[Bb]Watch the growth of our own personalities\n[F]In future we will not despair 'cause we're certainly aware\n[C]Of the visionary self and its prodigies\n[Dm]We'll march as soldiers to the place where the will of iron blazes\n[Bb]Never cross the bridge of our insecurity\n\n{section: Verse 3}\n[F]And on the day we comprehend that we're irreplaceable who is unique\n[C]It's a beautiful sight when you just do the things you wanna do\n[Dm]Setting goals and taking one more step to the du\n[Bb]Just be you, it is true, it is true...\n[F]It's a beautiful sight when you just do the things you wanna do\n[C]Setting goals and taking one more step to the du\n[Dm]Just be you, it is true\n[Bb]For there's no other Divine You!\n"
+  "source": "{title: Dobedu Song}\n{key: F}\n{reviewed: true}\n\n{section: Verse 1}\n[G]Ingenoius m[D]inds strong [C]enough to s[G]trive\n[G]For brilliant day[D]s that are fill[C]ed with deli[G]ght\n[D]You're ingen[C]ious\n[D]Keep it r[C]eal!\n\n{section: Chorus}\nIt's a beautiful s[G]ight \nwhen y[D]ou just D[Em]o the things you wanna do\nSetting go[C]als and taking one more step to the \n[G]Du just Be y[D]ou, it is tr[Em]ue\nFor there's no o[C]ther Divine Y[G]ou\n\n{section: Verse 2}\nInspiring hearts create space in our home\nDiscover doors to new rooms only filled with God's tunes\nYou're inspiring\nKeep it real!\n\n{section: Bridge}\n[Em]         [C]    [G]   ([D]4x)\n\n{section: Bridge}\nHea - ven gives me strength to Fol - low my own con - science\nWe've gone through hardships on the way to the persons of today\nWatch the growth of our own personalities\nIn future we will not despair 'cause we're certainly aware\nOf the visionary self and its prodigies\nWe'll march as soldiers to the place where the will of iron blazes\nNever cross the bridge of our insecurity\n\n{section: Verse 3}\nAnd on the day we comprehend that we're irreplaceable who is unique\nIt's a beautiful sight when you just do the things you wanna do\nSetting goals and taking one more step to the du\nJust be you, it is true, it is true...\nIt's a beautiful sight when you just do the things you wanna do\nSetting goals and taking one more step to the du\nJust be you, it is true\nFor there's no other Divine You!\n"
 }

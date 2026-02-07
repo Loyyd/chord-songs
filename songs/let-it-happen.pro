@@ -1,6 +1,6 @@
 {title: Let It Happen - United Pursuit}
 {key: F}
-{reviewed: false}
+{reviewed: true}
 
 {section: Chorus 3x}
 You're full of [F]life now

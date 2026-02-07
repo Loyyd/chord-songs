@@ -2,9 +2,9 @@
 {key: C}
 {reviewed: true}
 
-{section: Intro}
-          
-        
+{section: Intro 2x}
+[C]|   [Am]|   [C]|
+[Am]|   [F]|   [C]|
 
 {section: Verse 1}
 a [C]year from now we'll a[Am]ll be [C]gone
@@ -47,10 +47,8 @@ then [Am]we will [F]not [C]relate
 [Am]rivers and [C]roads
 [Am]rivers 'til [F]I reach [C]you
 
-(add in the ohhhhhhhh's)
- 
 {section: Outro 7x}
-
+(add in the ohhhhhhhh's)
 [C]rivers and roads
 [Am]rivers and [C]roads
 [Am]rivers 'til [F]I reach [C]you

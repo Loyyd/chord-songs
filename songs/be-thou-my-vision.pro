@@ -1,27 +1,27 @@
 {title: Be Thou My Vision}
 {key: D}
-{reviewed: false}
+{reviewed: true}
 
 {section: Verse 1}
-[D]Be Thou [Bm]my vision, [G]O Lord [D]of my [A]heart; [D]
-[A]Naught be all [D]else to me, [G]save that Thou [A]art--
-[G]Thou my [D]best thought, [G]by day or [A]by night,
-[D]Waking or [G]sleeping, [A]Thy presence my [D]light.
+[D]Be Thou my visio[Bm]n, O[G] Lord [D]of my [A]heart; [D]
+[A]Naught be all els[D]e to me, sav[G]e that Thou art[A]--
+[G]Thou my best thoug[D]ht, by day or by nig[G]ht,[A]
+[D]Waking or sleeping, Thy pre[G]sence m[A]y light[D].
 
 {section: Verse 2}
-[D]Be Thou [Bm]my wisdom a[G]nd Thou[D] my tr[A]ue word[D],
-[A]I ever with Th[D]ee and Thou [G]with me, Lord;[A]
-[G]Thou my [D]great Father, [G]and I Thy [A]true son;
-[D]Thou in me[G] dwelling,[A] and I with Thee[D] one.
+Be Thou my wisdom and Thou my true word,
+I ever with Thee and Thou with me, Lord;
+Thou my great Father, and I Thy true son;
+Thou in me dwelling, and I with Thee one.
 
 {section: Verse 3}
-[D]Riches I[Bm] heed not, [G]nor man[D]'s emp[A]ty prai[D]se,
-[A]Thou mine inhe[D]ritance, now[G] and always;[A]
-[G]Thou and[D] Thou only, fi[G]rst in my [A]heart,
-[D]High king [G]of heaven,[A] my treasure Tho[D]u art.
+Riches I heed not, nor man's empty praise,
+Thou mine inheritance, now and always;
+Thou and Thou only, first in my heart,
+High king of heaven, my treasure Thou art.
 
 {section: Verse 4}
-[D]High kin[Bm]g of heaven[G], my vi[D]ctory [A]won,[D]
-[A]May I reach he[D]aven's joys,[G] O bright heave[A]n's son!
-[G]Heart of[D] my own heart,[G] whatever [A]befall,
-[D]Still be m[G]y vision, [A]O ruler of all.[D]
+High king of heaven, my victory won,
+May I reach heaven's joys, O bright heaven's son!
+Heart of my own heart, whatever befall,
+Still be my vision, O ruler of all.

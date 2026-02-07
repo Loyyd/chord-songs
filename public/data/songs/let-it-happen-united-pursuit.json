@@ -2,7 +2,7 @@
   "id": "let-it-happen-united-pursuit",
   "title": "Let It Happen - United Pursuit",
   "key": "F",
-  "reviewed": false,
+  "reviewed": true,
   "sections": [
     {
       "name": "Chorus 3x",
@@ -592,5 +592,5 @@
     }
   ],
   "sourcePath": "songs/let-it-happen.pro",
-  "source": "{title: Let It Happen - United Pursuit}\n{key: F}\n{reviewed: false}\n\n{section: Chorus 3x}\nYou're full of [F]life now\nAnd full of [C]passion\nThat's how he [Am]made you\nJust let it [G]happen\n\n\n{section: Verse}\nAnd he calls [F]each one of [C]us\nBy our [Am]names to come [F]away \nAnd he w[F]hispers to your [C]heart\nTo let it g[Am]o and to be [F]alive\nYeah he c[F]alls each one of [C]us\nBy our [Am]names to come [F]away \nAnd he [F]whispers to your [C]heart\nTo let it[Am] go and to be [F]alive\n\n\n{section: Pre-Chorus}\nAnd he w[F]hispers to your [C]heart\nTo let it [Am]go and to be [F]alive\nAnd w[F]hispers to your [C]heart\nTo let it g[Am]o and to be [F]alive\nBe al[F]ive   Be a[C]live \nBe a[Am]live   Be a[F]live\nCome a[F]live   Come a[C]live \nCome a[Am]live   Come a[F]live \nTo come a[F]live   To come a[C]live \nTo come a[Am]live   To come a[F]live \n\n{section: Chorus 3x}\nYou're full of [F]life now\nAnd full of [C]passion\nThat's how he [Am]made you\nJust let it [G]happen\n\n{section: Bridge 2x}\n[C]   [C]   [F]   [C/E]   [G]\n\n{section: Bridge}\n[C]So take me back \n[G]Ba[F]ck to the beginning \n[C/E]When I was young\n[G]Running through the fields with you\n\n"
+  "source": "{title: Let It Happen - United Pursuit}\n{key: F}\n{reviewed: true}\n\n{section: Chorus 3x}\nYou're full of [F]life now\nAnd full of [C]passion\nThat's how he [Am]made you\nJust let it [G]happen\n\n\n{section: Verse}\nAnd he calls [F]each one of [C]us\nBy our [Am]names to come [F]away \nAnd he w[F]hispers to your [C]heart\nTo let it g[Am]o and to be [F]alive\nYeah he c[F]alls each one of [C]us\nBy our [Am]names to come [F]away \nAnd he [F]whispers to your [C]heart\nTo let it[Am] go and to be [F]alive\n\n\n{section: Pre-Chorus}\nAnd he w[F]hispers to your [C]heart\nTo let it [Am]go and to be [F]alive\nAnd w[F]hispers to your [C]heart\nTo let it g[Am]o and to be [F]alive\nBe al[F]ive   Be a[C]live \nBe a[Am]live   Be a[F]live\nCome a[F]live   Come a[C]live \nCome a[Am]live   Come a[F]live \nTo come a[F]live   To come a[C]live \nTo come a[Am]live   To come a[F]live \n\n{section: Chorus 3x}\nYou're full of [F]life now\nAnd full of [C]passion\nThat's how he [Am]made you\nJust let it [G]happen\n\n{section: Bridge 2x}\n[C]   [C]   [F]   [C/E]   [G]\n\n{section: Bridge}\n[C]So take me back \n[G]Ba[F]ck to the beginning \n[C/E]When I was young\n[G]Running through the fields with you\n\n"
 }

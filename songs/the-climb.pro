@@ -1,64 +1,64 @@
 {title: The Climb}
-{key: D}
+{key: E}
 {reviewed: true}
 
 {section: Verse 1}
-[D]I can almost see it
+[E]I can almost see it
 That dream I'm dreaming but
-[G]There's a voice inside my head saying
-[Em]You'll never reach it
-[D]Every step I'm taking,
+[A]There's a voice inside my head saying
+[F#m]You'll never reach it
+[E]Every step I'm taking,
 Every move I make feels
-[G]Lost with no direction
-[Em]My faith is shaking but
-[Bm]I, I gotta keep [F#m]trying
-Gotta [G]keep my head held h[Em]igh
+[A]Lost with no direction
+[F#m]My faith is shaking but
+[C#m]I, I gotta keep [G#m]trying
+Gotta [A]keep my head held h[F#m]igh
 
 {section: Chorus}
-[D]There's always gonna be another mountain
+[E]There's always gonna be another mountain
 I'm always gonna wanna make it move
-[G]Always gonna be an uphill battle
-[Em]Sometimes I'm gonna [A]have to lose
-[D]It ain't about how fast I get there
-Ain't about what's waiting on the other [Bm]side[A]   [G]  
-It's the cl[D]imb
+[A]Always gonna be an uphill battle
+[F#m]Sometimes I'm gonna [B]have to lose
+[E]It ain't about how fast I get there
+Ain't about what's waiting on the other [C#m]side[B]   [A]  
+It's the cl[E]imb
 
 {section: Verse 2}
-[D]The struggles I'm facing,
+[E]The struggles I'm facing,
 The chances I'm taking
-[G]Sometimes might knock me down but
-[Em]No, I'm not breaking
-[D]I may not know it,
+[A]Sometimes might knock me down but
+[F#m]No, I'm not breaking
+[E]I may not know it,
 But these are the moments that
-[G]I'm gonna remember most, yeah
-[Em]Just gotta keep going
-And [Bm]I,
-I gotta be s[F#m]trong
-[G]Just keep pushing [Em]on
+[A]I'm gonna remember most, yeah
+[F#m]Just gotta keep going
+And [C#m]I,
+I gotta be s[G#m]trong
+[A]Just keep pushing [F#m]on
 
 {section: Chorus}
-[D]There's always gonna be another mountain
+[E]There's always gonna be another mountain
 I'm always gonna wanna make it move
-[G]Always gonna be an uphill battle
-[Em]Sometimes I'm gonna [A]have to lose
-[D]It ain't about how fast I get there
-Ain't about what's waiting on the other [Bm]side[A]    [G]
-It's the [D]climb
+[A]Always gonna be an uphill battle
+[F#m]Sometimes I'm gonna [B]have to lose
+[E]It ain't about how fast I get there
+Ain't about what's waiting on the other [C#m]side[B]    [A]
+It's the [E]climb
 
 {section: Solo}
-[D] | [D] | [G] | [G] |
-[Em] | [D/F#] | [G] | [A] |
+ [E] |   [E] |   [A] |   [A] |
+ [F#m] |   [E/F#] |   [A] |   [B] |
 
 {section: Chorus}
-[D]There's always gonna be another mountain
+[E]There's always gonna be another mountain
 I'm always gonna wanna make it move
-[G]Always gonna be an uphill battle
-[D]Some[Em]body [D/F#]gonna [G]have to [A]lose[Bm] 
-[D]Ain't about how fast I get there
-Ain't about what's waiting on the other [Bm]sid[A]e  [G]
-It's the c[D]limb    [G]
+[A]Always gonna be an uphill battle
+[E]Some[F#m]body [E]gonna [A]have to [B]lose    (edited)
+[E]Ain't about how fast I get there
+Ain't about what's waiting on the other [C#m]sid[B]e  [A]
+It's the c[E]limb    [A]
 
 {section: Outro}
-Keep on [D]moving, keep climbing, keep the faith, baby
-[G]It's all about, it's all about the c[D]limb
-Keep the faith, keep your fa[G]ith  [D]
+Keep on [E]moving, keep climbing, keep the faith, baby
+[A]It's all about, it's all about the c[E]limb
+Keep the faith, keep your fa[A]ith  [E]

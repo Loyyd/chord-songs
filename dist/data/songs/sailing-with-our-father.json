@@ -11,37 +11,57 @@
           "tokens": [
             {
               "chord": "G",
-              "lyric": "If the trip you're traveling gets long,"
-            }
-          ],
-          "raw": "[G]If the trip you're traveling gets long,"
-        },
-        {
-          "tokens": [
+              "lyric": "If the trip "
+            },
             {
               "chord": "D",
-              "lyric": "Wishing for a new day to come;"
-            }
-          ],
-          "raw": "[D]Wishing for a new day to come;"
-        },
-        {
-          "tokens": [
+              "lyric": "you're traveli"
+            },
             {
               "chord": "Am",
-              "lyric": "When the sun rises in the morning"
+              "lyric": "ng gets long,"
             }
           ],
-          "raw": "[Am]When the sun rises in the morning"
+          "raw": "[G]If the trip [D]you're traveli[Am]ng gets long,"
         },
         {
           "tokens": [
             {
               "chord": "C",
-              "lyric": "We'll set sail and move on."
+              "lyric": "Wishing for a new "
+            },
+            {
+              "chord": "G",
+              "lyric": "day to come;"
             }
           ],
-          "raw": "[C]We'll set sail and move on."
+          "raw": "[C]Wishing for a new [G]day to come;"
+        },
+        {
+          "tokens": [
+            {
+              "chord": "D",
+              "lyric": "When the sun rises in"
+            },
+            {
+              "chord": "Am",
+              "lyric": " the morning"
+            }
+          ],
+          "raw": "[D]When the sun rises in[Am] the morning"
+        },
+        {
+          "tokens": [
+            {
+              "chord": "C",
+              "lyric": "We'll set sail and move "
+            },
+            {
+              "chord": "G",
+              "lyric": "on."
+            }
+          ],
+          "raw": "[C]We'll set sail and move [G]on."
         },
         {
           "tokens": [
@@ -51,42 +71,63 @@
             }
           ],
           "raw": ""
-        },
-        {
-          "tokens": [
-            {
-              "chord": "G",
-              "lyric": "Sailing with our Father"
-            }
-          ],
-          "raw": "[G]Sailing with our Father"
-        },
+        }
+      ]
+    },
+    {
+      "name": "Chorus",
+      "lines": [
         {
           "tokens": [
             {
               "chord": "D",
-              "lyric": "You know His ship will never sway;"
-            }
-          ],
-          "raw": "[D]You know His ship will never sway;"
-        },
-        {
-          "tokens": [
+              "lyric": "Sailing with our F"
+            },
             {
               "chord": "Am",
-              "lyric": "New Hope on the horizon"
+              "lyric": "ather"
             }
           ],
-          "raw": "[Am]New Hope on the horizon"
+          "raw": "[D]Sailing with our F[Am]ather"
         },
         {
           "tokens": [
             {
               "chord": "C",
-              "lyric": "We've found the Promised Land today."
+              "lyric": "You know His ship will never sw"
+            },
+            {
+              "chord": "G",
+              "lyric": "ay;"
             }
           ],
-          "raw": "[C]We've found the Promised Land today."
+          "raw": "[C]You know His ship will never sw[G]ay;"
+        },
+        {
+          "tokens": [
+            {
+              "chord": "D",
+              "lyric": "New Hope on the hor"
+            },
+            {
+              "chord": "Am",
+              "lyric": "izon"
+            }
+          ],
+          "raw": "[D]New Hope on the hor[Am]izon"
+        },
+        {
+          "tokens": [
+            {
+              "chord": "C",
+              "lyric": "We've found the Promised Land to"
+            },
+            {
+              "chord": "Em",
+              "lyric": "day."
+            }
+          ],
+          "raw": "[C]We've found the Promised Land to[Em]day."
         },
         {
           "tokens": [
@@ -96,42 +137,47 @@
             }
           ],
           "raw": ""
-        },
+        }
+      ]
+    },
+    {
+      "name": "Verse 2",
+      "lines": [
         {
           "tokens": [
             {
-              "chord": "G",
+              "chord": null,
               "lyric": "Look out with joy in your eyes,"
             }
           ],
-          "raw": "[G]Look out with joy in your eyes,"
+          "raw": "Look out with joy in your eyes,"
         },
         {
           "tokens": [
             {
-              "chord": "D",
+              "chord": null,
               "lyric": "The winds of Truth will guide our way;"
             }
           ],
-          "raw": "[D]The winds of Truth will guide our way;"
+          "raw": "The winds of Truth will guide our way;"
         },
         {
           "tokens": [
             {
-              "chord": "Am",
+              "chord": null,
               "lyric": "Leaving behind the raging sea,"
             }
           ],
-          "raw": "[Am]Leaving behind the raging sea,"
+          "raw": "Leaving behind the raging sea,"
         },
         {
           "tokens": [
             {
-              "chord": "C",
+              "chord": null,
               "lyric": "On waves of Love we'll sail away."
             }
           ],
-          "raw": "[C]On waves of Love we'll sail away."
+          "raw": "On waves of Love we'll sail away."
         },
         {
           "tokens": [
@@ -141,42 +187,47 @@
             }
           ],
           "raw": ""
-        },
+        }
+      ]
+    },
+    {
+      "name": "Verse 3",
+      "lines": [
         {
           "tokens": [
             {
-              "chord": "G",
+              "chord": null,
               "lyric": "Darkness it always turns to light,"
             }
           ],
-          "raw": "[G]Darkness it always turns to light,"
+          "raw": "Darkness it always turns to light,"
         },
         {
           "tokens": [
             {
-              "chord": "D",
+              "chord": null,
               "lyric": "The Promised Land is in sight;"
             }
           ],
-          "raw": "[D]The Promised Land is in sight;"
+          "raw": "The Promised Land is in sight;"
         },
         {
           "tokens": [
             {
-              "chord": "Am",
+              "chord": null,
               "lyric": "He's our guiding star by night"
             }
           ],
-          "raw": "[Am]He's our guiding star by night"
+          "raw": "He's our guiding star by night"
         },
         {
           "tokens": [
             {
-              "chord": "C",
+              "chord": null,
               "lyric": "And in the day our bright sunlight."
             }
           ],
-          "raw": "[C]And in the day our bright sunlight."
+          "raw": "And in the day our bright sunlight."
         },
         {
           "tokens": [
@@ -191,5 +242,5 @@
     }
   ],
   "sourcePath": "songs/sailing-with-our-father.pro",
-  "source": "{title: Sailing With Our Father}\n{key: G}\n{reviewed: false}\n\n{section: Verse 1}\n[G]If the trip you're traveling gets long,\n[D]Wishing for a new day to come;\n[Am]When the sun rises in the morning\n[C]We'll set sail and move on.\n\n{{section: Chorus}\n[G]Sailing with our Father\n[D]You know His ship will never sway;\n[Am]New Hope on the horizon\n[C]We've found the Promised Land today.\n\n{{section: Verse 2}\n[G]Look out with joy in your eyes,\n[D]The winds of Truth will guide our way;\n[Am]Leaving behind the raging sea,\n[C]On waves of Love we'll sail away.\n\n{{section: Verse 3}\n[G]Darkness it always turns to light,\n[D]The Promised Land is in sight;\n[Am]He's our guiding star by night\n[C]And in the day our bright sunlight.\n"
+  "source": "{title: Sailing With Our Father}\n{key: G}\n{reviewed: false}\n\n{section: Verse 1}\n[G]If the trip [D]you're traveli[Am]ng gets long,\n[C]Wishing for a new [G]day to come;\n[D]When the sun rises in[Am] the morning\n[C]We'll set sail and move [G]on.\n\n{section: Chorus}\n[D]Sailing with our F[Am]ather\n[C]You know His ship will never sw[G]ay;\n[D]New Hope on the hor[Am]izon\n[C]We've found the Promised Land to[Em]day.\n\n{section: Verse 2}\nLook out with joy in your eyes,\nThe winds of Truth will guide our way;\nLeaving behind the raging sea,\nOn waves of Love we'll sail away.\n\n{section: Verse 3}\nDarkness it always turns to light,\nThe Promised Land is in sight;\nHe's our guiding star by night\nAnd in the day our bright sunlight.\n"
 }

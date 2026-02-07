@@ -5,25 +5,41 @@
   "reviewed": true,
   "sections": [
     {
-      "name": "Intro",
+      "name": "Intro 2x",
       "lines": [
         {
           "tokens": [
             {
-              "chord": null,
-              "lyric": ""
+              "chord": "C",
+              "lyric": "|   "
+            },
+            {
+              "chord": "Am",
+              "lyric": "|   "
+            },
+            {
+              "chord": "C",
+              "lyric": "|"
             }
           ],
-          "raw": ""
+          "raw": "[C]|   [Am]|   [C]|"
         },
         {
           "tokens": [
             {
-              "chord": null,
-              "lyric": ""
+              "chord": "Am",
+              "lyric": "|   "
+            },
+            {
+              "chord": "F",
+              "lyric": "|   "
+            },
+            {
+              "chord": "C",
+              "lyric": "|"
             }
           ],
-          "raw": ""
+          "raw": "[Am]|   [F]|   [C]|"
         },
         {
           "tokens": [
@@ -634,24 +650,6 @@
             }
           ],
           "raw": ""
-        },
-        {
-          "tokens": [
-            {
-              "chord": null,
-              "lyric": "(add in the ohhhhhhhh's)"
-            }
-          ],
-          "raw": "(add in the ohhhhhhhh's)"
-        },
-        {
-          "tokens": [
-            {
-              "chord": null,
-              "lyric": ""
-            }
-          ],
-          "raw": ""
         }
       ]
     },
@@ -662,10 +660,10 @@
           "tokens": [
             {
               "chord": null,
-              "lyric": ""
+              "lyric": "(add in the ohhhhhhhh's)"
             }
           ],
-          "raw": ""
+          "raw": "(add in the ohhhhhhhh's)"
         },
         {
           "tokens": [
@@ -710,5 +708,5 @@
     }
   ],
   "sourcePath": "songs/rivers-and-roads.pro",
-  "source": "{title: Rivers and Roads}\n{key: C}\n{reviewed: true}\n\n{section: Intro}\n          \n        \n\n{section: Verse 1}\na [C]year from now we'll a[Am]ll be [C]gone\nall our f[Am]riends will [F]move [C]away\nand they're g[Am]oing to [F]better p[C]laces\nbut our [Am]friends will [F]be gone [C]away\n \n[C]nothing is as [Am]it has [C]been\nand I [Am]miss your f[F]ace like [C]hell\nand I [Am]guess it's [F]just as [C]well\nbut I m[Am]iss your [F]face like [C]hell\n \n \n{section: Chorus}\n[C]ohhhhh   [Am]ohhhh  [C]oh\n[Am]ohhhhhhh[F]hh  [C]ohhhhh\n \n[C]ohhhhh   [Am]ohhhh  [C]oh\n[Am]ohhhhhh[F]hhh  [C]ohhhhh\n \n \n{section: Verse 2}\nbeen[C] talking bout the w[Am]ay things[C] change[C]\nand my fa[Am]mily [F]lives in a [C]different[C] state[C]\nand if you do[Am]n't know [F]what to [C]make of this\nthen [Am]we will [F]not r[C]elate\nso if you do[Am]n't know wh[F]at to [C]make of this\nthen [Am]we will [F]not [C]relate\n\n{section: Chorus 2x}\n[C]ohhhhh   [Am]ohhhh  [C]oh\n[Am]ohhhhhhh[F]hh  [C]ohhhhh\n \n[C]ohhhhh   [Am]ohhhh  [C]oh\n[Am]ohhhhhh[F]hhh  [C]ohhhhh\n\n{section: Outro 2x}\n\n[C]rivers and roads\n[Am]rivers and [C]roads\n[Am]rivers 'til [F]I reach [C]you\n\n(add in the ohhhhhhhh's)\n \n{section: Outro 7x}\n\n[C]rivers and roads\n[Am]rivers and [C]roads\n[Am]rivers 'til [F]I reach [C]you"
+  "source": "{title: Rivers and Roads}\n{key: C}\n{reviewed: true}\n\n{section: Intro 2x}\n[C]|   [Am]|   [C]|\n[Am]|   [F]|   [C]|\n\n{section: Verse 1}\na [C]year from now we'll a[Am]ll be [C]gone\nall our f[Am]riends will [F]move [C]away\nand they're g[Am]oing to [F]better p[C]laces\nbut our [Am]friends will [F]be gone [C]away\n \n[C]nothing is as [Am]it has [C]been\nand I [Am]miss your f[F]ace like [C]hell\nand I [Am]guess it's [F]just as [C]well\nbut I m[Am]iss your [F]face like [C]hell\n \n \n{section: Chorus}\n[C]ohhhhh   [Am]ohhhh  [C]oh\n[Am]ohhhhhhh[F]hh  [C]ohhhhh\n \n[C]ohhhhh   [Am]ohhhh  [C]oh\n[Am]ohhhhhh[F]hhh  [C]ohhhhh\n \n \n{section: Verse 2}\nbeen[C] talking bout the w[Am]ay things[C] change[C]\nand my fa[Am]mily [F]lives in a [C]different[C] state[C]\nand if you do[Am]n't know [F]what to [C]make of this\nthen [Am]we will [F]not r[C]elate\nso if you do[Am]n't know wh[F]at to [C]make of this\nthen [Am]we will [F]not [C]relate\n\n{section: Chorus 2x}\n[C]ohhhhh   [Am]ohhhh  [C]oh\n[Am]ohhhhhhh[F]hh  [C]ohhhhh\n \n[C]ohhhhh   [Am]ohhhh  [C]oh\n[Am]ohhhhhh[F]hhh  [C]ohhhhh\n\n{section: Outro 2x}\n\n[C]rivers and roads\n[Am]rivers and [C]roads\n[Am]rivers 'til [F]I reach [C]you\n\n{section: Outro 7x}\n(add in the ohhhhhhhh's)\n[C]rivers and roads\n[Am]rivers and [C]roads\n[Am]rivers 'til [F]I reach [C]you"
 }

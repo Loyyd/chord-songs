@@ -2,7 +2,7 @@
   "id": "shining-fatherland",
   "title": "Shining Fatherland",
   "key": "Bm",
-  "reviewed": false,
+  "reviewed": true,
   "sections": [
     {
       "name": "Verse 1",
@@ -11,37 +11,101 @@
           "tokens": [
             {
               "chord": "Bm",
-              "lyric": "Sunlight beaming forth in the East, from the Fatherland;"
+              "lyric": "Sunlight beaming forth in the East, from th"
+            },
+            {
+              "chord": "Em",
+              "lyric": "e Fatherland;"
+            },
+            {
+              "chord": "Bm",
+              "lyric": ""
             }
           ],
-          "raw": "[Bm]Sunlight beaming forth in the East, from the Fatherland;"
+          "raw": "[Bm]Sunlight beaming forth in the East, from th[Em]e Fatherland;[Bm]"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
+              "lyric": "Bringing tid"
+            },
+            {
+              "chord": "G",
+              "lyric": "ings of "
+            },
+            {
+              "chord": "D",
+              "lyric": "a new world to famili"
+            },
+            {
+              "chord": "Em",
+              "lyric": "es in the field"
+            },
+            {
+              "chord": "D",
+              "lyric": "."
+            }
+          ],
+          "raw": "Bringing tid[G]ings of [D]a new world to famili[Em]es in the field[D]."
         },
         {
           "tokens": [
             {
               "chord": "Em",
-              "lyric": "Bringing tidings of a new world to families in the field."
-            }
-          ],
-          "raw": "[Em]Bringing tidings of a new world to families in the field."
-        },
-        {
-          "tokens": [
+              "lyric": "Let us hasten to send"
+            },
             {
               "chord": "Bm",
-              "lyric": "Let us hasten to send the news all throughout the world,"
+              "lyric": " the news all "
+            },
+            {
+              "chord": "F#m",
+              "lyric": "throughou"
+            },
+            {
+              "chord": "Em7",
+              "lyric": "t the world"
+            },
+            {
+              "chord": "F#m",
+              "lyric": ",   "
+            },
+            {
+              "chord": "A7",
+              "lyric": ""
             }
           ],
-          "raw": "[Bm]Let us hasten to send the news all throughout the world,"
+          "raw": "[Em]Let us hasten to send[Bm] the news all [F#m]throughou[Em7]t the world[F#m],   [A7]"
         },
         {
           "tokens": [
             {
+              "chord": "D",
+              "lyric": "Eden's gl"
+            },
+            {
               "chord": "G",
-              "lyric": "Eden's glory spreading forever the hope of joy and peace."
+              "lyric": "ory sp"
+            },
+            {
+              "chord": "A",
+              "lyric": "reading forev"
+            },
+            {
+              "chord": "Bm",
+              "lyric": "er the ho"
+            },
+            {
+              "chord": "Em",
+              "lyric": "pe of joy and peac"
+            },
+            {
+              "chord": "D",
+              "lyric": "e."
             }
           ],
-          "raw": "[G]Eden's glory spreading forever the hope of joy and peace."
+          "raw": "[D]Eden's gl[G]ory sp[A]reading forev[Bm]er the ho[Em]pe of joy and peac[D]e."
         },
         {
           "tokens": [
@@ -61,19 +125,59 @@
           "tokens": [
             {
               "chord": "D",
-              "lyric": "Dawn, golden dawn, throughout the shining Fatherland,"
+              "lyric": "Dawn, go"
+            },
+            {
+              "chord": "G",
+              "lyric": "lden da"
+            },
+            {
+              "chord": "D",
+              "lyric": "wn, thro"
+            },
+            {
+              "chord": "F#m",
+              "lyric": "ughout the shining Fat"
+            },
+            {
+              "chord": "Em7",
+              "lyric": "herland,"
+            },
+            {
+              "chord": "A7",
+              "lyric": ""
             }
           ],
-          "raw": "[D]Dawn, golden dawn, throughout the shining Fatherland,"
+          "raw": "[D]Dawn, go[G]lden da[D]wn, thro[F#m]ughout the shining Fat[Em7]herland,[A7]"
         },
         {
           "tokens": [
             {
+              "chord": "D",
+              "lyric": "Tells the t"
+            },
+            {
+              "chord": "G",
+              "lyric": "idings"
+            },
+            {
+              "chord": "A",
+              "lyric": " of the "
+            },
+            {
+              "chord": "Bm",
+              "lyric": "rising"
+            },
+            {
               "chord": "Em",
-              "lyric": "Tells the tidings of the rising sun that brings us life."
+              "lyric": " sun that brings "
+            },
+            {
+              "chord": "D",
+              "lyric": "us life."
             }
           ],
-          "raw": "[Em]Tells the tidings of the rising sun that brings us life."
+          "raw": "[D]Tells the t[G]idings[A] of the [Bm]rising[Em] sun that brings [D]us life."
         },
         {
           "tokens": [
@@ -92,38 +196,38 @@
         {
           "tokens": [
             {
-              "chord": "D",
+              "chord": null,
               "lyric": "Harvest quickly men of the fields, hasten to harvest now;"
             }
           ],
-          "raw": "[D]Harvest quickly men of the fields, hasten to harvest now;"
+          "raw": "Harvest quickly men of the fields, hasten to harvest now;"
         },
         {
           "tokens": [
             {
-              "chord": "G",
+              "chord": null,
               "lyric": "Crops are ripened and ready to bring into the heavenly barn."
             }
           ],
-          "raw": "[G]Crops are ripened and ready to bring into the heavenly barn."
+          "raw": "Crops are ripened and ready to bring into the heavenly barn."
         },
         {
           "tokens": [
             {
-              "chord": "A",
+              "chord": null,
               "lyric": "Saints and angels and heavenly hosts gather to speed the task;"
             }
           ],
-          "raw": "[A]Saints and angels and heavenly hosts gather to speed the task;"
+          "raw": "Saints and angels and heavenly hosts gather to speed the task;"
         },
         {
           "tokens": [
             {
-              "chord": "Bm",
+              "chord": null,
               "lyric": "All will share the harvest of joy at the banquet of our Lord."
             }
           ],
-          "raw": "[Bm]All will share the harvest of joy at the banquet of our Lord."
+          "raw": "All will share the harvest of joy at the banquet of our Lord."
         },
         {
           "tokens": [
@@ -142,52 +246,38 @@
         {
           "tokens": [
             {
-              "chord": "Em",
+              "chord": null,
               "lyric": "When the woes of six thousand years are gone from the Father's heart,"
             }
           ],
-          "raw": "[Em]When the woes of six thousand years are gone from the Father's heart,"
-        },
-        {
-          "tokens": [
-            {
-              "chord": "D",
-              "lyric": "Sons and daughters shall live with great joy, our True Parents' own"
-            }
-          ],
-          "raw": "[D]Sons and daughters shall live with great joy, our True Parents' own"
+          "raw": "When the woes of six thousand years are gone from the Father's heart,"
         },
         {
           "tokens": [
             {
               "chord": null,
-              "lyric": ""
+              "lyric": "Sons and daughters shall live with great joy, our True Parents' own"
             }
           ],
-          "raw": ""
-        }
-      ]
-    },
-    {
-      "name": "Verse 4",
-      "lines": [
-        {
-          "tokens": [
-            {
-              "chord": "G",
-              "lyric": "Saints and sages and men of good faith all waited for this day;"
-            }
-          ],
-          "raw": "[G]Saints and sages and men of good faith all waited for this day;"
+          "raw": "Sons and daughters shall live with great joy, our True Parents' own"
         },
         {
           "tokens": [
             {
-              "chord": "A",
+              "chord": null,
+              "lyric": "Saints and sages and men of good faith all waited for this day;"
+            }
+          ],
+          "raw": "Saints and sages and men of good faith all waited for this day;"
+        },
+        {
+          "tokens": [
+            {
+              "chord": null,
               "lyric": "Loyal men of hope and fidelity yearned to see this day."
             }
           ],
-          "raw": "[A]Loyal men of hope and fidelity yearned to see this day."
+          "raw": "Loyal men of hope and fidelity yearned to see this day."
         },
         {
           "tokens": [
@@ -202,5 +292,5 @@
     }
   ],
   "sourcePath": "songs/shining-fatherland.pro",
-  "source": "{title: Shining Fatherland}\n{key: Bm}\n{reviewed: false}\n\n{section: Verse 1}\n[Bm]Sunlight beaming forth in the East, from the Fatherland;\n[Em]Bringing tidings of a new world to families in the field.\n[Bm]Let us hasten to send the news all throughout the world,\n[G]Eden's glory spreading forever the hope of joy and peace.\n\n{section: Chorus}\n[D]Dawn, golden dawn, throughout the shining Fatherland,\n[Em]Tells the tidings of the rising sun that brings us life.\n\n{section: Verse 2}\n[D]Harvest quickly men of the fields, hasten to harvest now;\n[G]Crops are ripened and ready to bring into the heavenly barn.\n[A]Saints and angels and heavenly hosts gather to speed the task;\n[Bm]All will share the harvest of joy at the banquet of our Lord.\n\n{section: Verse 3}\n[Em]When the woes of six thousand years are gone from the Father's heart,\n[D]Sons and daughters shall live with great joy, our True Parents' own\n\n{section: Verse 4}\n[G]Saints and sages and men of good faith all waited for this day;\n[A]Loyal men of hope and fidelity yearned to see this day.\n"
+  "source": "{title: Shining Fatherland}\n{key: Bm}\n{reviewed: true}\n\n{section: Verse 1}\n[Bm]Sunlight beaming forth in the East, from th[Em]e Fatherland;[Bm]\nBringing tid[G]ings of [D]a new world to famili[Em]es in the field[D].\n[Em]Let us hasten to send[Bm] the news all [F#m]throughou[Em7]t the world[F#m],   [A7]\n[D]Eden's gl[G]ory sp[A]reading forev[Bm]er the ho[Em]pe of joy and peac[D]e.\n\n{section: Chorus}\n[D]Dawn, go[G]lden da[D]wn, thro[F#m]ughout the shining Fat[Em7]herland,[A7]\n[D]Tells the t[G]idings[A] of the [Bm]rising[Em] sun that brings [D]us life.\n\n{section: Verse 2}\nHarvest quickly men of the fields, hasten to harvest now;\nCrops are ripened and ready to bring into the heavenly barn.\nSaints and angels and heavenly hosts gather to speed the task;\nAll will share the harvest of joy at the banquet of our Lord.\n\n{section: Verse 3}\nWhen the woes of six thousand years are gone from the Father's heart,\nSons and daughters shall live with great joy, our True Parents' own\nSaints and sages and men of good faith all waited for this day;\nLoyal men of hope and fidelity yearned to see this day.\n"
 }

@@ -2,7 +2,7 @@
   "id": "amazing-grace",
   "title": "Amazing Grace",
   "key": "E",
-  "reviewed": false,
+  "reviewed": true,
   "sections": [
     {
       "name": "Verse 1",
@@ -301,5 +301,5 @@
     }
   ],
   "sourcePath": "songs/amazing-grace.pro",
-  "source": "{title: Amazing Grace}\n{key: E}\n{reviewed: false}\n\n{section: Verse 1}\n[E]Amazing Grace, how swee[A]t the soun[E]d,\nThat saved a wretch like m[B7]e.\nI o[E]nce was lo[E7]st but n[A]ow am fou[E]nd,\n\nWas blind, but[B7] now I [E]see.\n\n{section: Verse 2}\nT'was Grace that taught my heart to fear.\nAnd Grace, my fears relieved.\nHow precious did that Grace appear\nThe hour I first believed.\n\n{section: Verse 3}\nThrough many dangers, toils and snares\nI have already come;\n'Tis Grace that brought me safe thus far,\nAnd Grace will lead me home.\n\n{section: Verse 4}\nThe Lord has promised good to me.\nHis word my hope secures.\nHe will my shield and portion be,\nAs long as life endures.\n\n{section: Verse 5}\nYea, when this flesh and heart shall fail,\nAnd mortal life shall cease,\nI shall possess within the veil,\nA life of joy and peace.\n"
+  "source": "{title: Amazing Grace}\n{key: E}\n{reviewed: true}\n\n{section: Verse 1}\n[E]Amazing Grace, how swee[A]t the soun[E]d,\nThat saved a wretch like m[B7]e.\nI o[E]nce was lo[E7]st but n[A]ow am fou[E]nd,\n\nWas blind, but[B7] now I [E]see.\n\n{section: Verse 2}\nT'was Grace that taught my heart to fear.\nAnd Grace, my fears relieved.\nHow precious did that Grace appear\nThe hour I first believed.\n\n{section: Verse 3}\nThrough many dangers, toils and snares\nI have already come;\n'Tis Grace that brought me safe thus far,\nAnd Grace will lead me home.\n\n{section: Verse 4}\nThe Lord has promised good to me.\nHis word my hope secures.\nHe will my shield and portion be,\nAs long as life endures.\n\n{section: Verse 5}\nYea, when this flesh and heart shall fail,\nAnd mortal life shall cease,\nI shall possess within the veil,\nA life of joy and peace.\n"
 }
