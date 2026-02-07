@@ -234,10 +234,10 @@
           "tokens": [
             {
               "chord": null,
-              "lyric": ""
+              "lyric": "s                s"
             }
           ],
-          "raw": ""
+          "raw": "s                s"
         },
         {
           "tokens": [
@@ -415,5 +415,5 @@
     }
   ],
   "sourcePath": "songs/dobedu-song.pro",
-  "source": "{title: Dobedu Song}\n{key: F}\n{reviewed: false}\n\n{section: Verse 1}\n[G]Ingenoius m[D]inds strong [C]enough to s[G]trive\n[G]For brilliant day[D]s that are fill[C]ed with deli[G]ght\n[D]You're ingen[C]ious\n[D]Keep it r[C]eal!\n\n{section: Chorus}\nIt's a beautiful s[G]ight \nwhen y[D]ou just D[Em]o the things you wanna do\nSetting go[C]als and taking one more step to the \n[G]Du just Be y[D]ou, it is tr[Em]ue\nFor there's no o[C]ther Divine Y[G]ou\n\n{section: Verse 2}\nInspiring hearts create space in our home\nDiscover doors to new rooms only filled with God's tunes\nYou're inspiring\nKeep it real!\n\n{section: Bridge}\n                \n\n{section: Bridge}\nHea - ven gives me strength to Fol - low my own con - science\nWe've gone through hardships on the way to the persons of today\nWatch the growth of our own personalities\nIn future we will not despair 'cause we're certainly aware\nOf the visionary self and its prodigies\nWe'll march as soldiers to the place where the will of iron blazes\nNever cross the bridge of our insecurity\n\n{section: Verse 3}\nAnd on the day we comprehend that we're irreplaceable who is unique\nIt's a beautiful sight when you just do the things you wanna do\nSetting goals and taking one more step to the du\nJust be you, it is true, it is true...\nIt's a beautiful sight when you just do the things you wanna do\nSetting goals and taking one more step to the du\nJust be you, it is true\nFor there's no other Divine You!\n"
+  "source": "{title: Dobedu Song}\n{key: F}\n{reviewed: false}\n\n{section: Verse 1}\n[G]Ingenoius m[D]inds strong [C]enough to s[G]trive\n[G]For brilliant day[D]s that are fill[C]ed with deli[G]ght\n[D]You're ingen[C]ious\n[D]Keep it r[C]eal!\n\n{section: Chorus}\nIt's a beautiful s[G]ight \nwhen y[D]ou just D[Em]o the things you wanna do\nSetting go[C]als and taking one more step to the \n[G]Du just Be y[D]ou, it is tr[Em]ue\nFor there's no o[C]ther Divine Y[G]ou\n\n{section: Verse 2}\nInspiring hearts create space in our home\nDiscover doors to new rooms only filled with God's tunes\nYou're inspiring\nKeep it real!\n\n{section: Bridge}\ns                s\n\n{section: Bridge}\nHea - ven gives me strength to Fol - low my own con - science\nWe've gone through hardships on the way to the persons of today\nWatch the growth of our own personalities\nIn future we will not despair 'cause we're certainly aware\nOf the visionary self and its prodigies\nWe'll march as soldiers to the place where the will of iron blazes\nNever cross the bridge of our insecurity\n\n{section: Verse 3}\nAnd on the day we comprehend that we're irreplaceable who is unique\nIt's a beautiful sight when you just do the things you wanna do\nSetting goals and taking one more step to the du\nJust be you, it is true, it is true...\nIt's a beautiful sight when you just do the things you wanna do\nSetting goals and taking one more step to the du\nJust be you, it is true\nFor there's no other Divine You!\n"
 }
