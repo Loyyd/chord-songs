@@ -19,24 +19,6 @@
         {
           "tokens": [
             {
-              "chord": null,
-              "lyric": ""
-            }
-          ],
-          "raw": ""
-        },
-        {
-          "tokens": [
-            {
-              "chord": null,
-              "lyric": ""
-            }
-          ],
-          "raw": ""
-        },
-        {
-          "tokens": [
-            {
               "chord": "A#",
               "lyric": "Not a "
             },
@@ -364,5 +346,5 @@
     }
   ],
   "sourcePath": "songs/top-of-the-world.pro",
-  "source": "{title: Top Of The World}\n{artist: Carpenters}\n{key: F}\n{reviewed: false}\n\n{section: Verse 1}\nSuch a feelings coming over me\n                     \n\n[A#]Not a [C7]cloud in the sky\n[Am]Got the [Dm]sun in my eyes\n[Gm]And I won't be [C7]surprised if it's a dream\n[F]Everything I [C7]want the [F]world to be\n[Am]    [Gm]   [C7]  [F]   [F7]\nIs now coming [A#]true [C7]especially [Am]for [Dm]me\n[Gm]And the reason is [C7]clear, it's because you are here\n[Gm]You're the nearest thing to [C7]heaven that I've seen\n\n{section: Chorus}\n[F]I'm on the [F7]top of the [A#]world looking down on creation\n[F]And the [C7]only explanation [F]I [F7]can find\n[A#]Is the [C7]love that I've [F]found ever [A#]since you've been around\n[F]Your [C7]love's put me [F]at the top of the world\n\n{section: Verse 2}\nSomething in the wind has learned my name\nAnd it's telling me that things are not the same\nIn the leaves on the trees\nAnd the touch of the breeze\nThere's a pleasing sense of happiness for me\nThere is only one wish on my mind\nWhen this day is through I hope that I will find\nThat tomorrow will be just the same for you and me\nAll I need will be mine if you are here\n"
+  "source": "{title: Top Of The World}\n{artist: Carpenters}\n{key: F}\n{reviewed: false}\n\n{section: Verse 1}\nSuch a feelings coming over me\n[A#]Not a [C7]cloud in the sky\n[Am]Got the [Dm]sun in my eyes\n[Gm]And I won't be [C7]surprised if it's a dream\n[F]Everything I [C7]want the [F]world to be\n[Am]    [Gm]   [C7]  [F]   [F7]\nIs now coming [A#]true [C7]especially [Am]for [Dm]me\n[Gm]And the reason is [C7]clear, it's because you are here\n[Gm]You're the nearest thing to [C7]heaven that I've seen\n\n{section: Chorus}\n[F]I'm on the [F7]top of the [A#]world looking down on creation\n[F]And the [C7]only explanation [F]I [F7]can find\n[A#]Is the [C7]love that I've [F]found ever [A#]since you've been around\n[F]Your [C7]love's put me [F]at the top of the world\n\n{section: Verse 2}\nSomething in the wind has learned my name\nAnd it's telling me that things are not the same\nIn the leaves on the trees\nAnd the touch of the breeze\nThere's a pleasing sense of happiness for me\nThere is only one wish on my mind\nWhen this day is through I hope that I will find\nThat tomorrow will be just the same for you and me\nAll I need will be mine if you are here\n"
 }
