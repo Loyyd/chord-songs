@@ -241,20 +241,6 @@
       ]
     },
     {
-      "name": "Chorus",
-      "lines": [
-        {
-          "tokens": [
-            {
-              "chord": null,
-              "lyric": ""
-            }
-          ],
-          "raw": ""
-        }
-      ]
-    },
-    {
       "name": "Verse 3",
       "lines": [
         {
@@ -306,5 +292,5 @@
     }
   ],
   "sourcePath": "songs/song-of-the-heavenly-soldiers.pro",
-  "source": "{title: Song of the Heavenly Soldiers}\n{key: A}\n{reviewed: false}\n\n{section: Verse 1}\n[A]Beautiful mor[E7]ning sunris[A]e, calm a[D]bove the land of[E7] our hope;  [A]\n[E7]Robed in white chosen peopl[A]e, figh[D]ting for the lan[E7]d of Go[A]d.\nTo[A7]wering high the sno[D]w white mountain stand[Bm]s aloft in majest[E7]y.\n[A]Ruling with power ove[F#m]r the world, s[Bm7]hining o'er the uni[E7]verse. [A]\n\n{section: Chorus}\n[A]Marching on Heavenly S[D]oldie[A]rs, mar[F#m]ching on [Bm7]with H[E7]is love,\n[F#m]Unitin[D]g in [Bm]life eterna[E7]l with our God in Heav[A]en and earth.\n\n{section: Verse 2}\nHeavenly soldiers fighting strongly for the victory;\nBringing lost souls to harvest from the fallen world of fear, Freely\ngiving love and beauty to them from our Parents' heart.\nSpreading the word over the world, rescuing the family of God.\n\n{section: Chorus}\n\n{section: Verse 3}\nSanctified, brave crusaders, join in our True Parents' fight;\nLifting high the rod of iron, smashing evils of the world!\nNow restoring Eden's glory, on the earth eternally,\nPraising our God, Heavenly Father, giving joy to comfort His heart\n"
+  "source": "{title: Song of the Heavenly Soldiers}\n{key: A}\n{reviewed: false}\n\n{section: Verse 1}\n[A]Beautiful mor[E7]ning sunris[A]e, calm a[D]bove the land of[E7] our hope;  [A]\n[E7]Robed in white chosen peopl[A]e, figh[D]ting for the lan[E7]d of Go[A]d.\nTo[A7]wering high the sno[D]w white mountain stand[Bm]s aloft in majest[E7]y.\n[A]Ruling with power ove[F#m]r the world, s[Bm7]hining o'er the uni[E7]verse. [A]\n\n{section: Chorus}\n[A]Marching on Heavenly S[D]oldie[A]rs, mar[F#m]ching on [Bm7]with H[E7]is love,\n[F#m]Unitin[D]g in [Bm]life eterna[E7]l with our God in Heav[A]en and earth.\n\n{section: Verse 2}\nHeavenly soldiers fighting strongly for the victory;\nBringing lost souls to harvest from the fallen world of fear, Freely\ngiving love and beauty to them from our Parents' heart.\nSpreading the word over the world, rescuing the family of God.\n\n{section: Verse 3}\nSanctified, brave crusaders, join in our True Parents' fight;\nLifting high the rod of iron, smashing evils of the world!\nNow restoring Eden's glory, on the earth eternally,\nPraising our God, Heavenly Father, giving joy to comfort His heart\n"
 }
