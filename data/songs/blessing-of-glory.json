@@ -10,73 +10,85 @@
         {
           "tokens": [
             {
+              "chord": null,
+              "lyric": "Now the ligh"
+            },
+            {
               "chord": "A",
-              "lyric": "Now the light of glory arises like the "
+              "lyric": "t of g"
             },
             {
               "chord": "F#m",
-              "lyric": "sun that "
+              "lyric": "lory "
             },
             {
               "chord": "A",
-              "lyric": "shines on "
+              "lyric": "arises like the sun that sh"
             },
             {
               "chord": "D",
+              "lyric": "ines on "
+            },
+            {
+              "chord": "A",
               "lyric": "high;"
-            }
-          ],
-          "raw": "[A]Now the light of glory arises like the [F#m]sun that [A]shines on [D]high;"
-        },
-        {
-          "tokens": [
-            {
-              "chord": "F#m",
-              "lyric": "Now awaken into "
-            },
-            {
-              "chord": "C#m",
-              "lyric": "freedom, O re"
-            },
-            {
-              "chord": "F#m",
-              "lyric": "vive, you "
-            },
-            {
-              "chord": "D",
-              "lyric": "spirits, O re"
-            },
-            {
-              "chord": "A",
-              "lyric": "vive!"
-            }
-          ],
-          "raw": "[F#m]Now awaken into [C#m]freedom, O re[F#m]vive, you [D]spirits, O re[A]vive!"
-        },
-        {
-          "tokens": [
-            {
-              "chord": "F#m",
-              "lyric": "Wake the mountains and the "
-            },
-            {
-              "chord": "D",
-              "lyric": "valleys; "
-            },
-            {
-              "chord": "Bm",
-              "lyric": "bring a"
             },
             {
               "chord": "E7",
-              "lyric": "live the "
+              "lyric": ""
+            }
+          ],
+          "raw": "Now the ligh[A]t of g[F#m]lory [A]arises like the sun that sh[D]ines on [A]high;[E7]"
+        },
+        {
+          "tokens": [
+            {
+              "chord": "F#m",
+              "lyric": "Now awaken into free"
+            },
+            {
+              "chord": "C#m",
+              "lyric": "dom, O revi"
+            },
+            {
+              "chord": "F#m",
+              "lyric": "ve, you spiri"
+            },
+            {
+              "chord": "D",
+              "lyric": "ts, O revive"
             },
             {
               "chord": "A",
-              "lyric": "springs of the earth."
+              "lyric": "!"
             }
           ],
-          "raw": "[F#m]Wake the mountains and the [D]valleys; [Bm]bring a[E7]live the [A]springs of the earth."
+          "raw": "[F#m]Now awaken into free[C#m]dom, O revi[F#m]ve, you spiri[D]ts, O revive[A]!"
+        },
+        {
+          "tokens": [
+            {
+              "chord": "F#m",
+              "lyric": "Wake the mountains and the valley"
+            },
+            {
+              "chord": "D",
+              "lyric": "s; bring aliv"
+            },
+            {
+              "chord": "Bm",
+              "lyric": "e the sprin"
+            },
+            {
+              "chord": "E7",
+              "lyric": "gs of the ear"
+            },
+            {
+              "chord": "A",
+              "lyric": "th."
+            }
+          ],
+          "raw": "[F#m]Wake the mountains and the valley[D]s; bring aliv[Bm]e the sprin[E7]gs of the ear[A]th."
         },
         {
           "tokens": [
@@ -96,59 +108,67 @@
           "tokens": [
             {
               "chord": "E7",
-              "lyric": "Light the "
+              "lyric": "Light the w"
             },
             {
               "chord": "A",
-              "lyric": "world for"
+              "lyric": "orld forever"
             },
             {
               "chord": "F#m",
-              "lyric": "ever with the "
+              "lyric": " with the Ligh"
             },
             {
               "chord": "C#m",
-              "lyric": "Light of your re"
+              "lyric": "t of your"
             },
             {
               "chord": "F#m",
-              "lyric": "birth, "
+              "lyric": " rebirt"
             },
             {
               "chord": "C#m",
-              "lyric": "A7"
+              "lyric": "h,   "
+            },
+            {
+              "chord": "A7",
+              "lyric": " "
             }
           ],
-          "raw": "[E7]Light the [A]world for[F#m]ever with the [C#m]Light of your re[F#m]birth, [C#m]A7"
+          "raw": "[E7]Light the w[A]orld forever[F#m] with the Ligh[C#m]t of your[F#m] rebirt[C#m]h,   [A7] "
         },
         {
           "tokens": [
             {
+              "chord": null,
+              "lyric": "Light the worl"
+            },
+            {
               "chord": "D",
-              "lyric": "Light the "
+              "lyric": "d foreve"
             },
             {
               "chord": "A",
-              "lyric": "world for"
+              "lyric": "r wit"
             },
             {
               "chord": "F#m",
-              "lyric": "ever with the "
+              "lyric": "h the Ligh"
             },
             {
               "chord": "A",
-              "lyric": "Light of your re"
+              "lyric": "t of yo"
             },
             {
               "chord": "E7",
-              "lyric": "birth. "
+              "lyric": "ur rebirt"
             },
             {
               "chord": "A",
-              "lyric": ""
+              "lyric": "h. "
             }
           ],
-          "raw": "[D]Light the [A]world for[F#m]ever with the [A]Light of your re[E7]birth. [A]"
+          "raw": "Light the worl[D]d foreve[A]r wit[F#m]h the Ligh[A]t of yo[E7]ur rebirt[A]h. "
         },
         {
           "tokens": [
@@ -340,5 +360,5 @@
     }
   ],
   "sourcePath": "songs/blessing-of-glory.pro",
-  "source": "{title: Blessing of Glory}\n{key: A}\n{reviewed: false}\n\n{section: Verse 1}\n[A]Now the light of glory arises like the [F#m]sun that [A]shines on [D]high;\n[F#m]Now awaken into [C#m]freedom, O re[F#m]vive, you [D]spirits, O re[A]vive!\n[F#m]Wake the mountains and the [D]valleys; [Bm]bring a[E7]live the [A]springs of the earth.\n\n{section: Chorus}\n[E7]Light the [A]world for[F#m]ever with the [C#m]Light of your re[F#m]birth, [C#m]A7\n[D]Light the [A]world for[F#m]ever with the [A]Light of your re[E7]birth. [A]\n\n{section: Verse 2}\nWe are called to bring back the glory to the life of God above;\nNow the Lord in His greatness fills the universe with tender love,\nEver seeking souls awakened, ever calling them to be free.\nHow shall I attend Him who is calling to me?\nHow shall I attend Him who is calling to me?\n\n{section: Verse 3}\nFrom the dark of death I awaken and rejoice to live in grace;\nWhen the one who came to save me holds me tenderly in His embrace;\nI rejoice to feel the comfort of the love He has for me.\nWhat a blessing of glory to rejoice eternally\nWhat a blessing of glory to rejoice eternally\n\n{section: Verse 4}\nNow He lifts me up to embrace me in the blessing that is mine;\nWhat a blessing to receive Him in a love so tender and divine;\nHow can I return the blessing though in all my life I will try;\nI can never stop feeling how unworthy am I\nI can never stop feeling how unworthy am I\n"
+  "source": "{title: Blessing of Glory}\n{key: A}\n{reviewed: false}\n\n{section: Verse 1}\nNow the ligh[A]t of g[F#m]lory [A]arises like the sun that sh[D]ines on [A]high;[E7]\n[F#m]Now awaken into free[C#m]dom, O revi[F#m]ve, you spiri[D]ts, O revive[A]!\n[F#m]Wake the mountains and the valley[D]s; bring aliv[Bm]e the sprin[E7]gs of the ear[A]th.\n\n{section: Chorus}\n[E7]Light the w[A]orld forever[F#m] with the Ligh[C#m]t of your[F#m] rebirt[C#m]h,   [A7] \nLight the worl[D]d foreve[A]r wit[F#m]h the Ligh[A]t of yo[E7]ur rebirt[A]h. \n\n{section: Verse 2}\nWe are called to bring back the glory to the life of God above;\nNow the Lord in His greatness fills the universe with tender love,\nEver seeking souls awakened, ever calling them to be free.\nHow shall I attend Him who is calling to me?\nHow shall I attend Him who is calling to me?\n\n{section: Verse 3}\nFrom the dark of death I awaken and rejoice to live in grace;\nWhen the one who came to save me holds me tenderly in His embrace;\nI rejoice to feel the comfort of the love He has for me.\nWhat a blessing of glory to rejoice eternally\nWhat a blessing of glory to rejoice eternally\n\n{section: Verse 4}\nNow He lifts me up to embrace me in the blessing that is mine;\nWhat a blessing to receive Him in a love so tender and divine;\nHow can I return the blessing though in all my life I will try;\nI can never stop feeling how unworthy am I\nI can never stop feeling how unworthy am I\n"
 }
