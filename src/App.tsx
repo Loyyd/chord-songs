@@ -260,7 +260,9 @@ export default function App() {
     })
       .then((res) => res.json())
       .then((data) => {
-        if (!data.success) {
+        if (data.success) {
+          refreshIndex();
+        } else {
           console.error('Failed to update reviewed status:', data.error);
           // Revert on error
           setIndex(prev => prev.map(entry => 
@@ -348,6 +350,7 @@ export default function App() {
               throw new Error('Failed to save song to backend');
             }
             console.log('Song saved to backend');
+            refreshIndex();
           }
         } else {
           // New song - create it
@@ -364,13 +367,10 @@ export default function App() {
           }
           
           const result = await response.json();
-          console.log('Song created:', result.filename);
+          console.log('Song created:', result.id);
           
-          // Update the song with the new filename
-          const newSourcePath = `songs/${result.filename}`;
-          setSong({ ...parsed, id: song.id, sourcePath: newSourcePath });
-          
-          alert(`Song created as ${result.filename}. It will appear in the list after the build completes.`);
+          // Refresh index and select the new song
+          refreshIndex(result.id);
         }
       } catch (backendErr) {
         console.error('Backend save failed:', backendErr);
@@ -405,7 +405,16 @@ export default function App() {
         throw new Error('Failed to delete song');
       }
 
-      // Refresh index
+      // Select another song or clear selection
+      const nextIndex = index.filter(s => s.id !== song.id);
+      if (nextIndex.length > 0) {
+        setSelectedId(nextIndex[0].id);
+      } else {
+        setSelectedId(null);
+        setSong(null);
+      }
+      
+      // Refresh index from server
       refreshIndex();
       
       setIsEditing(false);

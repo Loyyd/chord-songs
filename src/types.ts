@@ -19,7 +19,7 @@ export interface SongData {
   key?: string;
   reviewed?: boolean;
   sections: SongSection[];
-  sourcePath: string;
+  sourcePath: string | null;
   source: string;
 }
 
