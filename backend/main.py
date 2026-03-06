@@ -1,5 +1,6 @@
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 import os
 import subprocess
@@ -20,27 +21,20 @@ app.add_middleware(
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 SONGS_DIR = os.path.join(BASE_DIR, "songs")
 FLAGGED_FILE = os.path.join(BASE_DIR, "backend", "flagged_songs.json")
+DIST_DIR = os.path.join(BASE_DIR, "dist")
 
-def run_build_script():
-    # Run the npm build script
+def rebuild_songs():
+    # Only rebuild songs, no deployment
     try:
-        subprocess.run(["npm", "run", "build:songs"], cwd=BASE_DIR, check=True)
-        print("Build script executed successfully.")
-    except subprocess.CalledProcessError as e:
-        print(f"Error running build script: {e}")
-
-def run_deploy():
-    # Run both build and deploy
-    try:
-        # First build the songs
-        subprocess.run(["npm", "run", "build:songs"], cwd=BASE_DIR, check=True)
-        print("Build script executed successfully.")
+        # In production, rebuild to dist/data directly for instant updates
+        env = os.environ.copy()
+        if os.path.exists(DIST_DIR):
+            env["SONGS_OUTPUT_DIR"] = os.path.join(DIST_DIR, "data")
         
-        # Then deploy to GitHub Pages
-        subprocess.run(["npm", "run", "deploy"], cwd=BASE_DIR, check=True)
-        print("Deployment to GitHub Pages completed successfully.")
+        subprocess.run(["npm", "run", "build:songs"], cwd=BASE_DIR, check=True, env=env)
+        print("Build script executed successfully.")
     except subprocess.CalledProcessError as e:
-        print(f"Error during build/deploy: {e}")
+        print(f"Error during build: {e}")
 
 def sanitize_filename(title: str) -> str:
     """Convert song title to a valid filename"""
@@ -112,10 +106,13 @@ def create_song(song: SongContent, background_tasks: BackgroundTasks):
     with open(filepath, "w", encoding="utf-8") as f:
         f.write(song.content)
     
-    # Trigger build and deploy in background
-    background_tasks.add_task(run_deploy)
+    # Trigger rebuild synchronously for instant updates
+    rebuild_songs()
     
-    return {"message": "Song created successfully", "filename": filename}
+    # The ID is the base filename without extension
+    song_id = os.path.splitext(filename)[0]
+    
+    return {"message": "Song created successfully", "filename": filename, "id": song_id}
 
 @app.get("/api/songs/{filename}")
 def get_song(filename: str):
@@ -153,10 +150,33 @@ def update_song(filename: str, song: SongContent, background_tasks: BackgroundTa
     with open(filepath, "w", encoding="utf-8") as f:
         f.write(song.content)
     
-    # Trigger build and deploy in background
-    background_tasks.add_task(run_deploy)
+    # Trigger rebuild synchronously
+    rebuild_songs()
     
     return {"message": "Song updated successfully", "filename": filename}
+
+@app.delete("/api/songs/{filename}")
+def delete_song(filename: str):
+    """Delete a song file"""
+    # Basic security check to prevent directory traversal
+    if ".." in filename or "/" in filename or "\\" in filename:
+        raise HTTPException(status_code=400, detail="Invalid filename")
+    
+    filepath = os.path.join(SONGS_DIR, filename)
+    
+    # Ensure we are deleting from the songs directory
+    if os.path.commonpath([os.path.abspath(filepath), SONGS_DIR]) != SONGS_DIR:
+        raise HTTPException(status_code=403, detail="Invalid file path")
+    
+    if not os.path.exists(filepath):
+        raise HTTPException(status_code=404, detail="Song not found")
+    
+    os.remove(filepath)
+    
+    # Trigger rebuild synchronously
+    rebuild_songs()
+    
+    return {"message": "Song deleted successfully"}
 
 @app.get("/api/flags")
 def get_flagged_songs():
@@ -251,11 +271,15 @@ def update_reviewed(request: ReviewedRequest, background_tasks: BackgroundTasks)
     
     try:
         update_reviewed_in_file(filepath, request.reviewed)
-        # Trigger build and deploy in background to update the index
-        background_tasks.add_task(run_deploy)
+        # Trigger rebuild synchronously
+        rebuild_songs()
         return {"success": True, "message": "Reviewed status updated", "reviewed": request.reviewed}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+# Mount the static files from dist/ directory (production)
+if os.path.exists(DIST_DIR):
+    app.mount("/", StaticFiles(directory=DIST_DIR, html=True), name="static")
 
 if __name__ == "__main__":
     import uvicorn

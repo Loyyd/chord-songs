@@ -4,8 +4,9 @@ import { parseChordPro } from '../src/lib/parseChordPro';
 import { SongData, SongIndexEntry } from '../src/types';
 
 const SONGS_DIR = path.resolve('songs');
-const OUTPUT_DIR = path.resolve('public/data/songs');
-const INDEX_PATH = path.resolve('public/data/songs.index.json');
+const OUTPUT_BASE = process.env.SONGS_OUTPUT_DIR || 'public/data';
+const OUTPUT_DIR = path.resolve(OUTPUT_BASE, 'songs');
+const INDEX_PATH = path.resolve(OUTPUT_BASE, 'songs.index.json');
 
 async function ensureDir(dir: string) {
   await fs.mkdir(dir, { recursive: true });

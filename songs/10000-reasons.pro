@@ -7,7 +7,7 @@
 [A]   [E]   [Bsus4]     [B]
 
 {section: Chorus}
-Bless the[A] Lord, O my[E] soul,[B/D#] O my[C#m] soul, 
+Bless the[A] Lord, O my[E] soul,[B/D#] O my[C#m] soul,
 [A]Worship His [E]holy [Bsus4]name. [B]
 Sing like[A] never be[C#m]fore, [A]O [B]my [C#m]soul.  
 I'll [A]worship Your ho[B]ly na[A/E]me. [E]

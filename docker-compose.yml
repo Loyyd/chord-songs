@@ -1,0 +1,11 @@
+services:
+  chord-songs:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      # This maps your local folders to the container
+      # Changes in the UI will now persist to your disk
+      - ./songs:/app/songs
+      - ./backend:/app/backend
+    restart: unless-stopped

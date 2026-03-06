@@ -8,8 +8,7 @@
     "build:songs": "tsx scripts/build-songs.ts",
     "build": "npm run build:songs && vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit",
-    "deploy": "npm run build && gh-pages -d dist --nojekyll"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "fuse.js": "^7.0.0",
@@ -21,7 +20,6 @@
     "@types/react": "^18.3.8",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.3",
-    "gh-pages": "^6.3.0",
     "tsx": "^4.19.2",
     "typescript": "^5.6.3",
     "vite": "^5.4.10"

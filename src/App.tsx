@@ -6,6 +6,8 @@ import { parseChordPro } from './lib/parseChordPro';
 import { SongEditor } from './components/SongEditor';
 
 function SongView({ song, transpose, highlightQuery, isContextSensitive }: { song: SongData; transpose: number; highlightQuery?: string; isContextSensitive?: boolean }) {
+  if (!song || !song.sections) return <div className="song">No content</div>;
+
   const highlightLyric = (lyric: string) => {
     if (!highlightQuery || !isContextSensitive || lyric.trim() === '') {
       return lyric;
@@ -98,12 +100,41 @@ export default function App() {
   const [editText, setEditText] = useState('');
   const [editError, setEditError] = useState<string | null>(null);
   const [contextSensitive, setContextSensitive] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [starred, setStarred] = useState<Set<string>>(() => {
     const saved = localStorage.getItem('starred-songs');
     return saved ? new Set(JSON.parse(saved)) : new Set();
   });
   const [autoScroll, setAutoScroll] = useState(false);
   const [scrollSpeed, setScrollSpeed] = useState(0.15); // Default subtle speed (pixels per frame)
+
+  const refreshIndex = (selectId?: string) => {
+    return fetch(`${import.meta.env.BASE_URL}data/songs.index.json`, { cache: 'no-store' })
+      .then((res) => res.json())
+      .then((data: SongIndexEntry[]) => {
+        setIndex(data);
+        if (selectId) {
+          setSelectedId(selectId);
+        } else if (!selectedId && data.length > 0) {
+          setSelectedId(data[0].id);
+        }
+        return data;
+      })
+      .catch((err) => console.error('Failed to refresh index:', err));
+  };
+
+  const checkAuth = () => {
+    if (isAuthenticated) return true;
+    const password = window.prompt('Enter password to save changes:');
+    if (password === 'truelove') {
+      setIsAuthenticated(true);
+      return true;
+    }
+    if (password !== null) {
+      alert('Incorrect password');
+    }
+    return false;
+  };
 
   // Autoscroll effect
   useEffect(() => {
@@ -132,17 +163,13 @@ export default function App() {
   }, [autoScroll, scrollSpeed]);
 
   useEffect(() => {
-    fetch(`${import.meta.env.BASE_URL}data/songs.index.json`, { cache: 'no-store' })
-      .then((res) => res.json())
-      .then((data: SongIndexEntry[]) => {
-        setIndex(data);
-        if (data.length > 0) setSelectedId(data[0].id);
-      })
-      .catch((err) => console.error(err));
+    refreshIndex();
   }, []);
 
   useEffect(() => {
     if (!selectedId) return;
+    if (selectedId.startsWith('new-song-')) return;
+    
     fetch(`${import.meta.env.BASE_URL}data/songs/${selectedId}.json`, { cache: 'no-store' })
       .then((res) => res.json())
       .then((data: SongData) => {
@@ -159,7 +186,7 @@ export default function App() {
     if (isEditing && song?.sourcePath) {
         const filename = song.sourcePath.split('/').pop();
         if (filename) {
-            fetch(`http://localhost:8000/api/songs/${filename}`)
+            fetch(`/api/songs/${filename}`)
                 .then(res => {
                     if (res.ok) return res.json();
                     throw new Error('Failed to fetch from backend');
@@ -210,6 +237,7 @@ export default function App() {
   };
 
   const toggleFlag = (id: string, currentReviewed: boolean | undefined) => {
+    if (!checkAuth()) return;
     const newReviewed = !currentReviewed;
     
     // Optimistically update the index
@@ -223,7 +251,7 @@ export default function App() {
     }
     
     // Sync with backend
-    fetch('http://localhost:8000/api/reviewed', {
+    fetch('/api/reviewed', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -261,6 +289,7 @@ export default function App() {
   };
 
   const handleCreateNewSong = () => {
+    if (!checkAuth()) return;
     const newSongTemplate = `{title: New Song}
 {key: C}
 
@@ -290,6 +319,7 @@ export default function App() {
 
   const applyEdit = async (source: string = editText) => {
     if (!song) return;
+    if (!checkAuth()) return;
     try {
       // Apply transpose to the source before saving
       const transposedSource = transposeChordProSource(source, transpose);
@@ -306,7 +336,7 @@ export default function App() {
           // Existing song - update it
           const filename = song.sourcePath.split('/').pop();
           if (filename) {
-            const response = await fetch(`http://localhost:8000/api/songs/${filename}`, {
+            const response = await fetch(`/api/songs/${filename}`, {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
@@ -321,7 +351,7 @@ export default function App() {
           }
         } else {
           // New song - create it
-          const response = await fetch(`http://localhost:8000/api/songs/create`, {
+          const response = await fetch(`/api/songs/create`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -351,10 +381,63 @@ export default function App() {
     }
   };
 
+  const handleDelete = async () => {
+    if (!song || !song.sourcePath) {
+      // For unsaved new songs, just cancel
+      setIsEditing(false);
+      setSelectedId(index.length > 0 ? index[0].id : null);
+      return;
+    }
+
+    if (!window.confirm(`Are you sure you want to delete "${song.title}"?`)) {
+      return;
+    }
+
+    if (!checkAuth()) return;
+
+    try {
+      const filename = song.sourcePath.split('/').pop();
+      const response = await fetch(`/api/songs/${filename}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete song');
+      }
+
+      // Refresh index
+      refreshIndex();
+      
+      setIsEditing(false);
+      alert('Song deleted successfully');
+    } catch (err) {
+      alert('Failed to delete song: ' + (err as Error).message);
+    }
+  };
+
   return (
     <div className="app-shell">
       <div className="card">
-        <h1>Holy Songs</h1>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+          <h1 style={{ margin: 0 }}>Holy Songs</h1>
+          <span 
+            onClick={() => !isAuthenticated && checkAuth()}
+            style={{ 
+              cursor: isAuthenticated ? 'default' : 'pointer',
+              fontSize: '20px',
+              display: 'flex',
+              alignItems: 'center',
+              userSelect: 'none'
+            }}
+            title={isAuthenticated ? 'Authenticated' : 'Login'}
+          >
+            {isAuthenticated ? (
+              <span style={{ color: '#eab308' }}>👑</span>
+            ) : (
+              <span style={{ color: '#ef4444' }}>🔑</span>
+            )}
+          </span>
+        </div>
         <p style={{ margin: '0 0 12px' }}>Search, view, and transpose songs.</p>
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '12px' }}>
           <input
@@ -477,6 +560,7 @@ export default function App() {
                   initialSource={editText}
                   onSave={applyEdit}
                   onCancel={() => setIsEditing(false)}
+                  onDelete={handleDelete}
                 />
                 {editError && <div className="error">{editError}</div>}
                 <div className="note" style={{ marginTop: 8 }}>Edits stay local; rerun build to persist to disk.</div>

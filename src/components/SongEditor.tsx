@@ -6,9 +6,10 @@ interface SongEditorProps {
   initialSource: string;
   onSave: (source: string) => void;
   onCancel: () => void;
+  onDelete?: () => void;
 }
 
-export function SongEditor({ initialSource, onSave, onCancel }: SongEditorProps) {
+export function SongEditor({ initialSource, onSave, onCancel, onDelete }: SongEditorProps) {
   const [source, setSource] = useState(initialSource);
   const [mode, setMode] = useState<'visual' | 'raw'>('visual');
   const [copiedChords, setCopiedChords] = useState<Array<{ line: number; chords: Array<{ name: string; index: number }> }> | null>(null);
@@ -159,6 +160,14 @@ export function SongEditor({ initialSource, onSave, onCancel }: SongEditorProps)
         <div className="toolbar-group">
             <button className="primary" onClick={() => onSave(source)}>Save Changes</button>
             <button onClick={onCancel}>Cancel</button>
+            {onDelete && (
+                <button 
+                    onClick={onDelete}
+                    style={{ backgroundColor: '#fee2e2', color: '#991b1b', borderColor: '#fecaca' }}
+                >
+                    Delete
+                </button>
+            )}
         </div>
       </div>
       
