@@ -101,6 +101,7 @@ export default function App() {
   const [editError, setEditError] = useState<string | null>(null);
   const [contextSensitive, setContextSensitive] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [adminPassword, setAdminPassword] = useState<string | null>(null);
   const [starred, setStarred] = useState<Set<string>>(() => {
     const saved = localStorage.getItem('starred-songs');
     return saved ? new Set(JSON.parse(saved)) : new Set();
@@ -123,17 +124,15 @@ export default function App() {
       .catch((err) => console.error('Failed to refresh index:', err));
   };
 
-  const checkAuth = () => {
-    if (isAuthenticated) return true;
+  const checkAuth = (): string | null => {
+    if (isAuthenticated && adminPassword) return adminPassword;
     const password = window.prompt('Enter password to save changes:');
-    if (password === 'truelove') {
+    if (password) {
+      setAdminPassword(password);
       setIsAuthenticated(true);
-      return true;
+      return password;
     }
-    if (password !== null) {
-      alert('Incorrect password');
-    }
-    return false;
+    return null;
   };
 
   // Autoscroll effect
@@ -237,7 +236,8 @@ export default function App() {
   };
 
   const toggleFlag = (id: string, currentReviewed: boolean | undefined) => {
-    if (!checkAuth()) return;
+    const pwd = checkAuth();
+    if (!pwd) return;
     const newReviewed = !currentReviewed;
     
     // Optimistically update the index
@@ -255,10 +255,18 @@ export default function App() {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': `Bearer ${pwd}`,
       },
       body: JSON.stringify({ song_id: id, reviewed: newReviewed }),
     })
-      .then((res) => res.json())
+      .then(async (res) => {
+        if (res.status === 401) {
+          setIsAuthenticated(false);
+          setAdminPassword(null);
+          throw new Error('Unauthorized');
+        }
+        return res.json();
+      })
       .then((data) => {
         if (data.success) {
           refreshIndex();
@@ -321,7 +329,8 @@ export default function App() {
 
   const applyEdit = async (source: string = editText) => {
     if (!song) return;
-    if (!checkAuth()) return;
+    const pwd = checkAuth();
+    if (!pwd) return;
     try {
       // Apply transpose to the source before saving
       const transposedSource = transposeChordProSource(source, transpose);
@@ -342,10 +351,17 @@ export default function App() {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${pwd}`,
               },
               body: JSON.stringify({ content: transposedSource }),
             });
             
+            if (response.status === 401) {
+              setIsAuthenticated(false);
+              setAdminPassword(null);
+              throw new Error('Unauthorized');
+            }
+
             if (!response.ok) {
               throw new Error('Failed to save song to backend');
             }
@@ -358,10 +374,17 @@ export default function App() {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
+              'Authorization': `Bearer ${pwd}`,
             },
             body: JSON.stringify({ content: transposedSource }),
           });
           
+          if (response.status === 401) {
+            setIsAuthenticated(false);
+            setAdminPassword(null);
+            throw new Error('Unauthorized');
+          }
+
           if (!response.ok) {
             throw new Error('Failed to create song on backend');
           }
@@ -393,13 +416,23 @@ export default function App() {
       return;
     }
 
-    if (!checkAuth()) return;
+    const pwd = checkAuth();
+    if (!pwd) return;
 
     try {
       const filename = song.sourcePath.split('/').pop();
       const response = await fetch(`/api/songs/${filename}`, {
         method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${pwd}`,
+        },
       });
+
+      if (response.status === 401) {
+        setIsAuthenticated(false);
+        setAdminPassword(null);
+        throw new Error('Unauthorized');
+      }
 
       if (!response.ok) {
         throw new Error('Failed to delete song');

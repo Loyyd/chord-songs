@@ -1,13 +1,22 @@
-from fastapi import FastAPI, HTTPException, BackgroundTasks
+from fastapi import FastAPI, HTTPException, BackgroundTasks, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel
 import os
 import subprocess
 import re
 import json
+import secrets
 
 app = FastAPI()
+security = HTTPBearer()
+
+def verify_admin(credentials: HTTPAuthorizationCredentials = Depends(security)):
+    admin_password = os.environ.get("ADMIN_PASSWORD", "truelove")
+    if not secrets.compare_digest(credentials.credentials, admin_password):
+        raise HTTPException(status_code=401, detail="Invalid or missing password")
+    return credentials.credentials
 
 # Allow CORS for frontend development
 app.add_middleware(
@@ -80,7 +89,7 @@ def list_songs():
     return {"songs": sorted(songs)}
 
 @app.post("/api/songs/create")
-def create_song(song: SongContent, background_tasks: BackgroundTasks):
+def create_song(song: SongContent, background_tasks: BackgroundTasks, _admin=Depends(verify_admin)):
     """Create a new song file with auto-generated filename from title"""
     # Extract title from content
     title_match = re.search(r'\{title:\s*([^}]+)\}', song.content, re.IGNORECASE)
@@ -132,7 +141,7 @@ def get_song(filename: str):
 
 @app.post("/api/songs/{filename}")
 @app.put("/api/songs/{filename}")
-def update_song(filename: str, song: SongContent, background_tasks: BackgroundTasks):
+def update_song(filename: str, song: SongContent, background_tasks: BackgroundTasks, _admin=Depends(verify_admin)):
     """Update an existing song file"""
     # Basic security check to prevent directory traversal
     if ".." in filename or "/" in filename or "\\" in filename:
@@ -156,7 +165,7 @@ def update_song(filename: str, song: SongContent, background_tasks: BackgroundTa
     return {"message": "Song updated successfully", "filename": filename}
 
 @app.delete("/api/songs/{filename}")
-def delete_song(filename: str):
+def delete_song(filename: str, _admin=Depends(verify_admin)):
     """Delete a song file"""
     # Basic security check to prevent directory traversal
     if ".." in filename or "/" in filename or "\\" in filename:
@@ -185,7 +194,7 @@ def get_flagged_songs():
     return {"flagged": list(flagged_songs)}
 
 @app.post("/api/flags")
-def toggle_flag(request: FlagRequest):
+def toggle_flag(request: FlagRequest, _admin=Depends(verify_admin)):
     """Toggle flag status for a song"""
     flagged_songs = load_flagged_songs()
     
@@ -262,7 +271,7 @@ def update_reviewed_in_file(filepath: str, reviewed: bool) -> bool:
     return True
 
 @app.post("/api/reviewed")
-def update_reviewed(request: ReviewedRequest, background_tasks: BackgroundTasks):
+def update_reviewed(request: ReviewedRequest, background_tasks: BackgroundTasks, _admin=Depends(verify_admin)):
     """Update the reviewed status of a song in its .pro file"""
     filepath = find_song_file_by_id(request.song_id)
     
