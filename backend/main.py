@@ -56,6 +56,12 @@ def sanitize_filename(title: str) -> str:
     # Remove leading/trailing hyphens
     filename = filename.strip('-')
     return filename if filename else 'untitled-song'
+
+def validate_song_path(filepath: str):
+    """Ensure the file path is within the songs directory"""
+    if os.path.commonpath([os.path.abspath(filepath), SONGS_DIR]) != SONGS_DIR:
+        raise HTTPException(status_code=403, detail="Invalid file path")
+
 class SongContent(BaseModel):
     content: str
 
@@ -109,8 +115,7 @@ def create_song(song: SongContent, background_tasks: BackgroundTasks, _admin=Dep
         counter += 1
     
     # Ensure we are writing to the songs directory
-    if os.path.commonpath([os.path.abspath(filepath), SONGS_DIR]) != SONGS_DIR:
-        raise HTTPException(status_code=403, detail="Invalid file path")
+    validate_song_path(filepath)
     
     with open(filepath, "w", encoding="utf-8") as f:
         f.write(song.content)
@@ -150,8 +155,7 @@ def update_song(filename: str, song: SongContent, background_tasks: BackgroundTa
     filepath = os.path.join(SONGS_DIR, filename)
     
     # Ensure we are writing to the songs directory
-    if os.path.commonpath([os.path.abspath(filepath), SONGS_DIR]) != SONGS_DIR:
-        raise HTTPException(status_code=403, detail="Invalid file path")
+    validate_song_path(filepath)
     
     if not os.path.exists(filepath):
         raise HTTPException(status_code=404, detail="Song not found")
@@ -174,8 +178,7 @@ def delete_song(filename: str, _admin=Depends(verify_admin)):
     filepath = os.path.join(SONGS_DIR, filename)
     
     # Ensure we are deleting from the songs directory
-    if os.path.commonpath([os.path.abspath(filepath), SONGS_DIR]) != SONGS_DIR:
-        raise HTTPException(status_code=403, detail="Invalid file path")
+    validate_song_path(filepath)
     
     if not os.path.exists(filepath):
         raise HTTPException(status_code=404, detail="Song not found")
