@@ -34,7 +34,7 @@ export function SongList({
       <div className="brand-heading">
         <img
           className="brand-logo"
-          src={`${import.meta.env.BASE_URL}logo-black.png`}
+          src={`${import.meta.env.BASE_URL}logo-black-96.png`}
           alt=""
           aria-hidden="true"
         />

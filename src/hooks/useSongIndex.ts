@@ -6,7 +6,7 @@ export function useSongIndex() {
   const [index, setIndex] = useState<SongIndexEntry[]>([]);
 
   const refreshIndex = useCallback((selectId?: string) => {
-    return fetch(`${import.meta.env.BASE_URL}data/songs.index.json`, { cache: 'no-store' })
+    return fetch(`${import.meta.env.BASE_URL}data/songs.index.json`)
       .then((res) => res.json())
       .then((data: unknown) => {
         const indexData = Array.isArray(data) ? (data as SongIndexEntry[]) : [];

@@ -9,7 +9,7 @@ export function useSelectedSong(selectedId: string | null, isEditing: boolean) {
   const [editError, setEditError] = useState<string | null>(null);
 
   const loadSong = useCallback((id: string) => {
-    return fetch(`${import.meta.env.BASE_URL}data/songs/${id}.json`, { cache: 'no-store' })
+    return fetch(`${import.meta.env.BASE_URL}data/songs/${id}.json`)
       .then((res) => res.json())
       .then((data: SongData) => {
         setSong(data);

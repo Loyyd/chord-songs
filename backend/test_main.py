@@ -38,6 +38,26 @@ def test_enqueue_content_sync_records_saved_locally(monkeypatch, tmp_path):
     assert main.sync_job_queue.get_nowait() == status["job_id"]
 
 
+@pytest.mark.parametrize("path,expected", [
+    ("assets/index-abc123.js", "public, max-age=31536000, immutable"),
+    ("data/songs.index.json", "public, max-age=0, must-revalidate"),
+    ("index.html", "no-cache"),
+    ("logo-black-96.png", "public, max-age=86400"),
+])
+def test_cache_control_for_static_path(path, expected):
+    assert main.cache_control_for_static_path(path) == expected
+
+
+@pytest.mark.parametrize("path,expected", [
+    ("/api/version", True),
+    ("/assets/index-abc123.js", True),
+    ("/data/songs.index.json", True),
+    ("/logo-black-96.png", False),
+])
+def test_should_gzip_path(path, expected):
+    assert main.should_gzip_path(path) is expected
+
+
 def test_run_sync_job_marks_failed_when_rebuild_fails(monkeypatch, tmp_path):
     job_id = "job-1"
     changed_path = str(tmp_path / "song.pro")

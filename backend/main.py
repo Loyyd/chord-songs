@@ -1,5 +1,6 @@
 from fastapi import Depends, FastAPI, Header, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
@@ -47,6 +48,46 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+class SelectiveGZipMiddleware:
+    def __init__(self, app, minimum_size: int = 1024):
+        self.app = app
+        self.gzip_app = GZipMiddleware(app, minimum_size=minimum_size)
+
+    async def __call__(self, scope, receive, send):
+        if scope["type"] == "http" and should_gzip_path(scope.get("path", "")):
+            await self.gzip_app(scope, receive, send)
+            return
+        await self.app(scope, receive, send)
+
+
+def should_gzip_path(path: str) -> bool:
+    return path.startswith("/api/") or path.endswith((".css", ".html", ".js", ".json", ".svg"))
+
+
+app.add_middleware(SelectiveGZipMiddleware, minimum_size=1024)
+
+
+def cache_control_for_static_path(path: str) -> str:
+    normalized_path = path.replace("\\", "/").lstrip("/")
+    if normalized_path.startswith("assets/"):
+        return "public, max-age=31536000, immutable"
+    if normalized_path.startswith("data/") and normalized_path.endswith(".json"):
+        return "public, max-age=0, must-revalidate"
+    if normalized_path in {"", "."} or normalized_path.endswith(".html"):
+        return "no-cache"
+    return "public, max-age=86400"
+
+
+class CachedStaticFiles(StaticFiles):
+    async def get_response(self, path: str, scope):
+        response = await super().get_response(path, scope)
+        if response.status_code == 200:
+            response.headers.setdefault("Cache-Control", cache_control_for_static_path(path))
+        return response
+
+
 # Path to the songs directory (relative to this file)
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 DIST_DIR = os.path.join(BASE_DIR, "dist")
@@ -712,11 +753,11 @@ def serve_edit_page(song_id: str):
     index_path = os.path.join(DIST_DIR, "index.html")
     if not os.path.exists(index_path):
         raise HTTPException(status_code=404, detail="Frontend not built")
-    return FileResponse(index_path)
+    return FileResponse(index_path, headers={"Cache-Control": "no-cache"})
 
 # Mount the static files from dist/ directory (production)
 if os.path.exists(DIST_DIR):
-    app.mount("/", StaticFiles(directory=DIST_DIR, html=True), name="static")
+    app.mount("/", CachedStaticFiles(directory=DIST_DIR, html=True), name="static")
 
 if __name__ == "__main__":
     import uvicorn
