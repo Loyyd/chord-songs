@@ -4,11 +4,13 @@ from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, contextmanager
+import hashlib
 import os
 import queue
 import subprocess
 import re
+import tempfile
 import threading
 import time
 import uuid
@@ -162,6 +164,86 @@ CONTENT_REPO_DIR = resolve_content_repo_dir()
 DEFAULT_GIT_USER_NAME = "Holy Songs Bot"
 DEFAULT_GIT_USER_EMAIL = "holy-songs-bot@local"
 
+
+def redact_secrets(value: object) -> str:
+    """Remove credentials from text before it reaches logs or API responses."""
+    text = str(value)
+    github_token = os.environ.get("GITHUB_TOKEN", "")
+    if github_token:
+        text = text.replace(github_token, "[REDACTED]")
+        encoded_token = quote(github_token, safe="")
+        if encoded_token != github_token:
+            text = text.replace(encoded_token, "[REDACTED]")
+
+    # Also cover credentials supplied in a remote URL and recognizable GitHub
+    # tokens that may have reached stderr through external git configuration.
+    text = re.sub(r"(?i)(https?://)[^/@\s]+@", r"\1[REDACTED]@", text)
+    text = re.sub(
+        r"\b(?:github_pat_[A-Za-z0-9_]+|gh[pousr]_[A-Za-z0-9_]+)\b",
+        "[REDACTED]",
+        text,
+    )
+    return text
+
+
+def git_error_detail(error: subprocess.CalledProcessError) -> str:
+    stderr = (error.stderr or "").strip()
+    stdout = (error.stdout or "").strip()
+    return redact_secrets(stderr or stdout or error)
+
+
+def strip_http_url_credentials(remote_url: str) -> str:
+    """Keep secrets out of git argv even when a configured URL contains userinfo."""
+    return re.sub(r"(?i)^(https?://)[^/@\s]+@", r"\1", remote_url)
+
+
+@contextmanager
+def git_auth_environment():
+    """Provide a GitHub token to git through askpass, never through argv or a file."""
+    github_token = os.environ.get("GITHUB_TOKEN", "")
+    if not github_token:
+        yield None
+        return
+
+    descriptor, askpass_path = tempfile.mkstemp(prefix="holy-songs-git-askpass-")
+    try:
+        os.fchmod(descriptor, 0o700)
+        with os.fdopen(descriptor, "w", encoding="utf-8") as askpass_file:
+            descriptor = -1
+            askpass_file.write(
+                "#!/bin/sh\n"
+                "case \"$1\" in\n"
+                "  *Username*) printf '%s\\n' 'x-access-token' ;;\n"
+                "  *Password*) printf '%s\\n' \"$GITHUB_TOKEN\" ;;\n"
+                "  *) printf '\\n' ;;\n"
+                "esac\n"
+            )
+
+        env = os.environ.copy()
+        env["GIT_ASKPASS"] = askpass_path
+        env["GIT_ASKPASS_REQUIRE"] = "force"
+        env["GIT_TERMINAL_PROMPT"] = "0"
+        yield env
+    finally:
+        if descriptor >= 0:
+            os.close(descriptor)
+        try:
+            os.unlink(askpass_path)
+        except FileNotFoundError:
+            pass
+
+
+def run_git_transport(args: list[str], **kwargs) -> subprocess.CompletedProcess:
+    """Run a fetch/push with non-interactive, argv-safe token authentication."""
+    with git_auth_environment() as auth_env:
+        command = ["git", *args]
+        if auth_env is not None:
+            kwargs["env"] = auth_env
+            # Do not let a machine-level helper silently substitute a different
+            # credential; the empty helper falls through to our askpass program.
+            command = ["git", "-c", "credential.helper=", *args]
+        return subprocess.run(command, **kwargs)
+
 def ensure_content_repo_safe_directory():
     if not CONTENT_REPO_DIR:
         return
@@ -186,6 +268,8 @@ def rebuild_songs() -> dict:
     """Build generated song data without deploying."""
     try:
         env = os.environ.copy()
+        # The song builder never needs repository credentials.
+        env.pop("GITHUB_TOKEN", None)
         if os.path.exists(DIST_DIR):
             env["SONGS_OUTPUT_DIR"] = DIST_DATA_DIR
         env["SONGS_DIR"] = SONGS_DIR
@@ -204,7 +288,7 @@ def rebuild_songs() -> dict:
     except subprocess.CalledProcessError as e:
         stderr = (e.stderr or "").strip()
         stdout = (e.stdout or "").strip()
-        message = f"Error during build: {stderr or stdout or e}"
+        message = redact_secrets(f"Error during build: {stderr or stdout or e}")
         print(message)
         return {"ok": False, "message": message}
 
@@ -225,19 +309,13 @@ def build_push_target(remote_name: str) -> str:
     else:
         return remote_name
 
-    if not github_token:
-        return remote_url
-
-    token = quote(github_token, safe="")
-    if remote_url.startswith("git@github.com:"):
+    remote_url = strip_http_url_credentials(remote_url)
+    if github_token and remote_url.startswith("git@github.com:"):
         remote_path = remote_url[len("git@github.com:"):]
-        return f"https://x-access-token:{token}@github.com/{remote_path}"
-    if remote_url.startswith("https://github.com/"):
-        return remote_url.replace(
-            "https://github.com/",
-            f"https://x-access-token:{token}@github.com/",
-            1,
-        )
+        return f"https://github.com/{remote_path}"
+    if github_token and remote_url.startswith("ssh://git@github.com/"):
+        remote_path = remote_url[len("ssh://git@github.com/"):]
+        return f"https://github.com/{remote_path}"
     return remote_url
 
 def get_git_identity() -> tuple[str, str]:
@@ -255,30 +333,40 @@ def rebase_content_repo(remote_name: str, branch: str, user_name: str, user_emai
         text=True,
     ).stdout.strip()
 
-    subprocess.run(
-        ["git", "fetch", push_target, branch],
+    run_git_transport(
+        ["fetch", push_target, branch],
         cwd=CONTENT_REPO_DIR,
         check=True,
         capture_output=True,
         text=True,
     )
-    subprocess.run(
-        [
-            "git",
-            "-c",
-            f"user.name={user_name}",
-            "-c",
-            f"user.email={user_email}",
-            "rebase",
-            "-X",
-            "theirs",
-            "FETCH_HEAD",
-        ],
-        cwd=CONTENT_REPO_DIR,
-        check=True,
-        capture_output=True,
-        text=True,
-    )
+    try:
+        subprocess.run(
+            [
+                "git",
+                "-c",
+                f"user.name={user_name}",
+                "-c",
+                f"user.email={user_email}",
+                "rebase",
+                "FETCH_HEAD",
+            ],
+            cwd=CONTENT_REPO_DIR,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+    except subprocess.CalledProcessError:
+        # Never pick a silent winner for edits made through another app/source.
+        # Leave the local branch and working tree usable for an explicit resolution.
+        subprocess.run(
+            ["git", "rebase", "--abort"],
+            cwd=CONTENT_REPO_DIR,
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+        raise
 
     after = subprocess.run(
         ["git", "rev-parse", "HEAD"],
@@ -314,8 +402,8 @@ def push_content_repo_if_needed(remote_name: str, branch: str) -> bool:
         return False
 
     push_target = build_push_target(remote_name)
-    subprocess.run(
-        ["git", "push", push_target, f"HEAD:{branch}"],
+    run_git_transport(
+        ["push", push_target, f"HEAD:{branch}"],
         cwd=CONTENT_REPO_DIR,
         check=True,
         capture_output=True,
@@ -331,6 +419,18 @@ def recover_pending_content_repo_backup() -> dict | None:
 
     print("Checking for pending local song edits to back up.")
     return sync_content_repo(SONGS_DIR, "Recover local song changes")
+
+
+def failed_combined_rebuild_result(changed_path: str, build_result: dict) -> dict:
+    build_message = redact_secrets(build_result.get("message") or "Unknown build error")
+    message = redact_secrets(
+        f"Content repo changes for {changed_path} were not pushed because the combined song "
+        f"catalogue failed validation. Repository HEAD and any pending commits were kept "
+        f"locally, and the previous catalogue remains active. {build_message}"
+    )
+    print(message)
+    return {"ok": False, "pushed": False, "message": message}
+
 
 def sync_content_repo(changed_path: str, action: str) -> dict:
     if not CONTENT_REPO_DIR or not os.path.isdir(os.path.join(CONTENT_REPO_DIR, ".git")):
@@ -376,9 +476,16 @@ def sync_content_repo(changed_path: str, action: str) -> dict:
         ).stdout.strip()
         if not staged:
             remote_changed = rebase_content_repo(remote_name, branch, user_name, user_email)
+            has_unpushed_commits = content_repo_has_unpushed_commits()
+            if remote_changed or has_unpushed_commits:
+                build_result = rebuild_songs()
+                if not build_result.get("ok"):
+                    return failed_combined_rebuild_result(changed_path, build_result)
+
+            # The push is intentionally after the build. Two independently valid
+            # branches can form an invalid catalogue (for example, duplicate IDs).
             pushed = push_content_repo_if_needed(remote_name, branch)
             if remote_changed:
-                rebuild_songs()
                 if pushed:
                     message = f"Content repo refreshed from GitHub and pending commits were synced for {rel_path}."
                     print(message)
@@ -412,28 +519,30 @@ def sync_content_repo(changed_path: str, action: str) -> dict:
             text=True,
         )
 
-        push_target = build_push_target(remote_name)
-        remote_changed = False
-        if not content_repo_has_uncommitted_tracked_changes():
-            remote_changed = rebase_content_repo(remote_name, branch, user_name, user_email)
-            push_content_repo_if_needed(remote_name, branch)
-        else:
-            subprocess.run(
-                ["git", "push", push_target, f"HEAD:{branch}"],
-                cwd=CONTENT_REPO_DIR,
-                check=True,
-                capture_output=True,
-                text=True,
+        if content_repo_has_uncommitted_tracked_changes():
+            message = (
+                f"Content repo sync paused for {rel_path}: another tracked edit is still "
+                "waiting to be committed. The local commit was kept and nothing was pushed."
             )
-        if remote_changed:
-            rebuild_songs()
+            print(message)
+            return {"ok": False, "pushed": False, "message": message}
+
+        remote_changed = rebase_content_repo(remote_name, branch, user_name, user_email)
+        has_unpushed_commits = content_repo_has_unpushed_commits()
+        if remote_changed or has_unpushed_commits:
+            build_result = rebuild_songs()
+            if not build_result.get("ok"):
+                return failed_combined_rebuild_result(changed_path, build_result)
+
+        # Validation of the combined local/remote HEAD is the gate for every push.
+        pushed = push_content_repo_if_needed(remote_name, branch)
         message = f"Content repo synced successfully for {rel_path}."
         print(message)
-        return {"ok": True, "pushed": True, "message": message}
+        return {"ok": True, "pushed": pushed, "message": message}
     except subprocess.CalledProcessError as error:
-        stderr = (error.stderr or "").strip()
-        stdout = (error.stdout or "").strip()
-        message = f"Content repo sync failed for {changed_path}: {stderr or stdout or error}"
+        message = redact_secrets(
+            f"Content repo sync failed for {changed_path}: {git_error_detail(error)}"
+        )
         print(message)
         return {"ok": False, "pushed": False, "message": message}
 
@@ -444,6 +553,7 @@ sync_jobs: dict[str, dict] = {}
 sync_jobs_lock = threading.Lock()
 sync_worker_started = False
 sync_worker_lock = threading.Lock()
+song_mutation_lock = threading.RLock()
 
 
 def public_job_status(job: dict) -> dict:
@@ -452,7 +562,7 @@ def public_job_status(job: dict) -> dict:
         "status": job["status"],
         "action": job["action"],
         "filename": os.path.basename(job["changed_path"]),
-        "message": job.get("message"),
+        "message": redact_secrets(job.get("message")) if job.get("message") is not None else None,
         "ok": job.get("ok"),
         "pushed": job.get("pushed", False),
         "created_at": job["created_at"],
@@ -468,6 +578,8 @@ def update_sync_job(job_id: str, **changes):
             return
         if "status" in changes and changes["status"] not in SYNC_JOB_STATES:
             raise ValueError(f"Invalid sync job status: {changes['status']}")
+        if "message" in changes and changes["message"] is not None:
+            changes["message"] = redact_secrets(changes["message"])
         job.update(changes)
         job["updated_at"] = time.time()
 
@@ -480,51 +592,66 @@ def run_sync_job(job_id: str):
         changed_path = job["changed_path"]
         action = job["action"]
 
-    update_sync_job(
-        job_id,
-        status="rebuilding",
-        message="Saved locally. Rebuilding song data...",
-    )
-    build_result = rebuild_songs()
-    if not build_result["ok"]:
-        update_sync_job(
-            job_id,
-            status="failed",
-            ok=False,
-            pushed=False,
-            message=build_result["message"],
-        )
-        return
+    with song_mutation_lock:
+        rebuild_required = job.get("rebuild_required", True)
+        if rebuild_required:
+            update_sync_job(
+                job_id,
+                status="rebuilding",
+                message="Saved locally. Rebuilding song data...",
+            )
+            build_result = rebuild_songs()
+            if not build_result["ok"]:
+                update_sync_job(
+                    job_id,
+                    status="failed",
+                    ok=False,
+                    pushed=False,
+                    message=build_result["message"],
+                )
+                return
 
-    update_sync_job(
-        job_id,
-        status="syncing",
-        message="Song data rebuilt. Syncing content repo...",
-    )
-    sync_result = sync_content_repo(changed_path, action)
-    if sync_result.get("ok"):
         update_sync_job(
             job_id,
-            status="synced",
-            ok=True,
-            pushed=sync_result.get("pushed", False),
-            message=sync_result.get("message") or "Content repo synced.",
+            status="syncing",
+            message="Song data rebuilt. Syncing content repo...",
         )
-    else:
-        update_sync_job(
-            job_id,
-            status="failed",
-            ok=False,
-            pushed=False,
-            message=sync_result.get("message") or "Content repo sync failed.",
-        )
+        sync_result = sync_content_repo(changed_path, action)
+        if sync_result.get("ok"):
+            update_sync_job(
+                job_id,
+                status="synced",
+                ok=True,
+                pushed=sync_result.get("pushed", False),
+                message=sync_result.get("message") or "Content repo synced.",
+            )
+        else:
+            update_sync_job(
+                job_id,
+                status="failed",
+                ok=False,
+                pushed=sync_result.get("pushed", False),
+                message=sync_result.get("message") or "Content repo sync failed.",
+            )
 
 
 def sync_worker_loop():
     while True:
         job_id = sync_job_queue.get()
         try:
-            run_sync_job(job_id)
+            try:
+                run_sync_job(job_id)
+            except Exception as error:
+                safe_error = redact_secrets(error)
+                message = f"Unexpected content sync error: {safe_error}"
+                print(f"Sync job {job_id} failed unexpectedly: {safe_error}")
+                update_sync_job(
+                    job_id,
+                    status="failed",
+                    ok=False,
+                    pushed=False,
+                    message=message,
+                )
         finally:
             sync_job_queue.task_done()
 
@@ -539,7 +666,7 @@ def ensure_sync_worker_started():
         sync_worker_started = True
 
 
-def enqueue_content_sync(changed_path: str, action: str) -> dict:
+def enqueue_content_sync(changed_path: str, action: str, *, rebuild_required: bool = True) -> dict:
     ensure_sync_worker_started()
     now = time.time()
     job_id = uuid.uuid4().hex
@@ -548,11 +675,16 @@ def enqueue_content_sync(changed_path: str, action: str) -> dict:
         "status": "saved_locally",
         "action": action,
         "changed_path": changed_path,
-        "message": "Saved locally. Waiting to rebuild song data...",
+        "message": (
+            "Saved locally. Waiting to rebuild song data..."
+            if rebuild_required
+            else "Song data rebuilt. Waiting to sync content repo..."
+        ),
         "ok": None,
         "pushed": False,
         "created_at": now,
         "updated_at": now,
+        "rebuild_required": rebuild_required,
     }
     with sync_jobs_lock:
         sync_jobs[job_id] = job
@@ -567,6 +699,238 @@ def validate_song_path(filepath: str):
 
 class SongContent(BaseModel):
     content: str
+    expected_revision: str | None = None
+
+
+CHORDPRO_META_RE = re.compile(r"^\{\s*([^:]+):\s*(.+)\s*\}$")
+
+
+def extract_song_title(content: str, *, require_directive: bool = False) -> str:
+    """Extract a title using the same last-directive-wins behavior as the builder."""
+    title = None
+    for line in content.splitlines():
+        match = CHORDPRO_META_RE.match(line)
+        if match and match.group(1).strip().lower() == "title":
+            title = match.group(2).strip()
+
+    if title is None:
+        if require_directive:
+            raise HTTPException(
+                status_code=400,
+                detail="Song must have a {title: ...} directive",
+            )
+        return "Untitled"
+
+    if require_directive and not title:
+        raise HTTPException(status_code=400, detail="Song title cannot be empty")
+    return title
+
+
+def normalized_song_id(title: str) -> str:
+    """Match the frontend/build slugify implementation exactly."""
+    song_id = re.sub(r"[^a-z0-9]+", "-", title.lower().strip())
+    return re.sub(r"^-+|-+$", "", song_id)
+
+
+def song_revision(content: str) -> str:
+    """Return a stable revision for optimistic concurrency checks."""
+    return hashlib.sha256(content.encode("utf-8")).hexdigest()
+
+
+def find_song_id_conflicts(song_id: str, *, exclude_filename: str | None = None) -> list[dict]:
+    conflicts = []
+    if not os.path.exists(SONGS_DIR):
+        return conflicts
+
+    for filename in sorted(os.listdir(SONGS_DIR)):
+        if not filename.endswith(".pro") or filename == exclude_filename:
+            continue
+        filepath = os.path.join(SONGS_DIR, filename)
+        with open(filepath, "r", encoding="utf-8") as song_file:
+            existing_content = song_file.read()
+        existing_title = extract_song_title(existing_content)
+        if normalized_song_id(existing_title) == song_id:
+            conflicts.append({"filename": filename, "title": existing_title})
+    return conflicts
+
+
+def ensure_unique_song_id(content: str, *, exclude_filename: str | None = None) -> tuple[str, str]:
+    title = extract_song_title(content, require_directive=True)
+    song_id = normalized_song_id(title)
+    if not song_id:
+        raise HTTPException(
+            status_code=400,
+            detail="Song title must contain at least one letter or number",
+        )
+
+    conflicts = find_song_id_conflicts(song_id, exclude_filename=exclude_filename)
+    if conflicts:
+        conflicting_files = ", ".join(conflict["filename"] for conflict in conflicts)
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail={
+                "code": "duplicate_song_id",
+                "message": (
+                    f'A song with the normalized ID "{song_id}" already exists in '
+                    f"{conflicting_files}. Choose a different title."
+                ),
+                "song_id": song_id,
+                "title": title,
+                "conflicts": conflicts,
+            },
+        )
+    return title, song_id
+
+
+def fsync_directory(directory: str):
+    """Persist a completed rename/removal when the filesystem supports directory fsync."""
+    try:
+        directory_fd = os.open(directory, os.O_RDONLY)
+    except OSError:
+        return
+    try:
+        os.fsync(directory_fd)
+    except OSError:
+        pass
+    finally:
+        os.close(directory_fd)
+
+
+def atomic_write_text(filepath: str, content: str):
+    """Write a complete file and atomically replace the previous version."""
+    directory = os.path.dirname(filepath)
+    os.makedirs(directory, exist_ok=True)
+    existing_mode = (os.stat(filepath).st_mode & 0o777) if os.path.exists(filepath) else 0o644
+    file_descriptor, temporary_path = tempfile.mkstemp(
+        dir=directory,
+        prefix=f".{os.path.basename(filepath)}.",
+        suffix=".tmp",
+    )
+    try:
+        os.chmod(temporary_path, existing_mode)
+        with os.fdopen(file_descriptor, "w", encoding="utf-8") as temporary_file:
+            file_descriptor = -1
+            temporary_file.write(content)
+            temporary_file.flush()
+            os.fsync(temporary_file.fileno())
+        os.replace(temporary_path, filepath)
+        fsync_directory(directory)
+    finally:
+        if file_descriptor >= 0:
+            os.close(file_descriptor)
+        if os.path.exists(temporary_path):
+            os.unlink(temporary_path)
+
+
+def transactional_song_write(filepath: str, content: str, previous_content: str | None):
+    """Write and verify a song, restoring the prior catalogue state if the build fails."""
+    atomic_write_text(filepath, content)
+    try:
+        build_result = rebuild_songs()
+    except Exception as error:
+        build_result = {"ok": False, "message": f"Song build failed unexpectedly: {error}"}
+
+    if build_result.get("ok"):
+        return
+
+    rollback_error = None
+    recovery_result = None
+    try:
+        if previous_content is None:
+            os.remove(filepath)
+            fsync_directory(os.path.dirname(filepath))
+        else:
+            atomic_write_text(filepath, previous_content)
+        recovery_result = rebuild_songs()
+    except Exception as error:
+        rollback_error = str(error)
+
+    rollback_succeeded = rollback_error is None and bool(recovery_result and recovery_result.get("ok"))
+    detail = {
+        "code": "song_build_failed",
+        "message": "The song could not be built, so the change was not saved.",
+        "build_error": build_result.get("message") or "Unknown build error",
+        "rollback_succeeded": rollback_succeeded,
+    }
+    if recovery_result and not recovery_result.get("ok"):
+        detail["recovery_error"] = recovery_result.get("message") or "Recovery build failed"
+    if rollback_error:
+        detail["recovery_error"] = rollback_error
+
+    raise HTTPException(
+        status_code=422 if rollback_succeeded else 500,
+        detail=detail,
+    )
+
+
+def transactional_song_delete(filepath: str, previous_content: str):
+    """Delete and verify a song, restoring it if the catalogue cannot be rebuilt."""
+    os.remove(filepath)
+    fsync_directory(os.path.dirname(filepath))
+    try:
+        build_result = rebuild_songs()
+    except Exception as error:
+        build_result = {"ok": False, "message": f"Song build failed unexpectedly: {error}"}
+
+    if build_result.get("ok"):
+        return
+
+    rollback_error = None
+    recovery_result = None
+    try:
+        atomic_write_text(filepath, previous_content)
+        recovery_result = rebuild_songs()
+    except Exception as error:
+        rollback_error = str(error)
+
+    rollback_succeeded = rollback_error is None and bool(recovery_result and recovery_result.get("ok"))
+    detail = {
+        "code": "song_build_failed",
+        "message": "The song catalogue could not be rebuilt, so the deletion was undone.",
+        "build_error": build_result.get("message") or "Unknown build error",
+        "rollback_succeeded": rollback_succeeded,
+    }
+    if recovery_result and not recovery_result.get("ok"):
+        detail["recovery_error"] = recovery_result.get("message") or "Recovery build failed"
+    if rollback_error:
+        detail["recovery_error"] = rollback_error
+
+    raise HTTPException(
+        status_code=422 if rollback_succeeded else 500,
+        detail=detail,
+    )
+
+
+def require_matching_revision(
+    filename: str,
+    expected_revision: str | None,
+    current_content: str,
+) -> str:
+    current_revision = song_revision(current_content)
+    if expected_revision is None:
+        raise HTTPException(
+            status_code=428,
+            detail={
+                "code": "revision_required",
+                "message": "Reload the song before saving or deleting it, then try again.",
+                "filename": filename,
+                "current_revision": current_revision,
+                "current_content": current_content,
+            },
+        )
+    if expected_revision != current_revision:
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail={
+                "code": "revision_conflict",
+                "message": "This song changed after you opened it. Review the latest version before trying again.",
+                "filename": filename,
+                "expected_revision": expected_revision,
+                "current_revision": current_revision,
+                "current_content": current_content,
+            },
+        )
+    return current_revision
 
 @app.get("/api/version")
 def get_version():
@@ -584,6 +948,11 @@ def get_sync_job(job_id: str):
 
 @app.post("/api/refresh", dependencies=[Depends(require_write_access)])
 def refresh_from_github():
+    with song_mutation_lock:
+        return _refresh_from_github()
+
+
+def _refresh_from_github():
     """Pull the content repository from GitHub and rebuild generated song data."""
     if not CONTENT_REPO_DIR or not os.path.isdir(os.path.join(CONTENT_REPO_DIR, ".git")):
         message = "Cannot refresh: CONTENT_REPO_DIR is not a git repository."
@@ -617,9 +986,7 @@ def refresh_from_github():
         print(message)
         return {"ok": True, "changed": changed, "message": message}
     except subprocess.CalledProcessError as error:
-        stderr = (error.stderr or "").strip()
-        stdout = (error.stdout or "").strip()
-        message = f"Content repo refresh failed: {stderr or stdout or error}"
+        message = f"Content repo refresh failed: {git_error_detail(error)}"
         print(message)
         return {"ok": False, "changed": False, "message": message}
 
@@ -635,35 +1002,31 @@ def list_songs():
 @app.post("/api/songs/create", dependencies=[Depends(require_write_access)])
 def create_song(song: SongContent):
     """Create a new song file with auto-generated filename from title"""
-    # Extract title from content
-    title_match = re.search(r'\{title:\s*([^}]+)\}', song.content, re.IGNORECASE)
-    if not title_match:
-        raise HTTPException(status_code=400, detail="Song must have a {title: ...} directive")
-    
-    title = title_match.group(1).strip()
-    base_filename = sanitize_filename(title)
-    filename = f"{base_filename}.pro"
-    filepath = os.path.join(SONGS_DIR, filename)
-    
-    # If file exists, add a number suffix
-    counter = 1
-    while os.path.exists(filepath):
-        filename = f"{base_filename}-{counter}.pro"
+    with song_mutation_lock:
+        title, song_id = ensure_unique_song_id(song.content)
+        base_filename = sanitize_filename(title)
+        filename = f"{base_filename}.pro"
         filepath = os.path.join(SONGS_DIR, filename)
-        counter += 1
-    
-    # Ensure we are writing to the songs directory
-    validate_song_path(filepath)
-    
-    with open(filepath, "w", encoding="utf-8") as f:
-        f.write(song.content)
-    
-    sync = enqueue_content_sync(filepath, "Create song")
-    
-    # The ID is the base filename without extension
-    song_id = os.path.splitext(filename)[0]
-    
-    return {"message": "Song saved locally", "filename": filename, "id": song_id, "sync": sync}
+
+        # A filename can be occupied by a song whose title produces a different ID.
+        counter = 1
+        while os.path.exists(filepath):
+            filename = f"{base_filename}-{counter}.pro"
+            filepath = os.path.join(SONGS_DIR, filename)
+            counter += 1
+
+        validate_song_path(filepath)
+        transactional_song_write(filepath, song.content, previous_content=None)
+        revision = song_revision(song.content)
+        sync = enqueue_content_sync(filepath, "Create song", rebuild_required=False)
+
+    return {
+        "message": "Song saved locally",
+        "filename": filename,
+        "id": song_id,
+        "revision": revision,
+        "sync": sync,
+    }
 
 @app.get("/api/songs/{filename}")
 def get_song(filename: str):
@@ -672,14 +1035,15 @@ def get_song(filename: str):
          raise HTTPException(status_code=400, detail="Invalid filename")
     
     filepath = os.path.join(SONGS_DIR, filename)
-    
-    if not os.path.exists(filepath):
-        raise HTTPException(status_code=404, detail="Song not found")
-    
-    with open(filepath, "r", encoding="utf-8") as f:
-        content = f.read()
-    
-    return {"content": content}
+
+    with song_mutation_lock:
+        if not os.path.exists(filepath):
+            raise HTTPException(status_code=404, detail="Song not found")
+
+        with open(filepath, "r", encoding="utf-8") as f:
+            content = f.read()
+
+    return {"content": content, "revision": song_revision(content)}
 
 @app.post("/api/songs/{filename}", dependencies=[Depends(require_write_access)])
 @app.put("/api/songs/{filename}", dependencies=[Depends(require_write_access)])
@@ -690,39 +1054,48 @@ def update_song(filename: str, song: SongContent):
         raise HTTPException(status_code=400, detail="Invalid filename")
     
     filepath = os.path.join(SONGS_DIR, filename)
-    
-    # Ensure we are writing to the songs directory
     validate_song_path(filepath)
-    
-    if not os.path.exists(filepath):
-        raise HTTPException(status_code=404, detail="Song not found")
-    
-    with open(filepath, "w", encoding="utf-8") as f:
-        f.write(song.content)
-    
-    sync = enqueue_content_sync(filepath, "Update song")
-    
-    return {"message": "Song saved locally", "filename": filename, "sync": sync}
+
+    with song_mutation_lock:
+        if not os.path.exists(filepath):
+            raise HTTPException(status_code=404, detail="Song not found")
+
+        with open(filepath, "r", encoding="utf-8") as song_file:
+            previous_content = song_file.read()
+        require_matching_revision(filename, song.expected_revision, previous_content)
+        _title, song_id = ensure_unique_song_id(song.content, exclude_filename=filename)
+        transactional_song_write(filepath, song.content, previous_content)
+        revision = song_revision(song.content)
+        sync = enqueue_content_sync(filepath, "Update song", rebuild_required=False)
+
+    return {
+        "message": "Song saved locally",
+        "filename": filename,
+        "id": song_id,
+        "revision": revision,
+        "sync": sync,
+    }
 
 @app.delete("/api/songs/{filename}", dependencies=[Depends(require_write_access)])
-def delete_song(filename: str):
+def delete_song(filename: str, expected_revision: str | None = None):
     """Delete a song file"""
     # Basic security check to prevent directory traversal
     if ".." in filename or "/" in filename or "\\" in filename:
         raise HTTPException(status_code=400, detail="Invalid filename")
     
     filepath = os.path.join(SONGS_DIR, filename)
-    
-    # Ensure we are deleting from the songs directory
     validate_song_path(filepath)
-    
-    if not os.path.exists(filepath):
-        raise HTTPException(status_code=404, detail="Song not found")
-    
-    os.remove(filepath)
-    
-    sync = enqueue_content_sync(filepath, "Delete song")
-    
+
+    with song_mutation_lock:
+        if not os.path.exists(filepath):
+            raise HTTPException(status_code=404, detail="Song not found")
+
+        with open(filepath, "r", encoding="utf-8") as song_file:
+            previous_content = song_file.read()
+        require_matching_revision(filename, expected_revision, previous_content)
+        transactional_song_delete(filepath, previous_content)
+        sync = enqueue_content_sync(filepath, "Delete song", rebuild_required=False)
+
     return {"message": "Song deleted locally", "sync": sync}
 
 def find_song_file_by_id(song_id: str) -> str | None:

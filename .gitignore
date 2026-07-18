@@ -6,7 +6,8 @@ dist/
 .venv/
 __pycache__/
 *.pyc
-public/data/
+public/data
+public/.data-generations/
 .ssh
 .build-server
 .build-server.*

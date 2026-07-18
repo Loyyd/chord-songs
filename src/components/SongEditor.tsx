@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { parseTokens } from '../lib/parseChordPro';
+import { syncChordEditWithLine } from '../lib/chordEditing';
+import type { ChordEditState } from '../lib/chordEditing';
 
 interface SongEditorProps {
   source: string;
@@ -328,12 +330,12 @@ export function SongEditor({ source, onChange }: SongEditorProps) {
         }
         .chord-edit-input {
           position: absolute;
-          top: -0.35rem;
+          top: -0.2rem;
           z-index: 30;
           transform: translateX(-50%);
-          width: 5.5rem;
-          min-width: 4.25rem;
-          max-width: 7rem;
+          width: 4.25rem;
+          min-width: 3.25rem;
+          max-width: 5.25rem;
           border: 1px solid var(--brand-gold);
           border-radius: 5px;
           background: white;
@@ -342,7 +344,8 @@ export function SongEditor({ source, onChange }: SongEditorProps) {
           font: inherit;
           font-weight: 700;
           line-height: 1.1;
-          padding: 0.16rem 0.28rem;
+          padding: 0.12rem 0.22rem;
+          text-align: center;
           outline: none;
         }
         .lyrics-input {
@@ -412,10 +415,11 @@ export function SongEditor({ source, onChange }: SongEditorProps) {
             box-shadow: 0 8px 18px rgba(20, 32, 54, 0.16);
           }
           .chord-edit-input {
-            top: -0.1rem;
-            min-width: 5.5rem;
-            min-height: 2rem;
-            padding: 0.35rem 0.45rem;
+            top: 0.05rem;
+            width: 4.25rem;
+            min-width: 4rem;
+            min-height: 1.75rem;
+            padding: 0.22rem 0.3rem;
             border-radius: 6px;
           }
           .drop-indicator {
@@ -481,31 +485,25 @@ function DirectiveEditor({ line, onChange, isSectionDirective, onCopySection, on
 }
 
 function LineEditor({ line, onChange }: LineEditorProps) {
-  const LONG_PRESS_MS = 450;
   const TOUCH_DRAG_THRESHOLD_PX = 8;
   const containerRef = useRef<HTMLDivElement>(null);
   const lyricsInputRef = useRef<HTMLInputElement>(null);
   const editInputRef = useRef<HTMLInputElement>(null);
+  const previousLineRef = useRef(line);
   const skipNextBlurCommitRef = useRef(false);
   const suppressNextClickRef = useRef(false);
-  const longPressTimeoutRef = useRef<number | null>(null);
   const touchDragRef = useRef<{
     pointerId: number;
     chordIndex: number;
     startX: number;
     startY: number;
     isDragging: boolean;
-    didLongPress: boolean;
   } | null>(null);
   const measureCanvasRef = useRef<HTMLCanvasElement | null>(null);
   const [dropIndex, setDropIndex] = useState<number | null>(null);
   const [selectedChordIndex, setSelectedChordIndex] = useState<number | null>(null);
   const [touchDraggingChordIndex, setTouchDraggingChordIndex] = useState<number | null>(null);
-  const [editingChord, setEditingChord] = useState<{
-    chordIndex: number | null;
-    charIndex: number;
-    value: string;
-  } | null>(null);
+  const [editingChord, setEditingChord] = useState<ChordEditState | null>(null);
   
   // Parse line into lyrics and chords with positions
   const tokens = parseTokens(line);
@@ -522,6 +520,16 @@ function LineEditor({ line, onChange }: LineEditorProps) {
     lyrics += token.lyric;
     currentLen += token.lyric.length;
   });
+
+  useEffect(() => {
+    if (previousLineRef.current === line) return;
+    previousLineRef.current = line;
+
+    if (editingChord?.chordIndex === null) {
+      skipNextBlurCommitRef.current = true;
+    }
+    setEditingChord((current) => syncChordEditWithLine(current, line));
+  }, [editingChord?.chordIndex, line]);
 
   const handleLyricsChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newLyrics = e.target.value;
@@ -680,20 +688,6 @@ function LineEditor({ line, onChange }: LineEditorProps) {
     editInputRef.current.select();
   }, [editingChord?.chordIndex, editingChord?.charIndex]);
 
-  useEffect(() => {
-    return () => {
-      if (longPressTimeoutRef.current !== null) {
-        window.clearTimeout(longPressTimeoutRef.current);
-      }
-    };
-  }, []);
-
-  const clearLongPressTimer = () => {
-    if (longPressTimeoutRef.current === null) return;
-    window.clearTimeout(longPressTimeoutRef.current);
-    longPressTimeoutRef.current = null;
-  };
-
   const handleDragStart = (e: React.DragEvent, chordIndex: number) => {
     e.dataTransfer.setData('chordIndex', chordIndex.toString());
     e.dataTransfer.effectAllowed = 'move';
@@ -747,19 +741,8 @@ function LineEditor({ line, onChange }: LineEditorProps) {
       startX: e.clientX,
       startY: e.clientY,
       isDragging: false,
-      didLongPress: false
     };
-
-    clearLongPressTimer();
-    longPressTimeoutRef.current = window.setTimeout(() => {
-      longPressTimeoutRef.current = null;
-      const touchDrag = touchDragRef.current;
-      if (!touchDrag || touchDrag.pointerId !== e.pointerId || touchDrag.isDragging) return;
-
-      touchDrag.didLongPress = true;
-      suppressNextClickRef.current = true;
-      startEditingChord(chordIndex);
-    }, LONG_PRESS_MS);
+    suppressNextClickRef.current = true;
   };
 
   const handleChordPointerMove = (e: React.PointerEvent<HTMLButtonElement>) => {
@@ -767,8 +750,6 @@ function LineEditor({ line, onChange }: LineEditorProps) {
     if (!touchDrag || touchDrag.pointerId !== e.pointerId) return;
 
     e.stopPropagation();
-    if (touchDrag.didLongPress) return;
-
     const deltaX = e.clientX - touchDrag.startX;
     const deltaY = e.clientY - touchDrag.startY;
     const distance = Math.hypot(deltaX, deltaY);
@@ -776,7 +757,6 @@ function LineEditor({ line, onChange }: LineEditorProps) {
     if (!touchDrag.isDragging && distance >= TOUCH_DRAG_THRESHOLD_PX) {
       touchDrag.isDragging = true;
       suppressNextClickRef.current = true;
-      clearLongPressTimer();
       setEditingChord(null);
       setTouchDraggingChordIndex(touchDrag.chordIndex);
     }
@@ -792,7 +772,6 @@ function LineEditor({ line, onChange }: LineEditorProps) {
     if (!touchDrag || touchDrag.pointerId !== e.pointerId) return;
 
     e.stopPropagation();
-    clearLongPressTimer();
     if (e.currentTarget.hasPointerCapture(e.pointerId)) {
       e.currentTarget.releasePointerCapture(e.pointerId);
     }
@@ -803,11 +782,10 @@ function LineEditor({ line, onChange }: LineEditorProps) {
       setDropIndex(null);
       setTouchDraggingChordIndex(null);
       suppressNextClickRef.current = true;
-    } else if (touchDrag.didLongPress) {
-      suppressNextClickRef.current = true;
     } else {
       setSelectedChordIndex(touchDrag.chordIndex);
       suppressNextClickRef.current = true;
+      startEditingChord(touchDrag.chordIndex);
     }
 
     touchDragRef.current = null;
@@ -817,7 +795,6 @@ function LineEditor({ line, onChange }: LineEditorProps) {
     const touchDrag = touchDragRef.current;
     if (!touchDrag || touchDrag.pointerId !== e.pointerId) return;
 
-    clearLongPressTimer();
     setDropIndex(null);
     setTouchDraggingChordIndex(null);
     suppressNextClickRef.current = true;
@@ -916,7 +893,7 @@ function LineEditor({ line, onChange }: LineEditorProps) {
             onPointerCancel={handleChordPointerCancel}
             onFocus={() => setSelectedChordIndex(i)}
             onKeyDown={(e) => handleChordKeyDown(e, i)}
-            title="Drag to move, click or long-press to edit, arrow keys to nudge"
+            title="Tap or click to edit, drag to move, arrow keys to nudge"
           >
             {chord.name}
           </button>
