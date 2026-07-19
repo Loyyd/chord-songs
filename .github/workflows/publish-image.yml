@@ -187,6 +187,23 @@ jobs:
                   .Tasks |= map(
                     if app_task then
                       .Config.image = $image
+                      | .Config.volumes = [
+                          (.Config.volumes // [])[]
+                          | select(((split(":") | .[1]) // "") != "/app/dist/data")
+                        ]
+                      | if (.Config.mounts | type) == "array" then
+                          .Config.mounts |= map(
+                            select((.target // .Target // "") != "/app/dist/data")
+                          )
+                        else
+                          .
+                        end
+                      | .VolumeMounts = [
+                          (.VolumeMounts // [])[]
+                          | select(
+                              (.Destination // .destination // "") != "/app/dist/data"
+                            )
+                        ]
                       | .Env = ((.Env // {}) | del(.GITHUB_TOKEN))
                       | .Identity = ((.Identity // {}) + {Env: true, File: true})
                       | .Vault = ((.Vault // {}) + {Role: "workload-holy-songs"})
@@ -212,6 +229,24 @@ jobs:
             [
               .Job.TaskGroups[].Tasks[]
               | select((.Name == "holy-songs" or .Name == "app") and ((.Env // {}) | has("GITHUB_TOKEN")))
+            ]
+            | length == 0
+          ' "${rendered_job}" >/dev/null
+
+          jq -e '
+            def app_task: .Name == "holy-songs" or .Name == "app";
+            [
+              .Job.TaskGroups[].Tasks[]
+              | select(app_task)
+              | (
+                  [(.Config.volumes // [])[] | ((split(":") | .[1]) // "")]
+                  + [(.Config.mounts // [])[] | (.target // .Target // "")]
+                  + [
+                      (.VolumeMounts // [])[]
+                      | (.Destination // .destination // "")
+                    ]
+                )[]
+              | select(. == "/app/dist/data")
             ]
             | length == 0
           ' "${rendered_job}" >/dev/null

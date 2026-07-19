@@ -64,6 +64,26 @@ async function writeFileDurably(file: string, content: string) {
   }
 }
 
+async function syncDirectoryTree(directory: string) {
+  const entries = await fs.readdir(directory, { withFileTypes: true });
+  for (const entry of entries) {
+    const entryPath = path.join(directory, entry.name);
+    if (entry.isDirectory()) {
+      await syncDirectoryTree(entryPath);
+      continue;
+    }
+    if (!entry.isFile()) continue;
+
+    const handle = await fs.open(entryPath, 'r');
+    try {
+      await handle.sync();
+    } finally {
+      await handle.close();
+    }
+  }
+  await syncDirectory(directory);
+}
+
 async function hasChordProFiles(dir: string) {
   try {
     const entries = await fs.readdir(dir);
@@ -213,15 +233,24 @@ async function recoverInterruptedPublish() {
       await removeJournal();
     } else {
       const outputState = await pathState(OUTPUT_BASE_DIR);
-      if (!outputState) {
-        if (journal.previous.kind === 'directory') {
-          const backupDir = generationPath(journal.previous.backupGeneration);
-          if (!(await pathState(backupDir))) {
-            throw new Error('Cannot recover the previous song catalogue: its backup is missing.');
+      if (journal.previous.kind === 'directory') {
+        const backupDir = generationPath(journal.previous.backupGeneration);
+        const backupState = await pathState(backupDir);
+        if (backupState) {
+          // A cross-device fallback removes the legacy tree recursively after
+          // its durable backup is complete. If that removal was interrupted,
+          // always restore from the backup instead of trusting a partial tree.
+          if (outputState) {
+            await fs.rm(OUTPUT_BASE_DIR, { recursive: true, force: true });
+            await syncDirectory(OUTPUT_PARENT_DIR);
           }
           await fs.rename(backupDir, OUTPUT_BASE_DIR);
           await syncDirectory(OUTPUT_PARENT_DIR);
-        } else if (journal.previous.kind === 'symlink') {
+        } else if (!outputState) {
+          throw new Error('Cannot recover the previous song catalogue: its backup is missing.');
+        }
+      } else if (!outputState) {
+        if (journal.previous.kind === 'symlink') {
           await createAndInstallLink(journal.previous.target);
         } else if (await isCompleteGeneration(newGenerationDir)) {
           // There was no previous catalogue. Completing the pointer install is
@@ -328,6 +357,51 @@ async function inspectPreviousOutput(): Promise<PreviousOutput> {
   throw new Error(`Song output path is neither a directory nor a symlink: ${OUTPUT_BASE_DIR}`);
 }
 
+async function relocateLegacyOutput(backupDir: string) {
+  const forceCrossDeviceCopy =
+    process.env.SONGS_BUILD_ENABLE_FAILURE_INJECTION === '1' &&
+    process.env.SONGS_BUILD_FORCE_LEGACY_COPY === '1';
+
+  if (!forceCrossDeviceCopy) {
+    try {
+      await fs.rename(OUTPUT_BASE_DIR, backupDir);
+      await syncDirectory(GENERATIONS_DIR);
+      return;
+    } catch (error) {
+      if ((error as NodeJS.ErrnoException).code !== 'EXDEV') throw error;
+    }
+  }
+
+  // Overlay filesystems can reject a rename when the image-layer directory is
+  // copied up for the first time. Preserve the same journalled migration by
+  // durably copying the legacy directory into the generation store before the
+  // old path is removed. A mounted output root fails earlier with EBUSY and is
+  // intentionally not copied or modified.
+  const temporaryBackupDir = `${backupDir}.${randomUUID()}.tmp`;
+  let backupReady = false;
+  try {
+    await fs.cp(OUTPUT_BASE_DIR, temporaryBackupDir, {
+      recursive: true,
+      errorOnExist: true,
+      force: false,
+      preserveTimestamps: true,
+    });
+    await syncDirectoryTree(temporaryBackupDir);
+    await syncDirectory(GENERATIONS_DIR);
+    injectFailure('before-legacy-backup-commit');
+    await fs.rename(temporaryBackupDir, backupDir);
+    await syncDirectory(GENERATIONS_DIR);
+    backupReady = true;
+    injectFailure('after-legacy-copy');
+    await fs.rm(OUTPUT_BASE_DIR, { recursive: true });
+  } catch (error) {
+    if (!backupReady) {
+      await fs.rm(temporaryBackupDir, { recursive: true, force: true });
+    }
+    throw error;
+  }
+}
+
 async function cleanupOldGenerations() {
   try {
     const outputState = await pathState(OUTPUT_BASE_DIR);
@@ -385,7 +459,7 @@ async function publishStagedBuild(stagingDir: string) {
       // symlink on POSIX. Move it to a journalled backup once; recovery restores
       // it if the process stops before the link is installed. Every later build
       // uses the atomic symlink-replacement path below.
-      await fs.rename(OUTPUT_BASE_DIR, generationPath(previous.backupGeneration));
+      await relocateLegacyOutput(generationPath(previous.backupGeneration));
       await syncDirectory(OUTPUT_PARENT_DIR);
       injectFailure('after-legacy-move');
     }
