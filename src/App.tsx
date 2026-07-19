@@ -5,6 +5,7 @@ import { transposeChordProSource } from './lib/chords';
 import { parseChordPro } from './lib/parseChordPro';
 import { addSongCategoryToSource, normalizeCategoryName } from './lib/songCategories';
 import { SongEditor } from './components/SongEditor';
+import { EditTransposeControl } from './components/EditTransposeControl';
 import { SaveToast } from './components/SaveToast';
 import { SongList } from './components/SongList';
 import { SongToolbar } from './components/SongToolbar';
@@ -22,7 +23,7 @@ import {
 import type { AppRoute } from './appUtils';
 import { useSaveToast } from './hooks/useSaveToast';
 import { useSelectedSong } from './hooks/useSelectedSong';
-import { useSongSaving } from './hooks/useSongSaving';
+import { SongConflictError, useSongSaving } from './hooks/useSongSaving';
 import type { SyncJobStatus } from './hooks/useSongSaving';
 import { useSongIndex } from './hooks/useSongIndex';
 
@@ -34,6 +35,7 @@ export default function App() {
   const [isTransposeOpen, setIsTransposeOpen] = useState(false);
   const [contextSensitive, setContextSensitive] = useState(false);
   const [categoryInput, setCategoryInput] = useState('');
+  const [saveConflict, setSaveConflict] = useState<SongConflictError | null>(null);
   const [starred, setStarred] = useState<Set<string>>(() => {
     const saved = localStorage.getItem(STARRED_SONGS_KEY);
     return saved ? new Set(JSON.parse(saved)) : new Set();
@@ -59,10 +61,14 @@ export default function App() {
     setEditText,
     lastSavedText,
     setLastSavedText,
+    revision,
+    setRevision,
+    isEditSourceLoading,
     editError,
     setEditError,
     loadSong,
     setSongSource,
+    reloadEditSource,
   } = useSelectedSong(selectedId, isEditing);
   const {
     isSaving,
@@ -81,7 +87,7 @@ export default function App() {
     showFailureToast,
   } = useSaveToast();
 
-  const hasUnsavedChanges = editText !== lastSavedText || transpose !== 0;
+  const hasUnsavedChanges = editText !== lastSavedText;
 
   useEffect(() => {
     if (transpose === 0) {
@@ -142,6 +148,7 @@ export default function App() {
     if (selectedId && !isTemporaryNewSongId(selectedId)) {
       sessionStorage.setItem(LAST_SELECTED_ID_KEY, selectedId);
     }
+    setSaveConflict(null);
   }, [selectedId]);
 
   useEffect(() => {
@@ -298,11 +305,68 @@ export default function App() {
     }
   };
 
+  const handleEditTranspose = (steps: number, targetKey?: string) => {
+    if (isSaving || isEditSourceLoading) return;
+    setEditText((current) => transposeChordProSource(current, steps, targetKey));
+    setEditError(null);
+  };
+
+  const applyReloadedSongSource = (source: string) => {
+    if (!song) return;
+    const parsed = parseChordPro(source, song.sourcePath ?? 'inline');
+    const nextId = parsed.id || song.id;
+    setSong({ ...parsed, id: nextId, sourcePath: song.sourcePath });
+    if (nextId !== selectedId) {
+      setSelectedId(nextId);
+      window.history.replaceState(null, '', `/edit/${encodeURIComponent(nextId)}`);
+      setRoute({ mode: 'edit', id: nextId });
+    }
+  };
+
+  const handleReloadLatestAfterConflict = async () => {
+    if (!window.confirm('Reload the latest server version? Your unsaved edits in this window will be replaced.')) {
+      return;
+    }
+
+    try {
+      const latest = await reloadEditSource();
+      applyReloadedSongSource(latest.content);
+      setSaveConflict(null);
+      setEditError(null);
+      showToast({ kind: 'success', message: 'Loaded the latest version' });
+    } catch (err) {
+      const message = (err as Error).message || 'Failed to load the latest version.';
+      setEditError(message);
+      showFailureToast(message);
+    }
+  };
+
+  const handleRetryEditSource = async () => {
+    try {
+      const latest = await reloadEditSource();
+      applyReloadedSongSource(latest.content);
+      setSaveConflict(null);
+      setEditError(null);
+    } catch (err) {
+      const message = (err as Error).message || 'Failed to load the latest version.';
+      setEditError(message);
+      showFailureToast(message);
+    }
+  };
+
+  const handleCopyLocalEdits = async () => {
+    try {
+      await navigator.clipboard.writeText(editText);
+      showToast({ kind: 'success', message: 'Your unsaved version was copied' });
+    } catch {
+      showFailureToast('Could not copy your unsaved version');
+    }
+  };
+
   const applyEdit = async (source: string = editText) => {
     if (!song || isSaving || !hasUnsavedChanges) return;
     try {
-      const transposedSource = transposeChordProSource(source, transpose);
-      const parsed = parseChordPro(transposedSource, song.sourcePath ?? 'inline');
+      const parsed = parseChordPro(source, song.sourcePath ?? 'inline');
 
       try {
         if (song.sourcePath) {
@@ -310,24 +374,37 @@ export default function App() {
           if (!filename) {
             throw new Error('Failed to determine the song filename.');
           }
+          if (!revision) {
+            throw new Error('The latest song revision is still loading. Reload the editor and try again.');
+          }
 
-          const result = await saveExistingSong(filename, transposedSource);
+          const result = await saveExistingSong(filename, source, revision);
+          const nextId = result.id ?? parsed.id ?? song.id;
 
-          setSong({ ...parsed, id: song.id, sourcePath: song.sourcePath });
-          setEditText(transposedSource);
-          setLastSavedText(transposedSource);
+          setSong({ ...parsed, id: nextId, sourcePath: song.sourcePath });
+          setSelectedId(nextId);
+          setEditText(source);
+          setLastSavedText(source);
+          setRevision(result.revision ?? revision);
+          setSaveConflict(null);
           setEditError(null);
           setTranspose(0);
-          void settleBackgroundSync(result.sync, song.id, false);
+          if (route.mode !== 'edit' || nextId !== route.id) {
+            window.history.replaceState(null, '', `/edit/${encodeURIComponent(nextId)}`);
+            setRoute({ mode: 'edit', id: nextId });
+          }
+          void settleBackgroundSync(result.sync, nextId, false);
         } else {
-          const result = await createSong(transposedSource);
+          const result = await createSong(source);
           const nextId = result.id ?? parsed.id;
           const sourcePath = result.filename ?? `${nextId}.pro`;
 
           setSong({ ...parsed, id: nextId, sourcePath });
           setSelectedId(nextId);
-          setEditText(transposedSource);
-          setLastSavedText(transposedSource);
+          setEditText(source);
+          setLastSavedText(source);
+          setRevision(result.revision ?? null);
+          setSaveConflict(null);
           setEditError(null);
           setTranspose(0);
           window.history.replaceState(null, '', `/edit/${encodeURIComponent(nextId)}`);
@@ -336,6 +413,12 @@ export default function App() {
         }
       } catch (backendErr) {
         console.error('Backend save failed:', backendErr);
+        if (backendErr instanceof SongConflictError) {
+          setSaveConflict(backendErr);
+          setEditError(null);
+          showFailureToast('Someone else saved this song first. Your edits are still here and were not overwritten.');
+          return;
+        }
         const message = (backendErr as Error).message || 'Failed to save changes';
         setEditError(message);
         showFailureToast(message);
@@ -363,8 +446,11 @@ export default function App() {
       if (!filename) {
         throw new Error('Failed to determine the song filename.');
       }
+      if (!revision) {
+        throw new Error('The latest song revision is still loading. Reload the editor and try again.');
+      }
 
-      const result = await deleteSong(filename);
+      const result = await deleteSong(filename, revision);
       const nextIndex = index.filter((entry) => entry.id !== song.id);
       setIndex(nextIndex);
       if (nextIndex.length > 0) {
@@ -377,7 +463,15 @@ export default function App() {
       navigateToBrowse();
       void settleBackgroundSync(result.sync, nextIndex[0]?.id, false);
     } catch (err) {
-      showFailureToast('Failed to delete song');
+      if (err instanceof SongConflictError) {
+        setSaveConflict(err);
+        setEditError(null);
+        showFailureToast('Someone else changed this song first. It was not deleted.');
+        return;
+      }
+      const message = (err as Error).message || 'Failed to delete song';
+      setEditError(message);
+      showFailureToast(message);
     }
   };
 
@@ -386,6 +480,7 @@ export default function App() {
       setSelectedId(index.length > 0 ? index[0].id : null);
       setSong(null);
     }
+    setSaveConflict(null);
     setEditError(null);
     navigateToBrowse();
   };
@@ -400,6 +495,7 @@ export default function App() {
   };
 
   const saveToastElement = <SaveToast toast={saveToast} tick={saveToastTick} />;
+  const existingEditIsReady = !song?.sourcePath || revision !== null;
 
   if (isEditing) {
     return (
@@ -419,24 +515,28 @@ export default function App() {
                   onChange={(event) => setCategoryInput(event.target.value)}
                   placeholder="Category"
                   list="category-suggestions"
-                  disabled={!song || isSaving}
+                  disabled={!song || isSaving || isEditSourceLoading || !existingEditIsReady}
                 />
                 <datalist id="category-suggestions">
                   {CATEGORY_SUGGESTIONS.map((category) => (
                     <option key={category} value={category} />
                   ))}
                 </datalist>
-                <button type="submit" disabled={!song || isSaving || normalizeCategoryName(categoryInput) === ''}>
+                <button type="submit" disabled={!song || isSaving || isEditSourceLoading || !existingEditIsReady || normalizeCategoryName(categoryInput) === ''}>
                   Add category
                 </button>
               </form>
               <button className="edit-cancel-button" onClick={handleCancelEdit} disabled={isSaving}>
                 Back
               </button>
-              <button className="primary" onClick={() => applyEdit(editText)} disabled={!song || isSaving || !hasUnsavedChanges}>
+              <button
+                className="primary"
+                onClick={() => applyEdit(editText)}
+                disabled={!song || isSaving || isEditSourceLoading || !existingEditIsReady || !hasUnsavedChanges || saveConflict !== null}
+              >
                 {isSaving ? 'Saving...' : 'Save Changes'}
               </button>
-              <button className="danger" onClick={handleDelete} disabled={!song || isSaving}>
+              <button className="danger" onClick={handleDelete} disabled={!song || isSaving || isEditSourceLoading || !existingEditIsReady || saveConflict !== null}>
                 Delete
               </button>
             </div>
@@ -444,12 +544,43 @@ export default function App() {
 
           {song ? (
             <>
-              <SongEditor
-                source={editText}
-                onChange={setEditText}
-              />
-              {editError && <div className="error">{editError}</div>}
-              <div className="note edit-page-note">Edits save locally immediately and sync to GitHub in the background.</div>
+              {isEditSourceLoading ? (
+                <div className="edit-source-loading" role="status">Loading the latest editable version…</div>
+              ) : existingEditIsReady ? (
+                <>
+                  <EditTransposeControl
+                    currentKey={editHeaderSong?.key}
+                    disabled={isSaving || saveConflict !== null}
+                    onTranspose={handleEditTranspose}
+                  />
+                  {saveConflict && (
+                    <div className="save-conflict" role="alert">
+                      <div>
+                        <strong>Another person saved this song first.</strong>
+                        <p>Your edits are still open here and were not overwritten. Copy them before reloading if you want to merge them into the latest version.</p>
+                      </div>
+                      <div className="save-conflict-actions">
+                        <button type="button" onClick={handleCopyLocalEdits}>Copy my version</button>
+                        <button type="button" className="primary" onClick={handleReloadLatestAfterConflict}>Reload latest</button>
+                      </div>
+                    </div>
+                  )}
+                  <SongEditor
+                    source={editText}
+                    onChange={(nextSource) => {
+                      setEditText(nextSource);
+                      if (!saveConflict) setEditError(null);
+                    }}
+                  />
+                </>
+              ) : (
+                <div className="edit-source-unavailable">
+                  <div className="error">{editError || 'The latest editable version could not be loaded, so editing is disabled to protect newer changes.'}</div>
+                  <button type="button" onClick={handleRetryEditSource}>Try loading again</button>
+                </div>
+              )}
+              {editError && existingEditIsReady && <div className="error">{editError}</div>}
+              <div className="note edit-page-note">Changes are build-checked when you save, then synced to GitHub in the background.</div>
             </>
           ) : (
             <p>Loading editor...</p>

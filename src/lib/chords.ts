@@ -1,4 +1,8 @@
 const NOTE_SEQUENCE = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+const FLAT_NOTE_SEQUENCE = ['C', 'Db', 'D', 'Eb', 'E', 'F', 'Gb', 'G', 'Ab', 'A', 'Bb', 'B'];
+export const CHROMATIC_KEYS = [
+  'C', 'C#', 'Db', 'D', 'D#', 'Eb', 'E', 'F', 'F#', 'Gb', 'G', 'G#', 'Ab', 'A', 'A#', 'Bb', 'B'
+] as const;
 const FLAT_MAP: Record<string, string> = {
   Db: 'C#',
   Eb: 'D#',
@@ -8,25 +12,30 @@ const FLAT_MAP: Record<string, string> = {
 };
 
 function normalizeRoot(root: string): string {
-  return FLAT_MAP[root] ?? root;
+  const normalizedCase = `${root.charAt(0).toUpperCase()}${root.slice(1)}`;
+  return FLAT_MAP[normalizedCase] ?? normalizedCase;
 }
 
-function transposeRoot(root: string, steps: number): string {
+function keyRoot(key: string): string | undefined {
+  return key.match(/^([A-G](?:#|b)?)/i)?.[1];
+}
+
+function transposeRoot(root: string, steps: number, preferFlats = false): string {
   const normalized = normalizeRoot(root);
   const index = NOTE_SEQUENCE.indexOf(normalized);
   if (index === -1) return root;
   const shifted = (index + steps + NOTE_SEQUENCE.length) % NOTE_SEQUENCE.length;
-  return NOTE_SEQUENCE[shifted];
+  return (preferFlats ? FLAT_NOTE_SEQUENCE : NOTE_SEQUENCE)[shifted];
 }
 
-export function transposeChord(chord: string, steps: number): string {
-  if (steps === 0) return chord;
-  const match = chord.match(/^([A-G](?:#|b)?)(.*)$/);
+export function transposeChord(chord: string, steps: number, preferFlats = false, respell = false): string {
+  if (steps === 0 && !respell) return chord;
+  const match = chord.match(/^([A-G](?:#|b)?)(.*)$/i);
   if (!match) return chord;
   const [, root, suffix] = match;
-  const transposedRoot = transposeRoot(root, steps);
-  const transposedSuffix = suffix.replace(/\/([A-G](?:#|b)?)$/g, (_match, bassRoot: string) => {
-    return `/${transposeRoot(bassRoot, steps)}`;
+  const transposedRoot = transposeRoot(root, steps, preferFlats);
+  const transposedSuffix = suffix.replace(/\/([A-G](?:#|b)?)$/gi, (_match, bassRoot: string) => {
+    return `/${transposeRoot(bassRoot, steps, preferFlats)}`;
   });
   return `${transposedRoot}${transposedSuffix}`;
 }
@@ -39,8 +48,11 @@ export function transposeTokens(tokens: { chord: string | null; lyric: string }[
 
 export function transposeDelta(fromKey: string | undefined, toKey: string | undefined): number {
   if (!fromKey || !toKey) return 0;
-  const from = NOTE_SEQUENCE.indexOf(normalizeRoot(fromKey));
-  const to = NOTE_SEQUENCE.indexOf(normalizeRoot(toKey));
+  const fromRoot = keyRoot(fromKey);
+  const toRoot = keyRoot(toKey);
+  if (!fromRoot || !toRoot) return 0;
+  const from = NOTE_SEQUENCE.indexOf(normalizeRoot(fromRoot));
+  const to = NOTE_SEQUENCE.indexOf(normalizeRoot(toRoot));
   if (from === -1 || to === -1) return 0;
   const delta = to - from;
   if (delta > 6) return delta - NOTE_SEQUENCE.length;
@@ -48,22 +60,23 @@ export function transposeDelta(fromKey: string | undefined, toKey: string | unde
   return delta;
 }
 
-export function transposeChordProSource(source: string, steps: number): string {
-  if (steps === 0) return source;
-  
+export function transposeChordProSource(source: string, steps: number, targetKey?: string): string {
+  if (steps === 0 && !targetKey) return source;
+
+  const preferFlats = targetKey?.includes('b') ?? false;
   const lines = source.split(/\r?\n/);
   const transposedLines = lines.map(line => {
     // Handle {key: X} directive
-    const keyMatch = line.match(/^(\{\s*key:\s*)([A-G](?:#|b)?)(\s*\})$/i);
+    const keyMatch = line.match(/^(\{\s*key:\s*)([A-G](?:#|b)?[^\s}]*)(\s*\})$/i);
     if (keyMatch) {
       const [, prefix, key, suffix] = keyMatch;
-      const transposedKey = transposeRoot(key, steps);
+      const transposedKey = targetKey ?? transposeChord(key, steps, preferFlats);
       return `${prefix}${transposedKey}${suffix}`;
     }
     
     // Transpose chords in [brackets]
     return line.replace(/\[([A-G](?:#|b)?[^\]]*)\]/g, (match, chord) => {
-      return `[${transposeChord(chord, steps)}]`;
+      return `[${transposeChord(chord, steps, preferFlats, targetKey !== undefined)}]`;
     });
   });
   

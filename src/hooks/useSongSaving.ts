@@ -16,9 +16,32 @@ export type SyncJobStatus = {
 export type SaveResponse = {
   id?: string;
   filename?: string;
+  revision?: string;
   message?: string;
   sync?: SyncJobStatus;
 };
+
+type RevisionConflictDetail = {
+  code?: string;
+  current_revision?: string;
+  current_content?: string;
+  message?: string;
+};
+
+export class SongConflictError extends Error {
+  currentRevision?: string;
+  currentContent?: string;
+
+  constructor(detail?: RevisionConflictDetail) {
+    super(
+      detail?.message
+        ?? 'This song was changed by someone else after you opened it. Your version was not saved.',
+    );
+    this.name = 'SongConflictError';
+    this.currentRevision = detail?.current_revision;
+    this.currentContent = detail?.current_content;
+  }
+}
 
 export type RefreshResponse = {
   ok: boolean;
@@ -34,6 +57,9 @@ async function getResponseError(response: Response, fallbackMessage: string) {
     if (typeof data?.detail === 'string' && data.detail.trim() !== '') {
       return data.detail;
     }
+    if (typeof data?.detail?.message === 'string' && data.detail.message.trim() !== '') {
+      return data.detail.message;
+    }
     if (typeof data?.message === 'string' && data.message.trim() !== '') {
       return data.message;
     }
@@ -41,6 +67,25 @@ async function getResponseError(response: Response, fallbackMessage: string) {
     // Ignore JSON parsing issues and use the fallback below.
   }
   return fallbackMessage;
+}
+
+async function getConflictError(response: Response) {
+  try {
+    const data = await response.json();
+    const detail = data?.detail;
+    if (detail?.code === 'revision_conflict') {
+      return new SongConflictError(detail as RevisionConflictDetail);
+    }
+    if (typeof detail?.message === 'string' && detail.message.trim() !== '') {
+      return new Error(detail.message);
+    }
+    if (typeof detail === 'string' && detail.trim() !== '') {
+      return new Error(detail);
+    }
+  } catch {
+    // Fall back to the standard server conflict message below.
+  }
+  return new Error('The server could not save this song because it conflicts with another song.');
 }
 
 function sleep(ms: number) {
@@ -126,14 +171,17 @@ export function useSongSaving() {
     return latest;
   };
 
-  const saveExistingSong = async (filename: string, content: string) => {
+  const saveExistingSong = async (filename: string, content: string, expectedRevision: string) => {
     setIsSaving(true);
     try {
-      const response = await fetchWithAdminRetry(`/api/songs/${filename}`, {
+      const response = await fetchWithAdminRetry(`/api/songs/${encodeURIComponent(filename)}`, {
         method: 'POST',
-        body: JSON.stringify({ content }),
+        body: JSON.stringify({ content, expected_revision: expectedRevision }),
       }, true);
 
+      if (response.status === 409) {
+        throw await getConflictError(response);
+      }
       if (!response.ok) {
         throw new Error(await getResponseError(response, 'Failed to save song to the backend.'));
       }
@@ -162,13 +210,17 @@ export function useSongSaving() {
     }
   };
 
-  const deleteSong = async (filename: string) => {
+  const deleteSong = async (filename: string, expectedRevision: string) => {
     setIsSaving(true);
     try {
-      const response = await fetchWithAdminRetry(`/api/songs/${filename}`, {
+      const query = new URLSearchParams({ expected_revision: expectedRevision });
+      const response = await fetchWithAdminRetry(`/api/songs/${encodeURIComponent(filename)}?${query.toString()}`, {
         method: 'DELETE',
       });
 
+      if (response.status === 409) {
+        throw await getConflictError(response);
+      }
       if (!response.ok) {
         throw new Error(await getResponseError(response, 'Failed to delete song'));
       }

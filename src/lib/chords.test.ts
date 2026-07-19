@@ -56,6 +56,11 @@ describe('transposeDelta', () => {
     assert.equal(transposeDelta('F#', 'Eb'), -3);
     assert.equal(transposeDelta(undefined, 'C'), 0);
   });
+
+  it('calculates semitone deltas for minor keys', () => {
+    assert.equal(transposeDelta('Em', 'Gm'), 3);
+    assert.equal(transposeDelta('F#m', 'Bbm'), 4);
+  });
 });
 
 describe('transposeChordProSource', () => {
@@ -63,6 +68,31 @@ describe('transposeChordProSource', () => {
     assert.equal(
       transposeChordProSource(['{key: Bb}', '[Bb/D]Amazing [F]grace'].join('\n'), 2),
       ['{key: C}', '[C/E]Amazing [G]grace'].join('\n')
+    );
+  });
+
+  it('uses the selected target key spelling and leaves lyrics untouched', () => {
+    assert.equal(
+      transposeChordProSource(['{key: C}', '[C/E]Amazing [F#]grace'].join('\n'), -2, 'Bb'),
+      ['{key: Bb}', '[Bb/D]Amazing [E]grace'].join('\n')
+    );
+  });
+
+  it('respells enharmonic chords when the selected key has the same pitch', () => {
+    assert.equal(
+      transposeChordProSource(['{key: A#}', '[A#/D#]Song'].join('\n'), 0, 'Bb'),
+      ['{key: Bb}', '[Bb/Eb]Song'].join('\n')
+    );
+  });
+
+  it('preserves minor mode while transposing key directives', () => {
+    assert.equal(
+      transposeChordProSource(['{key: Em}', '[Em/B]Song'].join('\n'), 2),
+      ['{key: F#m}', '[F#m/C#]Song'].join('\n')
+    );
+    assert.equal(
+      transposeChordProSource(['{key: Am}', '[Am/E]Song'].join('\n'), 1, 'Bbm'),
+      ['{key: Bbm}', '[Bbm/F]Song'].join('\n')
     );
   });
 });
