@@ -96,6 +96,81 @@ test('publishes a complete build and retains JSON used by older cached indices',
   await assertNoPublishDebris(fixture.outputDir);
 });
 
+test('copies a legacy directory when the filesystem cannot rename it directly', async (t) => {
+  const fixture = await makeBuildFixture();
+  t.after(() => fs.rm(fixture.root, { recursive: true, force: true }));
+
+  const oldSong = JSON.stringify({ id: 'old-song', title: 'Old Song' });
+  await fs.writeFile(
+    path.join(fixture.outputDir, 'songs.index.json'),
+    JSON.stringify([{ id: 'old-song', title: 'Old Song' }]),
+    'utf8'
+  );
+  await fs.writeFile(path.join(fixture.generatedSongsDir, 'old-song.json'), oldSong, 'utf8');
+  await fs.writeFile(
+    path.join(fixture.songsDir, 'new-song.pro'),
+    '{title: New Song}\n{key: E}\n[E]new\n',
+    'utf8'
+  );
+
+  const result = runBuild(fixture.songsDir, fixture.outputDir, {
+    SONGS_BUILD_ENABLE_FAILURE_INJECTION: '1',
+    SONGS_BUILD_FORCE_LEGACY_COPY: '1',
+  });
+
+  assert.equal(result.status, 0, result.stderr);
+  assert.equal((await fs.lstat(fixture.outputDir)).isSymbolicLink(), true);
+  assert.equal(
+    JSON.parse(await fs.readFile(path.join(fixture.outputDir, 'songs.index.json'), 'utf8'))[0].id,
+    'new-song'
+  );
+  assert.equal(
+    await fs.readFile(path.join(fixture.outputDir, 'songs', 'old-song.json'), 'utf8'),
+    oldSong
+  );
+  await assertNoPublishDebris(fixture.outputDir);
+});
+
+test('does not trust an uncommitted cross-device backup after a crash', async (t) => {
+  const fixture = await makeBuildFixture();
+  t.after(() => fs.rm(fixture.root, { recursive: true, force: true }));
+
+  const oldIndex = JSON.stringify([{ id: 'old-song', title: 'Old Song' }]);
+  const oldSong = JSON.stringify({ id: 'old-song', title: 'Old Song' });
+  await fs.writeFile(path.join(fixture.outputDir, 'songs.index.json'), oldIndex, 'utf8');
+  await fs.writeFile(path.join(fixture.generatedSongsDir, 'old-song.json'), oldSong, 'utf8');
+  await fs.writeFile(
+    path.join(fixture.songsDir, 'new-song.pro'),
+    '{title: New Song}\n{key: A}\n[A]new\n',
+    'utf8'
+  );
+
+  const crashed = runBuild(fixture.songsDir, fixture.outputDir, {
+    SONGS_BUILD_ENABLE_FAILURE_INJECTION: '1',
+    SONGS_BUILD_FORCE_LEGACY_COPY: '1',
+    SONGS_BUILD_FAILPOINT: 'before-legacy-backup-commit',
+    SONGS_BUILD_FAILURE_MODE: 'crash',
+  });
+  assert.equal(crashed.status, 86);
+  assert.equal(await fs.readFile(path.join(fixture.outputDir, 'songs.index.json'), 'utf8'), oldIndex);
+  assert.equal(
+    await fs.readFile(path.join(fixture.outputDir, 'songs', 'old-song.json'), 'utf8'),
+    oldSong
+  );
+
+  const recovered = runBuild(fixture.songsDir, fixture.outputDir, {
+    SONGS_BUILD_ENABLE_FAILURE_INJECTION: '1',
+    SONGS_BUILD_FORCE_LEGACY_COPY: '1',
+  });
+  assert.equal(recovered.status, 0, recovered.stderr);
+  assert.equal((await fs.lstat(fixture.outputDir)).isSymbolicLink(), true);
+  assert.equal(
+    JSON.parse(await fs.readFile(path.join(fixture.outputDir, 'songs.index.json'), 'utf8'))[0].id,
+    'new-song'
+  );
+  await assertNoPublishDebris(fixture.outputDir);
+});
+
 test('a failed build leaves the active catalogue untouched', async (t) => {
   const fixture = await makeBuildFixture();
   t.after(() => fs.rm(fixture.root, { recursive: true, force: true }));
@@ -209,11 +284,17 @@ test('recovers a hard crash during one-time physical-directory migration', async
 
   const crashedMigration = runBuild(fixture.songsDir, fixture.outputDir, {
     SONGS_BUILD_ENABLE_FAILURE_INJECTION: '1',
-    SONGS_BUILD_FAILPOINT: 'after-legacy-move',
+    SONGS_BUILD_FORCE_LEGACY_COPY: '1',
+    SONGS_BUILD_FAILPOINT: 'after-legacy-copy',
     SONGS_BUILD_FAILURE_MODE: 'crash',
   });
   assert.equal(crashedMigration.status, 86);
-  await assert.rejects(fs.lstat(fixture.outputDir), { code: 'ENOENT' });
+  assert.equal((await fs.lstat(fixture.outputDir)).isDirectory(), true);
+  assert.equal(await fs.readFile(path.join(fixture.outputDir, 'songs.index.json'), 'utf8'), oldIndex);
+  assert.equal(
+    await fs.readFile(path.join(fixture.outputDir, 'songs', 'old-song.json'), 'utf8'),
+    oldSong
+  );
 
   // Recovery runs before staging. Crashing at the next stage lets the test
   // observe that the old physical catalogue was restored first.

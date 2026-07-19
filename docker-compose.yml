@@ -10,7 +10,6 @@ services:
     volumes:
       - ../holy-songs-content:/app/content-repo
       - ./backend:/app/backend
-      - song-data:/app/dist/data
     environment:
       - SONGS_DIR=/app/content-repo/songs
       - CONTENT_REPO_DIR=/app/content-repo
@@ -27,11 +26,6 @@ services:
       dockerfile: Dockerfile.frontend
     ports:
       - "8080:80"
-    volumes:
-      - song-data:/usr/share/nginx/html/data:ro
     depends_on:
       - backend
     restart: unless-stopped
-
-volumes:
-  song-data:
