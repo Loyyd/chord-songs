@@ -414,7 +414,8 @@ def test_build_push_target_strips_credentials_from_explicit_url(monkeypatch):
 def test_git_transport_uses_temporary_askpass_without_token_in_argv(monkeypatch):
     token = "github_pat_testSecret123456789"
     captured = {}
-    monkeypatch.setenv("GITHUB_TOKEN", token)
+    monkeypatch.setenv("CONTENT_REPO_TOKEN", token)
+    monkeypatch.setenv("CONTENT_REPO_USERNAME", "holy-songs-bot")
 
     def fake_run(args, **kwargs):
         captured["args"] = args
@@ -435,9 +436,11 @@ def test_git_transport_uses_temporary_askpass_without_token_in_argv(monkeypatch)
     )
 
     assert token not in repr(captured["args"])
-    assert captured["env"]["GITHUB_TOKEN"] == token
+    assert captured["env"]["CONTENT_REPO_TOKEN"] == token
+    assert captured["env"]["CONTENT_REPO_USERNAME"] == "holy-songs-bot"
     assert captured["env"]["GIT_TERMINAL_PROMPT"] == "0"
-    assert "$GITHUB_TOKEN" in captured["askpass_script"]
+    assert "$CONTENT_REPO_TOKEN" in captured["askpass_script"]
+    assert "$CONTENT_REPO_USERNAME" in captured["askpass_script"]
     assert token not in captured["askpass_script"]
     assert not os.path.exists(captured["askpass_path"])
 

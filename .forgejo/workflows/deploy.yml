@@ -1,0 +1,147 @@
+name: Validate, publish, and deploy
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: write
+
+concurrency:
+  group: holy-songs-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  IMAGE_NAME: git.bcgen.ie/bcgen-ie/holy-songs
+
+jobs:
+  validate:
+    runs-on: docker
+    container:
+      image: node:24-bookworm
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install and test
+        run: |
+          set -eu
+          apt-get update -qq
+          apt-get install -y -q python3 python3-venv
+          npm ci
+          npm test
+          npm run typecheck
+          python3 -m venv /tmp/venv
+          /tmp/venv/bin/pip install --quiet -r backend/requirements.txt pytest
+          /tmp/venv/bin/pytest -q backend
+
+  publish-and-deploy:
+    needs: validate
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    runs-on: docker
+    container:
+      image: node:24-bookworm
+    env:
+      NOMAD_ADDR: ${{ vars.NOMAD_ADDR }}
+      NOMAD_TOKEN: ${{ secrets.NOMAD_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install deployment tools
+        run: |
+          set -eu
+          apt-get update -qq
+          apt-get install -y -q ca-certificates curl docker.io jq
+          docker version
+
+      - name: Build and publish immutable image
+        id: image
+        env:
+          REGISTRY_TOKEN: ${{ secrets.FORGEJO_TOKEN }}
+        run: |
+          set -eu
+          test -n "${REGISTRY_TOKEN:-}"
+          printf '%s' "$REGISTRY_TOKEN" \
+            | docker login git.bcgen.ie --username "${GITHUB_ACTOR}" --password-stdin
+
+          image_tag="${IMAGE_NAME}:${GITHUB_SHA}"
+          created="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+          docker build \
+            --build-arg "VCS_REF=${GITHUB_SHA}" \
+            --build-arg "IMAGE_REF=${image_tag}" \
+            --build-arg "BUILD_CREATED=${created}" \
+            --build-arg "BUILD_SOURCE=${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}" \
+            --tag "${image_tag}" \
+            --tag "${IMAGE_NAME}:main" \
+            .
+          docker push "${image_tag}"
+          docker push "${IMAGE_NAME}:main"
+
+          repo_digest="$(docker image inspect --format '{{index .RepoDigests 0}}' "${image_tag}")"
+          digest="${repo_digest#*@}"
+          case "$digest" in
+            sha256:*) ;;
+            *) echo "Could not resolve pushed image digest" >&2; exit 1 ;;
+          esac
+          deploy_ref="${IMAGE_NAME}@${digest}"
+          echo "ref=${deploy_ref}" >> "$GITHUB_OUTPUT"
+          echo "Published ${deploy_ref}"
+
+      - name: Deploy the image to the existing Nomad job
+        env:
+          DEPLOY_REF: ${{ steps.image.outputs.ref }}
+        run: |
+          set -eu
+          test -n "${NOMAD_ADDR:-}"
+          test -n "${NOMAD_TOKEN:-}"
+
+          curl -fsS \
+            -H "X-Nomad-Token: ${NOMAD_TOKEN}" \
+            "${NOMAD_ADDR}/v1/job/holy-songs" \
+            | jq --arg image "$DEPLOY_REF" '
+                if ([.TaskGroups[].Tasks[] | select(.Name == "holy-songs" or .Name == "app")] | length) != 1
+                then error("expected exactly one Holy Songs application task")
+                else
+                  .TaskGroups |= map(
+                    .Tasks |= map(
+                      if .Name == "holy-songs" or .Name == "app"
+                      then .Config.image = $image
+                      else .
+                      end
+                    )
+                  )
+                end
+                | {Job: .}
+              ' > /tmp/holy-songs.nomad.json
+
+          response="$(
+            curl -fsS \
+              -H "X-Nomad-Token: ${NOMAD_TOKEN}" \
+              -H 'Content-Type: application/json' \
+              --data-binary @/tmp/holy-songs.nomad.json \
+              "${NOMAD_ADDR}/v1/jobs"
+          )"
+          printf '%s' "$response" | jq -e '.EvalID | length > 0' >/dev/null
+
+      - name: Verify the deployed revision
+        run: |
+          set -eu
+          for attempt in $(seq 1 30); do
+            deployed_sha="$(
+              curl -fsS https://holy-songs.bcgen.ie/api/version 2>/dev/null \
+                | jq -r '.git_sha // empty' || true
+            )"
+            if [ "$deployed_sha" = "$GITHUB_SHA" ]; then
+              echo "Verified Holy Songs at ${GITHUB_SHA}"
+              exit 0
+            fi
+            echo "Waiting for ${GITHUB_SHA}; currently ${deployed_sha:-unavailable}"
+            sleep 10
+          done
+          echo "Deployment did not reach ${GITHUB_SHA}" >&2
+          exit 1

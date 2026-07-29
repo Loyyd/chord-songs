@@ -165,21 +165,30 @@ DEFAULT_GIT_USER_NAME = "Holy Songs Bot"
 DEFAULT_GIT_USER_EMAIL = "holy-songs-bot@local"
 
 
+def content_repo_token() -> str:
+    """Return the content-repository credential, with GitHub as a rollback fallback."""
+    return os.environ.get("CONTENT_REPO_TOKEN") or os.environ.get("GITHUB_TOKEN", "")
+
+
 def redact_secrets(value: object) -> str:
     """Remove credentials from text before it reaches logs or API responses."""
     text = str(value)
-    github_token = os.environ.get("GITHUB_TOKEN", "")
-    if github_token:
-        text = text.replace(github_token, "[REDACTED]")
-        encoded_token = quote(github_token, safe="")
-        if encoded_token != github_token:
+    tokens = {
+        os.environ.get("CONTENT_REPO_TOKEN", ""),
+        os.environ.get("GITHUB_TOKEN", ""),
+    }
+    for token in tokens - {""}:
+        text = text.replace(token, "[REDACTED]")
+        encoded_token = quote(token, safe="")
+        if encoded_token != token:
             text = text.replace(encoded_token, "[REDACTED]")
 
-    # Also cover credentials supplied in a remote URL and recognizable GitHub
-    # tokens that may have reached stderr through external git configuration.
+    # Also cover credentials supplied in a remote URL and recognizable tokens
+    # that may have reached stderr through external git configuration.
     text = re.sub(r"(?i)(https?://)[^/@\s]+@", r"\1[REDACTED]@", text)
     text = re.sub(
-        r"\b(?:github_pat_[A-Za-z0-9_]+|gh[pousr]_[A-Za-z0-9_]+)\b",
+        r"\b(?:github_pat_[A-Za-z0-9_]+|gh[pousr]_[A-Za-z0-9_]+|"
+        r"fjo_[A-Za-z0-9_-]+)\b",
         "[REDACTED]",
         text,
     )
@@ -199,9 +208,9 @@ def strip_http_url_credentials(remote_url: str) -> str:
 
 @contextmanager
 def git_auth_environment():
-    """Provide a GitHub token to git through askpass, never through argv or a file."""
-    github_token = os.environ.get("GITHUB_TOKEN", "")
-    if not github_token:
+    """Provide the content repo credential through askpass, never through argv."""
+    token = content_repo_token()
+    if not token:
         yield None
         return
 
@@ -213,13 +222,17 @@ def git_auth_environment():
             askpass_file.write(
                 "#!/bin/sh\n"
                 "case \"$1\" in\n"
-                "  *Username*) printf '%s\\n' 'x-access-token' ;;\n"
-                "  *Password*) printf '%s\\n' \"$GITHUB_TOKEN\" ;;\n"
+                "  *Username*) printf '%s\\n' \"$CONTENT_REPO_USERNAME\" ;;\n"
+                "  *Password*) printf '%s\\n' \"$CONTENT_REPO_TOKEN\" ;;\n"
                 "  *) printf '\\n' ;;\n"
                 "esac\n"
             )
 
         env = os.environ.copy()
+        env["CONTENT_REPO_TOKEN"] = token
+        env["CONTENT_REPO_USERNAME"] = os.environ.get(
+            "CONTENT_REPO_USERNAME", "x-access-token"
+        )
         env["GIT_ASKPASS"] = askpass_path
         env["GIT_ASKPASS_REQUIRE"] = "force"
         env["GIT_TERMINAL_PROMPT"] = "0"
@@ -269,6 +282,7 @@ def rebuild_songs() -> dict:
     try:
         env = os.environ.copy()
         # The song builder never needs repository credentials.
+        env.pop("CONTENT_REPO_TOKEN", None)
         env.pop("GITHUB_TOKEN", None)
         if os.path.exists(DIST_DIR):
             env["SONGS_OUTPUT_DIR"] = DIST_DATA_DIR
@@ -293,12 +307,12 @@ def rebuild_songs() -> dict:
         return {"ok": False, "message": message}
 
 def build_push_target(remote_name: str) -> str:
-    github_token = os.environ.get("GITHUB_TOKEN")
+    token = content_repo_token()
     explicit_remote_url = os.environ.get("CONTENT_REPO_PUSH_REMOTE_URL")
 
     if explicit_remote_url:
         remote_url = explicit_remote_url
-    elif github_token:
+    elif token:
         remote_url = subprocess.run(
             ["git", "remote", "get-url", remote_name],
             cwd=CONTENT_REPO_DIR,
@@ -310,10 +324,10 @@ def build_push_target(remote_name: str) -> str:
         return remote_name
 
     remote_url = strip_http_url_credentials(remote_url)
-    if github_token and remote_url.startswith("git@github.com:"):
+    if token and remote_url.startswith("git@github.com:"):
         remote_path = remote_url[len("git@github.com:"):]
         return f"https://github.com/{remote_path}"
-    if github_token and remote_url.startswith("ssh://git@github.com/"):
+    if token and remote_url.startswith("ssh://git@github.com/"):
         remote_path = remote_url[len("ssh://git@github.com/"):]
         return f"https://github.com/{remote_path}"
     return remote_url
