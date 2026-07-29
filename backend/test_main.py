@@ -155,7 +155,7 @@ def run_git(cwd, *args):
 def init_content_repo(tmp_path):
     remote = tmp_path / "remote.git"
     repo = tmp_path / "content"
-    run_git(tmp_path, "init", "--bare", str(remote))
+    run_git(tmp_path, "init", "--bare", "-b", "main", str(remote))
     run_git(tmp_path, "init", "-b", "main", str(repo))
     run_git(repo, "config", "user.name", "Test User")
     run_git(repo, "config", "user.email", "test@example.com")
