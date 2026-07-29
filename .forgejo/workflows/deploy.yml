@@ -47,7 +47,7 @@ jobs:
       image: node:24-bookworm
     env:
       NOMAD_ADDR: ${{ vars.NOMAD_ADDR }}
-      NOMAD_TOKEN: ${{ secrets.NOMAD_TOKEN }}
+      NOMAD_TOKEN: ${{ secrets.HOLY_SONGS_NOMAD_TOKEN }}
 
     steps:
       - uses: actions/checkout@v4
