@@ -62,12 +62,14 @@ jobs:
       - name: Build and publish immutable image
         id: image
         env:
-          REGISTRY_TOKEN: ${{ secrets.FORGEJO_TOKEN }}
+          REGISTRY_USERNAME: ${{ secrets.REGISTRY_USERNAME }}
+          REGISTRY_TOKEN: ${{ secrets.REGISTRY_TOKEN }}
         run: |
           set -eu
+          test -n "${REGISTRY_USERNAME:-}"
           test -n "${REGISTRY_TOKEN:-}"
           printf '%s' "$REGISTRY_TOKEN" \
-            | docker login git.bcgen.ie --username "${GITHUB_ACTOR}" --password-stdin
+            | docker login git.bcgen.ie --username "$REGISTRY_USERNAME" --password-stdin
 
           image_tag="${IMAGE_NAME}:${GITHUB_SHA}"
           created="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
