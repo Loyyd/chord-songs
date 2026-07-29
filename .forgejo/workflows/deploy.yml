@@ -16,7 +16,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  IMAGE_NAME: git.bcgen.ie/bcgen-ie/holy-songs
+  IMAGE_NAME: git.bcgen.ie/samuel/holy-songs
 
 jobs:
   validate:
