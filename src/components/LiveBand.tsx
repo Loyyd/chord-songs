@@ -134,7 +134,7 @@ export function LiveBand({
               {connectedMembers} / {knownMembers} band members connected
             </div>
           ) : (
-            <p>Search the catalogue or connect to share a running order. <a href="https://auth.bcgen.ie/signup" target="_blank" rel="noreferrer">Create an account</a></p>
+            <p>Build a running order locally, or connect to share it. <a href="https://auth.bcgen.ie/signup" target="_blank" rel="noreferrer">Create an account</a></p>
           )}
         </div>
         {isConnected ? (
@@ -150,66 +150,64 @@ export function LiveBand({
 
       <p className="sr-only" aria-live="polite">{reorderAnnouncement}</p>
 
-      {isConnected && (
-        <>
-          <h2 className="live-set-title">Running order</h2>
-          {!isSynchronized ? (
-            <div className="live-band-sync" role="status">Adopting the current set…</div>
-          ) : (
-            <>
-              {state.entries.length === 0 ? (
-                <p className="live-band-empty">The live set is empty.</p>
-              ) : (
-                <ol className="live-band-list" ref={liveListRef}>
-                  {displayedEntries.map((entry, index) => {
-                    const song = songsById.get(entry.songId);
-                    const isActive = entry.id === state.activeEntryId;
-                    return (
-                      <li
-                        key={entry.id}
-                        data-live-entry={entry.id}
-                        className={(isActive ? 'active ' : '') + (drag?.entryId === entry.id ? 'dragging' : '')}
+      <>
+        <h2 className="live-set-title">Running order</h2>
+        {isConnected && !isSynchronized ? (
+          <div className="live-band-sync" role="status">Adopting the current set…</div>
+        ) : (
+          <>
+            {state.entries.length === 0 ? (
+              <p className="live-band-empty">The live set is empty.</p>
+            ) : (
+              <ol className="live-band-list" ref={liveListRef}>
+                {displayedEntries.map((entry, index) => {
+                  const song = songsById.get(entry.songId);
+                  const isActive = entry.id === state.activeEntryId;
+                  return (
+                    <li
+                      key={entry.id}
+                      data-live-entry={entry.id}
+                      className={(isActive ? 'active ' : '') + (drag?.entryId === entry.id ? 'dragging' : '')}
+                    >
+                      <button
+                        type="button"
+                        className="live-band-drag"
+                        aria-label={'Drag ' + (song?.title ?? entry.songId) + ' to reorder'}
+                        title="Drag to reorder; use arrow keys with a keyboard"
+                        onPointerDown={(event) => startDrag(event, entry.id, index)}
+                        onPointerMove={updateDrag}
+                        onPointerUp={finishDrag}
+                        onPointerCancel={() => setDrag(null)}
+                        onKeyDown={(event) => moveWithKeyboard(event, entry.id, index)}
                       >
-                        <button
-                          type="button"
-                          className="live-band-drag"
-                          aria-label={'Drag ' + (song?.title ?? entry.songId) + ' to reorder'}
-                          title="Drag to reorder; use arrow keys with a keyboard"
-                          onPointerDown={(event) => startDrag(event, entry.id, index)}
-                          onPointerMove={updateDrag}
-                          onPointerUp={finishDrag}
-                          onPointerCancel={() => setDrag(null)}
-                          onKeyDown={(event) => moveWithKeyboard(event, entry.id, index)}
-                        >
-                          <span aria-hidden="true">⠿</span>
-                        </button>
-                        <button
-                          type="button"
-                          className="live-band-song"
-                          onClick={() => onSelectEntry(entry.id)}
-                          aria-current={isActive ? 'true' : undefined}
-                        >
-                          <span>{song?.title ?? entry.songId}</span>
-                          {isActive && <small>Current</small>}
-                        </button>
-                        <button
-                          type="button"
-                          className="live-band-delete"
-                          aria-label={`Delete ${song?.title ?? entry.songId} from live set`}
-                          title="Delete from live set"
-                          onClick={() => onDeleteEntry(entry.id)}
-                        >
-                          ×
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ol>
-              )}
-            </>
-          )}
-        </>
-      )}
+                        <span aria-hidden="true">⠿</span>
+                      </button>
+                      <button
+                        type="button"
+                        className="live-band-song"
+                        onClick={() => onSelectEntry(entry.id)}
+                        aria-current={isActive ? 'true' : undefined}
+                      >
+                        <span>{song?.title ?? entry.songId}</span>
+                        {isActive && <small>Current</small>}
+                      </button>
+                      <button
+                        type="button"
+                        className="live-band-delete"
+                        aria-label={`Delete ${song?.title ?? entry.songId} from live set`}
+                        title="Delete from live set"
+                        onClick={() => onDeleteEntry(entry.id)}
+                      >
+                        ×
+                      </button>
+                    </li>
+                  );
+                })}
+              </ol>
+            )}
+          </>
+        )}
+      </>
 
       {children}
     </section>

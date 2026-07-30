@@ -635,13 +635,13 @@ export default function App() {
           selectedId={selectedId}
           starred={starred}
           query={query}
-          livePositions={liveBand.status === 'connected' ? livePositions : undefined}
+          livePositions={livePositions}
           selectedSongButtonRef={selectedSongButtonRef}
           onQueryChange={setQuery}
           onCreateNewSong={handleCreateNewSong}
           onSelect={handleSelect}
           onToggleStar={toggleStar}
-          onAddToLive={liveBand.status === 'connected' ? liveBand.addSong : undefined}
+          onAddToLive={liveBand.addSong}
         />
         </LiveBand>
       </div>

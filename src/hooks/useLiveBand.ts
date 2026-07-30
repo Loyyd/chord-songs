@@ -5,7 +5,6 @@ import {
   moveAnchorForTarget,
   replayActions,
   type LiveAction,
-  type LiveState,
   type NewLiveAction,
 } from '../live/liveState';
 
@@ -45,8 +44,6 @@ type DataMessage =
   | { type: 'log-snapshot'; sessionId: string; actions: LiveAction[] }
   | { type: 'actions'; sessionId: string; actions: LiveAction[] };
 
-const EMPTY_STATE: LiveState = { entries: [], activeEntryId: null };
-
 export function useLiveBand() {
   const [status, setStatus] = useState<ConnectionStatus>('idle');
   const [error, setError] = useState<string | null>(null);
@@ -62,6 +59,7 @@ export function useLiveBand() {
   const sessionIdRef = useRef<string | null>(null);
   const actionsRef = useRef<LiveAction[]>([]);
   const counterRef = useRef(0);
+  const localActorRef = useRef(crypto.randomUUID());
   const intentionalCloseRef = useRef(false);
   const wantsConnectionRef = useRef(false);
   const reconnectAttemptRef = useRef(0);
@@ -321,7 +319,6 @@ export function useLiveBand() {
           const firstSessionId = crypto.randomUUID();
           sessionIdRef.current = firstSessionId;
           setSessionId(firstSessionId);
-          replaceActions([]);
         }
 
         await Promise.all(existingPeerIds.map((remotePeerId) => startOffer(remotePeerId)));
@@ -380,7 +377,6 @@ export function useLiveBand() {
       clearResumeProbe,
       createPeer,
       removePeer,
-      replaceActions,
       sendSignal,
       startOffer,
     ],
@@ -396,12 +392,9 @@ export function useLiveBand() {
     closePeerConnections();
     peerIdRef.current = null;
     sessionIdRef.current = null;
-    actionsRef.current = [];
-    counterRef.current = 0;
     setKnownPeerIds(new Set());
     setConnectedPeerIds(new Set());
     setSessionId(null);
-    setActions([]);
     setStatus('idle');
     setError(null);
   }, [clearReconnectTimer, clearResumeProbe, closePeerConnections]);
@@ -553,13 +546,11 @@ export function useLiveBand() {
 
   const appendAction = useCallback(
     (operation: NewLiveAction) => {
-      const actor = peerIdRef.current;
       const currentSessionId = sessionIdRef.current;
-      if (!actor || !currentSessionId) return;
       counterRef.current += 1;
-      const action = createLiveAction(actor, counterRef.current, operation);
+      const action = createLiveAction(localActorRef.current, counterRef.current, operation);
       mergeIncomingActions([action]);
-      broadcastData({
+      if (currentSessionId) broadcastData({
         type: 'actions',
         sessionId: currentSessionId,
         actions: [action],
@@ -570,7 +561,7 @@ export function useLiveBand() {
 
   const addSong = useCallback(
     (songId: string) => {
-      const entries = stateRef.current.entries;
+      const entries = replayActions(actionsRef.current).entries;
       if (entries.some((entry) => entry.songId === songId)) return;
       appendAction({
         type: 'add',
@@ -604,7 +595,7 @@ export function useLiveBand() {
   return {
     status,
     error,
-    state: sessionId ? state : EMPTY_STATE,
+    state,
     isSynchronized: sessionId !== null,
     connectedMembers: status === 'connected' ? connectedPeerIds.size + 1 : 0,
     knownMembers: status === 'connected' ? knownPeerIds.size + 1 : 0,
