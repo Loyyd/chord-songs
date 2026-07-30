@@ -51,8 +51,8 @@
     ...rawResults.filter((entry) => starred.has(entry.id)),
     ...rawResults.filter((entry) => !starred.has(entry.id)),
   ];
-  $: setEntries = new Map(
-    $liveStore.state.entries.map((entry, position) => [entry.songId, { entry, position: position + 1 }] as const),
+  $: positions = new Map(
+    $liveStore.state.entries.map((entry, position) => [entry.songId, position + 1] as const),
   );
   $: connected = $liveStore.status === 'connected';
   $: busy = $liveStore.status === 'authenticating' || $liveStore.status === 'connecting';
@@ -357,14 +357,14 @@
         {/if}
         <ul class="song-list">
           {#each results as entry (entry.id)}
-            {@const setEntry = setEntries.get(entry.id)}
+            {@const position = positions.get(entry.id)}
             <li>
               <div class:active={entry.id === selectedId} class="song-result-row">
                 <button
                   type="button"
                   class="song-result-main"
-                  draggable={!setEntry}
-                  title={!setEntry ? 'Open song; drag to add it to the set list' : 'Open song'}
+                  draggable={position === undefined}
+                  title={position === undefined ? 'Open song; drag to add it to the set list' : 'Open song'}
                   on:click={() => void selectSong(entry.id)}
                   on:dragstart={(event) => startSearchDrag(event, entry)}
                 >
@@ -372,7 +372,7 @@
                   <SongMeta song={entry} />
                 </button>
                 <div class="song-result-actions">
-                  {#if !setEntry}
+                  {#if position === undefined}
                     <button
                       type="button"
                       class="live-add-result"
@@ -381,13 +381,9 @@
                       on:click={() => live.addSong(entry.id)}
                     >+</button>
                   {:else}
-                    <button
-                      type="button"
-                      class="live-remove-result"
-                      title="Remove from set list (number {setEntry.position})"
-                      aria-label="Remove {entry.title} from set list"
-                      on:click={() => live.deleteEntry(setEntry.entry.id)}
-                    >×</button>
+                    <span class="live-position-result" title="{entry.title} is number {position} in the set list">
+                      <span class="sr-only">Position in set list: </span>{position}
+                    </span>
                   {/if}
                   <button
                     type="button"

@@ -125,21 +125,17 @@ a {
   background: var(--brand-gold);
 }
 
-.live-remove-result {
+.live-position-result {
   display: inline-grid;
   width: 44px;
   min-height: 44px;
   place-items: center;
   border-radius: 0;
-  background: transparent;
-  color: #b91c1c;
-  font-size: 18px;
+  background: var(--brand-blue);
+  color: #ffffff;
+  font-size: 14px;
   font-weight: 800;
   line-height: 1;
-}
-
-.live-remove-result:hover {
-  background: rgba(220, 38, 38, 0.1);
 }
 
 .live-band .primary {
@@ -900,14 +896,8 @@ button:disabled {
   color: var(--brand-blue);
 }
 
-.song-result-row.active .live-remove-result {
+.song-result-row.active .live-position-result {
   background: var(--brand-blue-soft);
-  color: #ffffff;
-}
-
-.song-result-row.active .live-remove-result:hover {
-  background: rgba(220, 38, 38, 0.32);
-  color: #ffffff;
 }
 
 .song-result-row.active .song-subtitle {
