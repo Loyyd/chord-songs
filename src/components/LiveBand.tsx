@@ -115,35 +115,19 @@ export function LiveBand({
   return (
     <section className="card live-band" aria-labelledby="live-band-title">
       <div className="live-band-header">
-        <div>
-          <div className="brand-heading" id="live-band-title">
-            <img
-              className="brand-logo"
-              src={import.meta.env.BASE_URL + 'logo-black-96.png'}
-              alt=""
-              aria-hidden="true"
-            />
-            <h1 className="brand-title" aria-label="Holy Songs">
-              <span className="brand-title-holy">Holy</span>
-              <span className="brand-title-songs">Songs</span>
-            </h1>
-          </div>
-          {isConnected ? (
-            <div className="live-band-presence" role="status">
-              <span className="live-band-presence-dot" aria-hidden="true" />
-              {connectedMembers} / {knownMembers} band members connected
-            </div>
-          ) : (
-            <p>Build a running order locally, or connect to share it. <a href="https://auth.bcgen.ie/signup" target="_blank" rel="noreferrer">Create an account</a></p>
-          )}
+        <div className="brand-heading" id="live-band-title">
+          <img
+            className="brand-logo"
+            src={import.meta.env.BASE_URL + 'logo-black-96.png'}
+            alt=""
+            aria-hidden="true"
+          />
+          <h1 className="brand-title" aria-label="Holy Songs">
+            <span className="brand-title-holy">Holy</span>
+            <span className="brand-title-songs">Songs</span>
+          </h1>
         </div>
-        {isConnected ? (
-          <button type="button" onClick={onDisconnect}>Disconnect</button>
-        ) : (
-          <button type="button" className="primary" onClick={onConnect} disabled={isBusy}>
-            {isBusy ? 'Connecting…' : 'Connect'}
-          </button>
-        )}
+        <p>Build your set list locally. Connect when you are ready to share it.</p>
       </div>
 
       {error && <div className="live-band-error" role="alert">{error}</div>}
@@ -151,13 +135,33 @@ export function LiveBand({
       <p className="sr-only" aria-live="polite">{reorderAnnouncement}</p>
 
       <>
-        <h2 className="live-set-title">Running order</h2>
+        <div className="live-set-header">
+          <div>
+            <h2 className="live-set-title">Set list</h2>
+            {isConnected ? (
+              <div className="live-band-presence" role="status">
+                <span className="live-band-presence-dot" aria-hidden="true" />
+                {connectedMembers} / {knownMembers} band members connected
+              </div>
+            ) : (
+              <div className="live-set-mode">Local</div>
+            )}
+          </div>
+          {isConnected ? (
+            <button type="button" onClick={onDisconnect}>Disconnect</button>
+          ) : (
+            <button type="button" className="primary" onClick={onConnect} disabled={isBusy}>
+              {isBusy ? 'Connecting…' : 'Connect'}
+            </button>
+          )}
+        </div>
+
         {isConnected && !isSynchronized ? (
-          <div className="live-band-sync" role="status">Adopting the current set…</div>
+          <div className="live-band-sync" role="status">Syncing the shared set list…</div>
         ) : (
           <>
             {state.entries.length === 0 ? (
-              <p className="live-band-empty">The live set is empty.</p>
+              <p className="live-band-empty">The set list is empty.</p>
             ) : (
               <ol className="live-band-list" ref={liveListRef}>
                 {displayedEntries.map((entry, index) => {
@@ -194,8 +198,8 @@ export function LiveBand({
                       <button
                         type="button"
                         className="live-band-delete"
-                        aria-label={`Delete ${song?.title ?? entry.songId} from live set`}
-                        title="Delete from live set"
+                        aria-label={`Delete ${song?.title ?? entry.songId} from set list`}
+                        title="Delete from set list"
                         onClick={() => onDeleteEntry(entry.id)}
                       >
                         ×

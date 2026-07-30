@@ -79,17 +79,17 @@ export function SongList({
                       type='button'
                       className='live-add-result'
                       onClick={() => onAddToLive(entry.id)}
-                      title='Add to live set'
-                      aria-label={'Add ' + entry.title + ' to live set'}
+                      title='Add to set list'
+                      aria-label={'Add ' + entry.title + ' to set list'}
                     >
                       +
                     </button>
                   ) : (
                     <span
                       className='live-position-result'
-                      title={entry.title + ' is number ' + livePosition + ' in the live set'}
+                      title={entry.title + ' is number ' + livePosition + ' in the set list'}
                     >
-                      <span className='sr-only'>Position in live set: </span>
+                      <span className='sr-only'>Position in set list: </span>
                       {livePosition}
                     </span>
                   ))}

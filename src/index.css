@@ -63,17 +63,6 @@ a {
   padding: 14px 16px;
 }
 
-.live-band-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.live-band-header h2 {
-  margin-bottom: 3px;
-}
-
 .live-band-header p,
 .live-band-empty,
 .song-search-empty {
@@ -82,17 +71,25 @@ a {
   font-size: 13px;
 }
 
-.live-band-header > button,
+.live-set-header > button,
 .song-picker input,
 .song-picker > div > button {
   min-height: 44px;
 }
 
-.live-band-header a {
-  color: var(--brand-blue);
-  font-weight: 700;
-  text-decoration: underline;
-  text-underline-offset: 2px;
+
+.live-set-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.live-set-header > div {
+  min-width: 0;
 }
 
 .song-picker {
@@ -102,8 +99,13 @@ a {
 }
 
 .live-set-title {
-  margin: 14px 0 0;
+  margin: 0 0 3px;
   font-size: 15px;
+}
+
+.live-set-mode {
+  color: rgba(0, 32, 80, 0.62);
+  font-size: 13px;
 }
 
 .live-add-result {
