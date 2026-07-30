@@ -47,13 +47,21 @@
       })
     : null;
   $: rawResults = fuse && query.trim() ? fuse.search(query, { limit: 8 }).map((hit) => hit.item) : index;
-  $: results = [
-    ...rawResults.filter((entry) => starred.has(entry.id)),
-    ...rawResults.filter((entry) => !starred.has(entry.id)),
-  ];
   $: positions = new Map(
     $liveStore.state.entries.map((entry, position) => [entry.songId, position + 1] as const),
   );
+  $: results = query.trim()
+    ? [
+        ...rawResults
+          .filter((entry) => positions.has(entry.id))
+          .sort((left, right) => positions.get(left.id)! - positions.get(right.id)!),
+        ...rawResults.filter((entry) => !positions.has(entry.id) && starred.has(entry.id)),
+        ...rawResults.filter((entry) => !positions.has(entry.id) && !starred.has(entry.id)),
+      ]
+    : [
+        ...rawResults.filter((entry) => starred.has(entry.id)),
+        ...rawResults.filter((entry) => !starred.has(entry.id)),
+      ];
   $: connected = $liveStore.status === 'connected';
   $: busy = $liveStore.status === 'authenticating' || $liveStore.status === 'connecting';
   $: displayedEntries = reorderEntries($liveStore.state.entries, drag);
