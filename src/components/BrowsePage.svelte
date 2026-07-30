@@ -154,7 +154,6 @@
 
   function startSetDrag(event: PointerEvent, entryId: string, listIndex: number) {
     if (event.button !== 0 || (event.target as HTMLElement).closest(".live-band-delete")) return;
-    (event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
     drag = { entryId, pointerId: event.pointerId, targetIndex: listIndex, startY: event.clientY, active: false };
   }
 
@@ -162,7 +161,10 @@
     if (!drag || drag.pointerId !== event.pointerId || !listElement) return;
     if (!drag.active && Math.abs(event.clientY - drag.startY) < 6) return;
     event.preventDefault();
-    if (!drag.active) drag = { ...drag, active: true };
+    if (!drag.active) {
+      (event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
+      drag = { ...drag, active: true };
+    }
     const rows = Array.from(listElement.querySelectorAll<HTMLElement>('[data-live-entry]'))
       .filter((row) => row.dataset.liveEntry !== drag?.entryId);
     const target = rows.findIndex((row) => {
