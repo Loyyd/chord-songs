@@ -35,9 +35,17 @@
   let drag: DragState | null = null;
 
   $: fuse = index.length
-    ? new Fuse(index, { keys: ['title', 'categories', 'sections'], threshold: 0.35, includeScore: true })
+    ? new Fuse(index, {
+        keys: [
+          { name: 'title', weight: 0.7 },
+          { name: 'categories', weight: 0.2 },
+          { name: 'sections', weight: 0.1 },
+        ],
+        threshold: 0.35,
+        includeScore: true,
+      })
     : null;
-  $: rawResults = fuse && query.trim() ? fuse.search(query).map((hit) => hit.item) : [];
+  $: rawResults = fuse && query.trim() ? fuse.search(query, { limit: 8 }).map((hit) => hit.item) : [];
   $: results = [
     ...rawResults.filter((entry) => starred.has(entry.id)),
     ...rawResults.filter((entry) => !starred.has(entry.id)),
