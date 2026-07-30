@@ -196,6 +196,14 @@ class LiveSignalling:
         if removed:
             await self.broadcast({"type": "peer-left", "peerId": peer_id})
 
+    async def handle(self, sender: LivePeer, message: object):
+        if isinstance(message, dict) and message.get("type") == "ping":
+            nonce = message.get("nonce")
+            if isinstance(nonce, str):
+                await sender.send({"type": "pong", "nonce": nonce})
+            return
+        await self.relay(sender, message)
+
     async def relay(self, sender: LivePeer, message: object):
         if not isinstance(message, dict) or message.get("type") not in self.RELAY_TYPES:
             return
@@ -1116,7 +1124,7 @@ async def live_websocket(websocket: WebSocket):
                 message = json.loads(raw_message)
             except json.JSONDecodeError:
                 continue
-            await live_signalling.relay(peer, message)
+            await live_signalling.handle(peer, message)
     except WebSocketDisconnect:
         pass
     finally:

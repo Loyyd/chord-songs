@@ -107,6 +107,12 @@ def test_live_signalling_relays_only_to_the_named_peer(monkeypatch):
             "payload": {"description": {"type": "offer", "sdp": "opaque"}},
         }
 
+        await signalling.handle(first, {"type": "ping", "nonce": "resume-check"})
+        assert first_socket.messages[-1] == {
+            "type": "pong",
+            "nonce": "resume-check",
+        }
+
     asyncio.run(exercise())
 
 

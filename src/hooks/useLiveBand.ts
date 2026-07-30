@@ -32,6 +32,7 @@ type SignalMessage =
   | SignalWelcome
   | { type: 'peer-joined'; peer: SignalPeer }
   | { type: 'peer-left'; peerId: string }
+  | { type: 'pong'; nonce: string }
   | {
       type: 'offer' | 'answer' | 'ice-candidate';
       from: string;
@@ -61,6 +62,11 @@ export function useLiveBand() {
   const actionsRef = useRef<LiveAction[]>([]);
   const counterRef = useRef(0);
   const intentionalCloseRef = useRef(false);
+  const wantsConnectionRef = useRef(false);
+  const reconnectAttemptRef = useRef(0);
+  const reconnectTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const resumeProbeRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const openSocketRef = useRef<() => void>(() => undefined);
 
   const state = useMemo(() => replayActions(actions), [actions]);
   const stateRef = useRef(state);
@@ -181,6 +187,42 @@ export function useLiveBand() {
     setConnectedPeerIds(new Set());
   }, []);
 
+  const clearReconnectTimer = useCallback(() => {
+    if (reconnectTimerRef.current !== null) {
+      clearTimeout(reconnectTimerRef.current);
+      reconnectTimerRef.current = null;
+    }
+  }, []);
+
+  const clearResumeProbe = useCallback(() => {
+    if (resumeProbeRef.current !== null) {
+      clearTimeout(resumeProbeRef.current);
+      resumeProbeRef.current = null;
+    }
+  }, []);
+
+  const scheduleReconnect = useCallback(
+    (immediate = false) => {
+      if (
+        !wantsConnectionRef.current ||
+        document.visibilityState === 'hidden' ||
+        !navigator.onLine
+      ) {
+        return;
+      }
+
+      clearReconnectTimer();
+      const attempt = reconnectAttemptRef.current;
+      const delay = immediate ? 0 : Math.min(1_000 * 2 ** attempt, 10_000);
+      reconnectAttemptRef.current = attempt + 1;
+      reconnectTimerRef.current = setTimeout(() => {
+        reconnectTimerRef.current = null;
+        openSocketRef.current();
+      }, delay);
+    },
+    [clearReconnectTimer],
+  );
+
   const attachDataChannel = useCallback(
     (remotePeerId: string, peer: Peer, channel: RTCDataChannel) => {
       peer.channel = channel;
@@ -285,6 +327,11 @@ export function useLiveBand() {
         return;
       }
 
+      if (message.type === 'pong') {
+        clearResumeProbe();
+        return;
+      }
+
       if (message.type === 'peer-joined') {
         setKnownPeerIds((current) => new Set(current).add(message.peer.peerId));
         return;
@@ -327,11 +374,22 @@ export function useLiveBand() {
         peer.pendingCandidates.push(candidate);
       }
     },
-    [applyPendingCandidates, createPeer, removePeer, replaceActions, sendSignal, startOffer],
+    [
+      applyPendingCandidates,
+      clearResumeProbe,
+      createPeer,
+      removePeer,
+      replaceActions,
+      sendSignal,
+      startOffer,
+    ],
   );
 
   const disconnect = useCallback(() => {
+    wantsConnectionRef.current = false;
     intentionalCloseRef.current = true;
+    clearReconnectTimer();
+    clearResumeProbe();
     socketRef.current?.close();
     socketRef.current = null;
     closePeerConnections();
@@ -345,18 +403,28 @@ export function useLiveBand() {
     setActions([]);
     setStatus('idle');
     setError(null);
-  }, [closePeerConnections]);
+  }, [clearReconnectTimer, clearResumeProbe, closePeerConnections]);
 
   const openSocket = useCallback(() => {
-    if (socketRef.current) return;
+    if (!wantsConnectionRef.current || socketRef.current) return;
     intentionalCloseRef.current = false;
     setStatus('connecting');
-    setError(null);
+    setError(reconnectAttemptRef.current > 0 ? 'Reconnecting to the live band…' : null);
 
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-    const socket = new WebSocket(`${protocol}//${window.location.host}/api/live`);
+    let socket: WebSocket;
+    try {
+      socket = new WebSocket(protocol + '//' + window.location.host + '/api/live');
+    } catch {
+      scheduleReconnect();
+      return;
+    }
     socketRef.current = socket;
-    socket.onopen = () => setStatus('connected');
+    socket.onopen = () => {
+      reconnectAttemptRef.current = 0;
+      setStatus('connected');
+      setError(null);
+    };
     socket.onmessage = (event) => {
       let message: SignalMessage;
       try {
@@ -369,25 +437,40 @@ export function useLiveBand() {
         setError('Could not connect to another band member.');
       });
     };
-    socket.onerror = () => setError('Could not open the live band connection.');
+    socket.onerror = () => undefined;
     socket.onclose = (event) => {
+      if (socketRef.current !== socket) return;
       socketRef.current = null;
-      if (!intentionalCloseRef.current) {
-        closePeerConnections();
+      clearResumeProbe();
+      if (intentionalCloseRef.current) return;
+
+      closePeerConnections();
+      peerIdRef.current = null;
+      if (event.code === 4401 || event.code === 4403) {
+        wantsConnectionRef.current = false;
         setStatus('error');
         setError(
           event.code === 4401
             ? 'PocketID authentication is required.'
-            : 'The live band connection closed. Existing peer connections may continue.',
+            : 'This site is not allowed to open the live band connection.',
         );
+        return;
       }
+      setStatus('connecting');
+      setError('Reconnecting to the live band…');
+      scheduleReconnect();
     };
-  }, [closePeerConnections, handleSignalMessage]);
+  }, [clearResumeProbe, closePeerConnections, handleSignalMessage, scheduleReconnect]);
+
+  useEffect(() => {
+    openSocketRef.current = openSocket;
+  }, [openSocket]);
 
   const connect = useCallback(async () => {
     if (status !== 'idle' && status !== 'error') return;
     setStatus('authenticating');
     setError(null);
+    wantsConnectionRef.current = true;
 
     if (!import.meta.env.DEV) {
       try {
@@ -402,6 +485,7 @@ export function useLiveBand() {
           return;
         }
       } catch {
+        wantsConnectionRef.current = false;
         setStatus('error');
         setError('Could not verify PocketID authentication.');
         return;
@@ -410,6 +494,51 @@ export function useLiveBand() {
 
     openSocket();
   }, [openSocket, status]);
+
+  useEffect(() => {
+    const recoverConnection = () => {
+      if (
+        !wantsConnectionRef.current ||
+        document.visibilityState === 'hidden' ||
+        !navigator.onLine
+      ) {
+        return;
+      }
+
+      const socket = socketRef.current;
+      if (!socket) {
+        scheduleReconnect(true);
+        return;
+      }
+      if (socket.readyState === WebSocket.CLOSED) {
+        socketRef.current = null;
+        closePeerConnections();
+        peerIdRef.current = null;
+        setStatus('connecting');
+        setError('Reconnecting to the live band…');
+        scheduleReconnect(true);
+        return;
+      }
+      if (socket.readyState !== WebSocket.OPEN) return;
+
+      clearResumeProbe();
+      const nonce = crypto.randomUUID();
+      socket.send(JSON.stringify({ type: 'ping', nonce }));
+      resumeProbeRef.current = setTimeout(() => {
+        resumeProbeRef.current = null;
+        if (socketRef.current === socket && socket.readyState === WebSocket.OPEN) {
+          socket.close(4000, 'Signalling health check timed out');
+        }
+      }, 4_000);
+    };
+
+    document.addEventListener('visibilitychange', recoverConnection);
+    window.addEventListener('online', recoverConnection);
+    return () => {
+      document.removeEventListener('visibilitychange', recoverConnection);
+      window.removeEventListener('online', recoverConnection);
+    };
+  }, [clearResumeProbe, closePeerConnections, scheduleReconnect]);
 
   useEffect(() => {
     const url = new URL(window.location.href);
