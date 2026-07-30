@@ -1457,3 +1457,253 @@ button:disabled {
   font-size: 13px;
   color: var(--brand-blue-soft);
 }
+.song-search-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.song-search-controls input {
+  flex: 1;
+  min-width: 0;
+}
+
+.create-song-button {
+  display: inline-grid;
+  width: 44px;
+  flex: 0 0 44px;
+  place-items: center;
+  padding: 0;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.song-editor {
+  min-width: 0;
+}
+
+.editor-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.editor-pane {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
+.editor-pane-heading {
+  color: var(--brand-blue-soft);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.editor-content {
+  min-height: 560px;
+  max-height: calc(100vh - 245px);
+  overflow: auto;
+  padding: 1rem;
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  background: white;
+}
+
+.raw-editor {
+  width: 100%;
+  min-height: 560px;
+  max-height: calc(100vh - 245px);
+  flex: 1;
+  overflow: auto;
+  resize: none;
+  padding: 1rem;
+  border: 1px solid var(--border-soft);
+  border-radius: 8px;
+  background: white;
+  color: inherit;
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 15px;
+  line-height: 1.45;
+  white-space: pre;
+}
+
+.line-editor {
+  position: relative;
+  min-height: 1.5em;
+  margin: 2.2em 0 0.2em;
+}
+
+.line-spacer {
+  height: 1.5em;
+}
+
+.directive-editor {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5em;
+}
+
+.directive-editor input {
+  width: 100%;
+  flex: 1;
+  padding-left: 14px;
+  border: 0;
+  background: transparent;
+  color: var(--brand-gold);
+  font: inherit;
+  font-size: 0.9em;
+  font-weight: 700;
+}
+
+.section-actions {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.section-action-button {
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--brand-blue);
+  font-size: 0.7rem;
+  white-space: nowrap;
+}
+
+.chords-layer {
+  position: absolute;
+  top: -1.6em;
+  left: 14px;
+  width: calc(100% - 14px);
+  height: 1.5em;
+  cursor: text;
+}
+
+.chord-pill {
+  position: absolute;
+  z-index: 10;
+  padding: 0.08rem 0.15rem;
+  transform: translateX(-50%);
+  border: 1px solid transparent;
+  border-radius: 4px;
+  background: transparent;
+  color: var(--brand-blue);
+  font: inherit;
+  font-size: 0.9em;
+  font-weight: 700;
+  line-height: 1;
+  cursor: grab;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.chord-pill:hover,
+.chord-pill:focus-visible,
+.chord-pill.is-touch-dragging {
+  border-color: rgba(216, 152, 16, 0.32);
+  outline: none;
+  background: rgba(216, 152, 16, 0.11);
+  color: var(--brand-gold);
+}
+
+.chord-edit-input {
+  position: absolute;
+  top: -0.2rem;
+  z-index: 30;
+  width: 4.25rem;
+  min-width: 3.25rem;
+  padding: 0.12rem 0.22rem;
+  transform: translateX(-50%);
+  border: 1px solid var(--brand-gold);
+  border-radius: 5px;
+  outline: 0;
+  background: white;
+  color: var(--brand-blue);
+  box-shadow: 0 8px 18px rgba(20, 32, 54, 0.14);
+  font: inherit;
+  font-weight: 700;
+  text-align: center;
+}
+
+.lyrics-input {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px dashed transparent;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+}
+
+.lyrics-input:focus {
+  border-bottom-color: var(--brand-gold);
+  background: rgba(216, 152, 16, 0.08);
+}
+
+.clear-chords-button {
+  position: absolute;
+  top: -0.4rem;
+  right: 0.25rem;
+  z-index: 20;
+  padding: 0.15rem 0.5rem;
+  border: 1px solid var(--border-soft);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--brand-blue);
+  font-size: 0.75rem;
+}
+
+@media (max-width: 900px) {
+  .editor-split {
+    grid-template-columns: 1fr;
+  }
+
+  .raw-editor,
+  .editor-content {
+    min-height: 380px;
+    max-height: none;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .line-editor {
+    min-height: 2em;
+    margin-top: 2.8em;
+  }
+
+  .chords-layer {
+    top: -2.25em;
+    height: 2.25em;
+  }
+
+  .chord-pill {
+    min-width: 2.5rem;
+    min-height: 2rem;
+    padding: 0.38rem 0.45rem;
+    touch-action: none;
+    border-color: rgba(30, 45, 72, 0.12);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.92);
+    box-shadow: 0 4px 12px rgba(20, 32, 54, 0.08);
+  }
+
+  .chord-edit-input {
+    top: 0.05rem;
+    min-width: 4rem;
+    min-height: 1.75rem;
+    padding: 0.22rem 0.3rem;
+  }
+
+  .clear-chords-button {
+    top: -0.15rem;
+    min-height: 2rem;
+  }
+}

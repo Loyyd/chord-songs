@@ -13,7 +13,110 @@
     />
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <main id="browse-shell" class="app-shell">
+      <div class="sidebar-stack">
+        <section class="card live-band" aria-labelledby="live-band-title">
+          <div class="live-band-header">
+            <div class="brand-heading" id="live-band-title">
+              <img class="brand-logo" src="/logo-black-96.png" alt="" aria-hidden="true" />
+              <h1 class="brand-title" aria-label="Holy Songs">
+                <span class="brand-title-holy">Holy</span>
+                <span class="brand-title-songs">Songs</span>
+              </h1>
+            </div>
+            <p>Build your set list locally. Connect when you are ready to share it.</p>
+          </div>
+          <div id="live-error" class="live-band-error" role="alert" hidden></div>
+          <p id="reorder-announcement" class="sr-only" aria-live="polite"></p>
+          <div class="live-set-header">
+            <div>
+              <h2 class="live-set-title">Set list</h2>
+              <div id="live-status" class="live-set-mode">Local</div>
+            </div>
+            <button id="connect-button" type="button" class="primary">Connect</button>
+          </div>
+          <div id="live-sync" class="live-band-sync" role="status" hidden>Syncing the shared set list…</div>
+          <p id="set-list-empty" class="live-band-empty">The set list is empty.</p>
+          <ol id="set-list" class="live-band-list" hidden></ol>
+          <div class="song-picker">
+            <div class="song-search-controls">
+              <input id="song-search" placeholder="Search title, category, or lyrics..." autocomplete="off" />
+              <button id="create-song" type="button" class="create-song-button" title="Create new song" aria-label="Create new song">+</button>
+            </div>
+            <p id="song-search-empty" class="song-search-empty" hidden>No matching songs.</p>
+            <ul id="song-results" class="song-list"></ul>
+          </div>
+        </section>
+      </div>
+
+      <section class="card" id="song-card">
+        <div id="song-loading">Loading song…</div>
+        <div id="song-content" hidden>
+          <div class="song-header">
+            <div id="song-heading" class="song-heading"></div>
+            <div class="song-actions">
+              <div id="transpose-control" class="transpose-control">
+                <button id="transpose-main" class="transpose-main" title="Transpose" aria-label="Open transpose controls">
+                  <span class="transpose-label-full">Transpose</span>
+                  <span class="transpose-label-short">Tr.</span>
+                </button>
+                <button id="transpose-down" class="transpose-step" title="Transpose down" aria-label="Transpose down" tabindex="-1">-</button>
+                <span id="transpose-value" class="transpose-value" aria-label="Transpose 0">0</span>
+                <button id="transpose-up" class="transpose-step" title="Transpose up" aria-label="Transpose up" tabindex="-1">+</button>
+              </div>
+              <button id="edit-song" type="button">Edit</button>
+              <button id="autoscroll-toggle" type="button">Autoscroll</button>
+              <button id="refresh-songs" class="refresh-button" type="button" title="Refresh from GitHub" aria-label="Refresh from GitHub">
+                <img src="/refresh.png" alt="" aria-hidden="true" />
+              </button>
+            </div>
+            <div id="autoscroll-speed" class="autoscroll-speed" hidden>
+              <label for="speed-slider">Speed:</label>
+              <input id="speed-slider" type="range" min="0.05" max="0.5" step="0.01" value="0.15" class="speed-slider" />
+              <span id="speed-value" class="speed-value">0.15x</span>
+            </div>
+          </div>
+          <div id="song-view" class="song-container"></div>
+        </div>
+      </section>
+      <button id="floating-autoscroll-stop" class="floating-autoscroll-stop" type="button" aria-label="Disable autoscroll" hidden>Stop scroll</button>
+    </main>
+
+    <main id="edit-shell" class="edit-page-shell" hidden>
+      <section class="edit-page-card">
+        <header class="edit-page-header">
+          <div id="edit-page-title" class="edit-page-title"><h2>Loading editor…</h2></div>
+          <div class="edit-page-actions">
+            <form id="category-form" class="category-add-control">
+              <input id="category-input" placeholder="Category" list="category-suggestions" />
+              <datalist id="category-suggestions">
+                <option value="Holy Songs"></option>
+                <option value="Worship"></option>
+                <option value="BC Originals"></option>
+              </datalist>
+              <button id="add-category" type="submit">Add category</button>
+            </form>
+            <button id="edit-back" class="edit-cancel-button" type="button">Back</button>
+            <button id="edit-save" class="primary" type="button">Save Changes</button>
+            <button id="edit-delete" class="danger" type="button">Delete</button>
+          </div>
+        </header>
+        <div id="edit-loading" class="edit-source-loading" role="status">Loading the latest editable version…</div>
+        <div id="edit-ready" hidden>
+          <div id="edit-transpose" class="edit-transpose-control" aria-label="Transpose the whole song"></div>
+          <div id="save-conflict" class="save-conflict" role="alert" hidden></div>
+          <div id="song-editor"></div>
+          <div id="edit-error" class="error" hidden></div>
+          <div class="note edit-page-note">Changes are build-checked when you save, then synced to GitHub in the background.</div>
+        </div>
+      </section>
+    </main>
+
+    <div id="save-toast" class="save-toast success" role="status" aria-live="polite">
+      <div class="save-toast-icon"></div>
+      <div class="save-toast-label">Saved</div>
+    </div>
+
+    <script type="module" src="/src/client/app.ts"></script>
   </body>
 </html>

@@ -1,4 +1,4 @@
-import { SongData, SongLine, SongLineToken, SongSection } from '../types';
+import type { SongData, SongLineToken, SongSection } from '../types';
 import { dedupeCategories, parseCategoryList } from './songCategories';
 
 export function slugify(input: string): string {

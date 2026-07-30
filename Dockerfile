@@ -1,5 +1,5 @@
 # Stage 1: Build the frontend
-FROM node:20-slim AS builder
+FROM node:22-slim AS builder
 
 ARG VCS_REF=unknown
 ARG IMAGE_REF=unknown
@@ -19,7 +19,7 @@ COPY . .
 RUN npm run build:app
 
 # Stage 2: Final image
-FROM node:20-slim
+FROM node:22-slim
 
 ARG VCS_REF=unknown
 ARG IMAGE_REF=unknown
