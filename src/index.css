@@ -130,7 +130,7 @@ a {
   width: 44px;
   min-height: 44px;
   place-items: center;
-  border-radius: 999px;
+  border-radius: 0;
   background: var(--brand-blue);
   color: #ffffff;
   font-size: 14px;
@@ -887,13 +887,17 @@ button:disabled {
 }
 
 .song-result-row.active .live-add-result {
-  background: transparent;
+  background: var(--brand-blue-soft);
   color: #ffffff;
 }
 
 .song-result-row.active .live-add-result:hover {
   background: var(--brand-gold);
   color: var(--brand-blue);
+}
+
+.song-result-row.active .live-position-result {
+  background: var(--brand-blue-soft);
 }
 
 .song-result-row.active .song-subtitle {
