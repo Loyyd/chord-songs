@@ -228,8 +228,8 @@ function renderSearch(live: LiveBandSnapshot, controller: LiveBand) {
   for (const entry of $searchResults.get()) {
     const item = document.createElement('li');
     const row = document.createElement('div');
-    row.className = 'song-result-row';
-    const main = button('', 'song-result-main' + (entry.id === selected ? ' active' : ''));
+    row.className = 'song-result-row' + (entry.id === selected ? ' active' : '');
+    const main = button('', 'song-result-main');
     const title = document.createElement('span');
     title.className = 'song-result-title';
     title.textContent = entry.title;
@@ -239,6 +239,16 @@ function renderSearch(live: LiveBandSnapshot, controller: LiveBand) {
     const actions = document.createElement('div');
     actions.className = 'song-result-actions';
     const position = positions.get(entry.id);
+    if (position === undefined) {
+      main.draggable = true;
+      main.title = 'Open song; drag to add it to the set list';
+      main.addEventListener('dragstart', (event) => {
+        event.dataTransfer?.setData('application/x-holy-songs-song', entry.id);
+        if (event.dataTransfer) event.dataTransfer.effectAllowed = 'copy';
+        row.classList.add('dragging');
+      });
+      main.addEventListener('dragend', () => row.classList.remove('dragging'));
+    }
     if (position === undefined) {
       const add = button('+', 'live-add-result');
       add.title = 'Add to set list';
@@ -261,6 +271,31 @@ function renderSearch(live: LiveBandSnapshot, controller: LiveBand) {
     root.append(item);
   }
   setHidden(byId('song-search-empty'), !$query.get().trim() || $searchResults.get().length > 0);
+}
+
+function setupSearchDropTarget(controller: LiveBand) {
+  const card = document.querySelector<HTMLElement>('.live-band');
+  const targets = [byId('live-set-header'), byId('live-sync'), byId('set-list-empty'), byId('set-list')];
+  const acceptsSong = (event: DragEvent) =>
+    Array.from(event.dataTransfer?.types ?? []).includes('application/x-holy-songs-song');
+  for (const target of targets) {
+    target.addEventListener('dragover', (event) => {
+      if (!acceptsSong(event)) return;
+      event.preventDefault();
+      if (event.dataTransfer) event.dataTransfer.dropEffect = 'copy';
+      card?.classList.add('accepting-song-drop');
+    });
+    target.addEventListener('drop', (event) => {
+      const songId = event.dataTransfer?.getData('application/x-holy-songs-song');
+      card?.classList.remove('accepting-song-drop');
+      if (!songId) return;
+      event.preventDefault();
+      controller.addSong(songId);
+      selectSong(songId);
+    });
+  }
+  document.addEventListener('dragend', () => card?.classList.remove('accepting-song-drop'));
+  document.addEventListener('drop', () => card?.classList.remove('accepting-song-drop'));
 }
 
 interface DragState {
@@ -403,6 +438,7 @@ export async function initBrowse(controller: LiveBand) {
   const search = byId<HTMLInputElement>('song-search');
   search.value = $query.get();
   search.addEventListener('input', () => $query.set(search.value));
+  setupSearchDropTarget(controller);
   byId('create-song').addEventListener('click', () => window.location.assign('/edit/new'));
   byId('edit-song').addEventListener('click', () => {
     const id = $selectedSongId.get();
