@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   createLiveAction,
   mergeActions,
+  moveAnchorForTarget,
   replayActions,
   type LiveAction,
   type LiveState,
@@ -591,14 +592,9 @@ export function useLiveBand() {
   );
 
   const moveEntry = useCallback(
-    (entryId: string, direction: -1 | 1) => {
-      const entries = stateRef.current.entries;
-      const index = entries.findIndex((entry) => entry.id === entryId);
-      const targetIndex = index + direction;
-      if (index === -1 || targetIndex < 0 || targetIndex >= entries.length) return;
-
-      const afterEntryId =
-        direction === -1 ? entries[index - 2]?.id ?? null : entries[index + 1].id;
+    (entryId: string, targetIndex: number) => {
+      const afterEntryId = moveAnchorForTarget(stateRef.current.entries, entryId, targetIndex);
+      if (afterEntryId === undefined) return;
       appendAction({ type: 'move', entryId, afterEntryId });
     },
     [appendAction],

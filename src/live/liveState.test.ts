@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 import type { LiveAction, NewLiveAction } from './liveState';
-import { mergeActions, replayActions } from './liveState';
+import { mergeActions, moveAnchorForTarget, replayActions } from './liveState';
 
 const action = (value: NewLiveAction & { counter: number; actor?: string }): LiveAction => {
   const { counter, actor = 'peer-a', ...operation } = value;
@@ -29,6 +29,20 @@ test('replays add, move, select, and delete actions', () => {
     ],
     activeEntryId: null,
   });
+});
+
+test('resolves drag targets to one stable move anchor', () => {
+  const entries = [
+    { id: 'one', songId: 'song-one' },
+    { id: 'two', songId: 'song-two' },
+    { id: 'three', songId: 'song-three' },
+  ];
+
+  assert.equal(moveAnchorForTarget(entries, 'three', 0), null);
+  assert.equal(moveAnchorForTarget(entries, 'one', 2), 'three');
+  assert.equal(moveAnchorForTarget(entries, 'two', 1), undefined);
+  assert.equal(moveAnchorForTarget(entries, 'missing', 0), undefined);
+  assert.equal(moveAnchorForTarget(entries, 'one', 99), 'three');
 });
 
 test('ignores duplicate and impossible actions', () => {

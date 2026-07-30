@@ -118,6 +118,20 @@ function positionAfter(entries: LiveEntry[], afterEntryId: string | null): numbe
   return anchorIndex === -1 ? null : anchorIndex + 1;
 }
 
+export function moveAnchorForTarget(
+  entries: readonly LiveEntry[],
+  entryId: string,
+  targetIndex: number,
+): string | null | undefined {
+  const currentIndex = entries.findIndex((entry) => entry.id === entryId);
+  if (currentIndex === -1) return undefined;
+
+  const remainingEntries = entries.filter((entry) => entry.id !== entryId);
+  const boundedTargetIndex = Math.max(0, Math.min(targetIndex, remainingEntries.length));
+  if (currentIndex === boundedTargetIndex) return undefined;
+  return remainingEntries[boundedTargetIndex - 1]?.id ?? null;
+}
+
 export function createLiveAction(
   actor: string,
   counter: number,

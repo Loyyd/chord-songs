@@ -24,6 +24,18 @@ a {
   text-decoration: none;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .app-shell {
   display: grid;
   grid-template-columns: 360px 1fr;
@@ -70,6 +82,12 @@ a {
   font-size: 13px;
 }
 
+.live-band-header > button,
+.song-picker input,
+.song-picker > div > button {
+  min-height: 44px;
+}
+
 .live-band-header a {
   color: var(--brand-blue);
   font-weight: 700;
@@ -90,8 +108,8 @@ a {
 
 .live-add-result {
   display: inline-grid;
-  width: 32px;
-  min-height: 32px;
+  width: 44px;
+  min-height: 44px;
   place-items: center;
   border-radius: 999px;
   background: rgba(216, 152, 16, 0.14);
@@ -148,14 +166,6 @@ a {
   color: rgba(0, 32, 80, 0.68);
 }
 
-.live-band-add {
-  width: 100%;
-  margin-top: 12px;
-  border-style: dashed;
-  background: #ffffff;
-  font-weight: 650;
-}
-
 .live-band-empty,
 .song-search-empty {
   padding-top: 10px;
@@ -174,10 +184,39 @@ a {
 
 .live-band-list li {
   display: flex;
+  min-height: 44px;
   align-items: stretch;
   gap: 6px;
   counter-increment: live-set;
+  transition: transform 120ms ease, opacity 120ms ease;
 }
+
+.live-band-list li.dragging {
+  z-index: 1;
+  opacity: 0.78;
+}
+
+.live-band-drag {
+  width: 44px;
+  flex: 0 0 44px;
+  padding: 0;
+  border-color: transparent;
+  background: transparent;
+  color: rgba(0, 32, 80, 0.55);
+  cursor: grab;
+  touch-action: none;
+}
+
+.live-band-drag:active {
+  cursor: grabbing;
+  background: rgba(216, 152, 16, 0.14);
+}
+
+.live-band-drag span {
+  font-size: 20px;
+  line-height: 1;
+}
+
 
 .live-band-song {
   display: flex;
@@ -234,9 +273,9 @@ a {
 }
 
 .live-band-actions button {
-  width: 28px;
+  width: 44px;
   height: 100%;
-  min-height: 30px;
+  min-height: 44px;
   padding: 0;
 }
 
@@ -746,7 +785,7 @@ input[type="range"]:focus::-moz-range-thumb {
 }
 
 .song-result-actions button {
-  width: 32px;
+  width: 44px;
   padding: 0;
 }
 
