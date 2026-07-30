@@ -886,6 +886,16 @@ button:disabled {
   color: inherit;
 }
 
+.song-result-row.active .live-add-result {
+  background: transparent;
+  color: #ffffff;
+}
+
+.song-result-row.active .live-add-result:hover {
+  background: var(--brand-gold);
+  color: var(--brand-blue);
+}
+
 .song-result-row.active .song-subtitle {
   color: rgba(255, 255, 255, 0.82);
 }
