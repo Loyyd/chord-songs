@@ -7,6 +7,7 @@ interface SongListProps {
   selectedId: string | null;
   starred: Set<string>;
   query: string;
+  livePositions?: ReadonlyMap<string, number>;
   selectedSongButtonRef: RefObject<HTMLButtonElement>;
   onQueryChange: (query: string) => void;
   onCreateNewSong: () => void;
@@ -20,6 +21,7 @@ export function SongList({
   selectedId,
   starred,
   query,
+  livePositions,
   selectedSongButtonRef,
   onQueryChange,
   onCreateNewSong,
@@ -58,42 +60,53 @@ export function SongList({
         <p className="song-search-empty">No matching songs.</p>
       )}
       <ul className="song-list">
-        {entries.map((entry) => (
-          <li key={entry.id}>
-            <div className='song-result-row'>
-              <button
-                className={'song-result-main' + (entry.id === selectedId ? ' active' : '')}
-                ref={entry.id === selectedId ? selectedSongButtonRef : null}
-                onClick={() => onSelect(entry.id)}
-              >
-                <span className='song-result-title'>{entry.title}</span>
-                <SongMeta song={entry} />
-              </button>
-              <div className='song-result-actions'>
-                {onAddToLive && (
+        {entries.map((entry) => {
+          const livePosition = livePositions?.get(entry.id);
+          return (
+            <li key={entry.id}>
+              <div className='song-result-row'>
+                <button
+                  className={'song-result-main' + (entry.id === selectedId ? ' active' : '')}
+                  ref={entry.id === selectedId ? selectedSongButtonRef : null}
+                  onClick={() => onSelect(entry.id)}
+                >
+                  <span className='song-result-title'>{entry.title}</span>
+                  <SongMeta song={entry} />
+                </button>
+                <div className='song-result-actions'>
+                  {onAddToLive && (livePosition === undefined ? (
+                    <button
+                      type='button'
+                      className='live-add-result'
+                      onClick={() => onAddToLive(entry.id)}
+                      title='Add to live set'
+                      aria-label={'Add ' + entry.title + ' to live set'}
+                    >
+                      +
+                    </button>
+                  ) : (
+                    <span
+                      className='live-position-result'
+                      title={entry.title + ' is number ' + livePosition + ' in the live set'}
+                    >
+                      <span className='sr-only'>Position in live set: </span>
+                      {livePosition}
+                    </span>
+                  ))}
                   <button
                     type='button'
-                    className='live-add-result'
-                    onClick={() => onAddToLive(entry.id)}
-                    title='Add to live set'
-                    aria-label={'Add ' + entry.title + ' to live set'}
+                    className={'star-icon' + (starred.has(entry.id) ? ' filled' : '')}
+                    onClick={() => onToggleStar(entry.id)}
+                    title={starred.has(entry.id) ? 'Unstar song' : 'Star song'}
+                    aria-label={(starred.has(entry.id) ? 'Unstar ' : 'Star ') + entry.title}
                   >
-                    +
+                    {starred.has(entry.id) ? '★' : '☆'}
                   </button>
-                )}
-                <button
-                  type='button'
-                  className={'star-icon' + (starred.has(entry.id) ? ' filled' : '')}
-                  onClick={() => onToggleStar(entry.id)}
-                  title={starred.has(entry.id) ? 'Unstar song' : 'Star song'}
-                  aria-label={(starred.has(entry.id) ? 'Unstar ' : 'Star ') + entry.title}
-                >
-                  {starred.has(entry.id) ? '★' : '☆'}
-                </button>
+                </div>
               </div>
-            </div>
-          </li>
-        ))}
+            </li>
+          );
+        })}
       </ul>
     </div>
   );

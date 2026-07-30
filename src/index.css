@@ -123,6 +123,18 @@ a {
   background: var(--brand-gold);
 }
 
+.live-position-result {
+  display: inline-grid;
+  width: 44px;
+  min-height: 44px;
+  place-items: center;
+  border-radius: 999px;
+  background: var(--brand-blue);
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 800;
+  line-height: 1;
+}
 
 .live-band .primary {
   border-color: var(--brand-blue);

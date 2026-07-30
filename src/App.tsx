@@ -213,6 +213,16 @@ export default function App() {
     return [...starredSongs, ...unstarredSongs];
   }, [results, starred]);
 
+  const livePositions = useMemo(() => {
+    const positions = new Map<string, number>();
+    liveBand.state.entries.forEach((entry, index) => {
+      if (!positions.has(entry.songId)) {
+        positions.set(entry.songId, index + 1);
+      }
+    });
+    return positions;
+  }, [liveBand.state.entries]);
+
   const editHeaderSong = useMemo(() => {
     if (!isEditing || !song) return song;
     return {
@@ -625,6 +635,7 @@ export default function App() {
           selectedId={selectedId}
           starred={starred}
           query={query}
+          livePositions={liveBand.status === 'connected' ? livePositions : undefined}
           selectedSongButtonRef={selectedSongButtonRef}
           onQueryChange={setQuery}
           onCreateNewSong={handleCreateNewSong}

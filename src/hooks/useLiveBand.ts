@@ -571,6 +571,7 @@ export function useLiveBand() {
   const addSong = useCallback(
     (songId: string) => {
       const entries = stateRef.current.entries;
+      if (entries.some((entry) => entry.songId === songId)) return;
       appendAction({
         type: 'add',
         entryId: crypto.randomUUID(),
