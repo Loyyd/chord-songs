@@ -19,6 +19,12 @@ Actions. The running task reads `GITHUB_TOKEN` from OpenBao at
 `kv/data/services/holy-songs/shared`, with sops+age as the source of truth in
 `private-cloud-federation/platform/compose/secrets/services/holy-songs/shared.enc.env`.
 
+The live-band WebRTC endpoint relies on the registered
+`private-cloud-federation` job's oauth2-proxy sidecar and authenticated
+`/api/live` Traefik route. The standalone template in this repository does not
+provision PocketID and is therefore insufficient for the production live-band
+endpoint by itself. See [`docs/live-band.md`](../docs/live-band.md).
+
 Run from the repo root:
 
 ```bash

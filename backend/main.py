@@ -1,11 +1,13 @@
-from fastapi import Depends, FastAPI, Header, HTTPException, status
+from fastapi import Depends, FastAPI, Header, HTTPException, WebSocket, WebSocketDisconnect, status
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.middleware.gzip import GZipMiddleware
 from fastapi.responses import FileResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from contextlib import asynccontextmanager, contextmanager
+import asyncio
 import hashlib
+import json
 import os
 import queue
 import subprocess
@@ -15,6 +17,7 @@ import threading
 import time
 import uuid
 from urllib.parse import quote
+from urllib.request import Request, urlopen
 
 from backend.utils import sanitize_filename
 
@@ -98,6 +101,144 @@ DIST_INDEX_PATH = os.path.join(DIST_DATA_DIR, "songs.index.json")
 GIT_SHA = os.environ.get("GIT_SHA", "unknown")
 IMAGE_REF = os.environ.get("IMAGE_REF", "unknown")
 ADMIN_TOKEN = os.environ.get("HOLY_SONGS_ADMIN_TOKEN", "").strip()
+LIVE_AUTH_REQUIRED = os.environ.get("LIVE_AUTH_REQUIRED", "true").strip().lower() not in {
+    "0",
+    "false",
+    "no",
+}
+TURN_KEY_ID = os.environ.get("CLOUDFLARE_TURN_KEY_ID", "").strip()
+TURN_API_TOKEN = os.environ.get("CLOUDFLARE_TURN_API_TOKEN", "").strip()
+TURN_CREDENTIAL_TTL = int(os.environ.get("CLOUDFLARE_TURN_CREDENTIAL_TTL", "3600"))
+
+DEFAULT_ICE_SERVERS = [
+    {"urls": ["stun:stun.cloudflare.com:3478"]},
+]
+
+
+def generate_ice_servers() -> list[dict]:
+    """Return temporary Cloudflare TURN credentials, or STUN-only configuration."""
+    if not TURN_KEY_ID or not TURN_API_TOKEN:
+        return DEFAULT_ICE_SERVERS
+
+    request = Request(
+        (
+            "https://rtc.live.cloudflare.com/v1/turn/keys/"
+            f"{quote(TURN_KEY_ID, safe='')}/credentials/generate-ice-servers"
+        ),
+        data=json.dumps({"ttl": TURN_CREDENTIAL_TTL}).encode("utf-8"),
+        headers={
+            "Authorization": f"Bearer {TURN_API_TOKEN}",
+            "Content-Type": "application/json",
+        },
+        method="POST",
+    )
+    with urlopen(request, timeout=10) as response:
+        payload = json.load(response)
+
+    ice_servers = payload.get("iceServers")
+    if not isinstance(ice_servers, list) or not ice_servers:
+        raise ValueError("Cloudflare TURN response did not contain iceServers")
+    return ice_servers
+
+
+class LivePeer:
+    def __init__(self, peer_id: str, identity: str, websocket: WebSocket):
+        self.peer_id = peer_id
+        self.identity = identity
+        self.websocket = websocket
+        self.send_lock = asyncio.Lock()
+
+    async def send(self, message: dict):
+        async with self.send_lock:
+            await self.websocket.send_json(message)
+
+
+class LiveSignalling:
+    """One ephemeral signalling pool for the single active Holy Songs band."""
+
+    RELAY_TYPES = {"offer", "answer", "ice-candidate"}
+
+    def __init__(self):
+        self.peers: dict[str, LivePeer] = {}
+        self.lock = asyncio.Lock()
+
+    async def join(self, websocket: WebSocket, identity: str) -> LivePeer:
+        peer = LivePeer(uuid.uuid4().hex, identity, websocket)
+        await websocket.accept()
+
+        async with self.lock:
+            existing_peers = list(self.peers.values())
+            self.peers[peer.peer_id] = peer
+
+        await peer.send(
+            {
+                "type": "welcome",
+                "peerId": peer.peer_id,
+                "peers": [
+                    {"peerId": existing.peer_id, "identity": existing.identity}
+                    for existing in existing_peers
+                ],
+                "iceServers": await asyncio.to_thread(safe_generate_ice_servers),
+            }
+        )
+        await self.broadcast(
+            {
+                "type": "peer-joined",
+                "peer": {"peerId": peer.peer_id, "identity": peer.identity},
+            },
+            exclude=peer.peer_id,
+        )
+        return peer
+
+    async def leave(self, peer_id: str):
+        async with self.lock:
+            removed = self.peers.pop(peer_id, None)
+        if removed:
+            await self.broadcast({"type": "peer-left", "peerId": peer_id})
+
+    async def relay(self, sender: LivePeer, message: object):
+        if not isinstance(message, dict) or message.get("type") not in self.RELAY_TYPES:
+            return
+
+        recipient_id = message.get("to")
+        payload = message.get("payload")
+        if not isinstance(recipient_id, str) or not isinstance(payload, dict):
+            return
+
+        async with self.lock:
+            recipient = self.peers.get(recipient_id)
+        if recipient is None:
+            return
+
+        await recipient.send(
+            {
+                "type": message["type"],
+                "from": sender.peer_id,
+                "payload": payload,
+            }
+        )
+
+    async def broadcast(self, message: dict, exclude: str | None = None):
+        async with self.lock:
+            recipients = [
+                peer for peer_id, peer in self.peers.items() if peer_id != exclude
+            ]
+        if recipients:
+            await asyncio.gather(
+                *(peer.send(message) for peer in recipients),
+                return_exceptions=True,
+            )
+
+
+def safe_generate_ice_servers() -> list[dict]:
+    try:
+        return generate_ice_servers()
+    except Exception as error:
+        print(f"Cloudflare TURN credential generation failed: {redact_secrets(error)}")
+        return DEFAULT_ICE_SERVERS
+
+
+live_signalling = LiveSignalling()
 
 
 def require_write_access(
@@ -945,6 +1086,42 @@ def require_matching_revision(
             },
         )
     return current_revision
+
+
+@app.websocket("/api/live")
+async def live_websocket(websocket: WebSocket):
+    """Authenticate one band member and relay only WebRTC negotiation messages."""
+    origin = websocket.headers.get("origin")
+    if origin not in parse_cors_origins():
+        await websocket.close(code=4403, reason="Origin not allowed")
+        return
+
+    identity = (
+        websocket.headers.get("x-forwarded-email")
+        or websocket.headers.get("x-auth-request-email")
+        or websocket.headers.get("x-forwarded-user")
+    )
+    if LIVE_AUTH_REQUIRED and not identity:
+        await websocket.close(code=4401, reason="PocketID authentication required")
+        return
+
+    peer = await live_signalling.join(websocket, identity or "local-development")
+    try:
+        while True:
+            raw_message = await websocket.receive_text()
+            if len(raw_message) > 64 * 1024:
+                await websocket.close(code=4400, reason="Signalling message too large")
+                return
+            try:
+                message = json.loads(raw_message)
+            except json.JSONDecodeError:
+                continue
+            await live_signalling.relay(peer, message)
+    except WebSocketDisconnect:
+        pass
+    finally:
+        await live_signalling.leave(peer.peer_id)
+
 
 @app.get("/api/version")
 def get_version():

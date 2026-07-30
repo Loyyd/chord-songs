@@ -46,6 +46,7 @@ for (const { name, command, args } of commands) {
   const child = spawn(command, args, {
     env: {
       ...process.env,
+      LIVE_AUTH_REQUIRED: process.env.LIVE_AUTH_REQUIRED ?? 'false',
       PYTHONUNBUFFERED: '1'
     },
     stdio: ['ignore', 'pipe', 'pipe']

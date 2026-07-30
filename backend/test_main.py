@@ -1,3 +1,4 @@
+import asyncio
 import os
 import pytest
 import queue
@@ -58,6 +59,55 @@ def test_cache_control_for_static_path(path, expected):
 ])
 def test_should_gzip_path(path, expected):
     assert main.should_gzip_path(path) is expected
+
+
+def test_generate_ice_servers_defaults_to_cloudflare_stun(monkeypatch):
+    monkeypatch.setattr(main, "TURN_KEY_ID", "")
+    monkeypatch.setattr(main, "TURN_API_TOKEN", "")
+
+    assert main.generate_ice_servers() == [
+        {"urls": ["stun:stun.cloudflare.com:3478"]},
+    ]
+
+
+def test_live_signalling_relays_only_to_the_named_peer(monkeypatch):
+    class FakeWebSocket:
+        def __init__(self):
+            self.messages = []
+            self.accepted = False
+
+        async def accept(self):
+            self.accepted = True
+
+        async def send_json(self, message):
+            self.messages.append(message)
+
+    async def exercise():
+        signalling = main.LiveSignalling()
+        first_socket = FakeWebSocket()
+        second_socket = FakeWebSocket()
+        monkeypatch.setattr(main, "safe_generate_ice_servers", lambda: [])
+
+        first = await signalling.join(first_socket, "alice@example.ie")
+        second = await signalling.join(second_socket, "bob@example.ie")
+        await signalling.relay(
+            first,
+            {
+                "type": "offer",
+                "to": second.peer_id,
+                "payload": {"description": {"type": "offer", "sdp": "opaque"}},
+            },
+        )
+
+        assert first_socket.accepted is True
+        assert second_socket.accepted is True
+        assert second_socket.messages[-1] == {
+            "type": "offer",
+            "from": first.peer_id,
+            "payload": {"description": {"type": "offer", "sdp": "opaque"}},
+        }
+
+    asyncio.run(exercise())
 
 
 def test_run_sync_job_marks_failed_when_rebuild_fails(monkeypatch, tmp_path):

@@ -6,6 +6,7 @@ import { parseChordPro } from './lib/parseChordPro';
 import { addSongCategoryToSource, normalizeCategoryName } from './lib/songCategories';
 import { SongEditor } from './components/SongEditor';
 import { EditTransposeControl } from './components/EditTransposeControl';
+import { LiveBand } from './components/LiveBand';
 import { SaveToast } from './components/SaveToast';
 import { SongList } from './components/SongList';
 import { SongToolbar } from './components/SongToolbar';
@@ -26,6 +27,7 @@ import { useSelectedSong } from './hooks/useSelectedSong';
 import { SongConflictError, useSongSaving } from './hooks/useSongSaving';
 import type { SyncJobStatus } from './hooks/useSongSaving';
 import { useSongIndex } from './hooks/useSongIndex';
+import { useLiveBand } from './hooks/useLiveBand';
 
 export default function App() {
   const [route, setRoute] = useState<AppRoute>(() => parseAppRoute());
@@ -86,6 +88,7 @@ export default function App() {
     showSaveToast,
     showFailureToast,
   } = useSaveToast();
+  const liveBand = useLiveBand();
 
   const hasUnsavedChanges = editText !== lastSavedText;
 
@@ -180,6 +183,16 @@ export default function App() {
     setSelectedId(route.id);
     setTranspose(0);
   }, [route, setSongSource]);
+
+  useEffect(() => {
+    const activeEntry = liveBand.state.entries.find(
+      (entry) => entry.id === liveBand.state.activeEntryId,
+    );
+    if (activeEntry && index.some((entry) => entry.id === activeEntry.songId)) {
+      setSelectedId(activeEntry.songId);
+      setTranspose(0);
+    }
+  }, [index, liveBand.state.activeEntryId, liveBand.state.entries]);
 
   const fuse = useMemo(() => {
     if (index.length === 0) return null;
@@ -593,19 +606,37 @@ export default function App() {
 
   return (
     <div className="app-shell">
-      <SongList
-        entries={sortedResults}
-        selectedId={selectedId}
-        starred={starred}
-        query={query}
-        contextSensitive={contextSensitive}
-        selectedSongButtonRef={selectedSongButtonRef}
-        onQueryChange={setQuery}
-        onContextSensitiveChange={setContextSensitive}
-        onCreateNewSong={handleCreateNewSong}
-        onSelect={handleSelect}
-        onToggleStar={toggleStar}
-      />
+      <div className="sidebar-stack">
+        <LiveBand
+          status={liveBand.status}
+          error={liveBand.error}
+          state={liveBand.state}
+          isSynchronized={liveBand.isSynchronized}
+          connectedMembers={liveBand.connectedMembers}
+          knownMembers={liveBand.knownMembers}
+          selectedSongId={selectedId}
+          songs={index}
+          onConnect={() => void liveBand.connect()}
+          onDisconnect={liveBand.disconnect}
+          onAddSong={liveBand.addSong}
+          onDeleteEntry={liveBand.deleteEntry}
+          onMoveEntry={liveBand.moveEntry}
+          onSelectEntry={liveBand.selectEntry}
+        />
+        <SongList
+          entries={sortedResults}
+          selectedId={selectedId}
+          starred={starred}
+          query={query}
+          contextSensitive={contextSensitive}
+          selectedSongButtonRef={selectedSongButtonRef}
+          onQueryChange={setQuery}
+          onContextSensitiveChange={setContextSensitive}
+          onCreateNewSong={handleCreateNewSong}
+          onSelect={handleSelect}
+          onToggleStar={toggleStar}
+        />
+      </div>
 
       <div className="card">
         {song ? (
