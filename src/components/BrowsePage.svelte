@@ -29,6 +29,7 @@
   let reorderAnnouncement = '';
   let scrollFrame = 0;
   let toastTimer = 0;
+  let observedActiveEntryId: string | null = null;
   let toast = { visible: false, kind: 'success' as 'success' | 'warning' | 'error', message: '' };
 
   type DragState = { entryId: string; pointerId: number; targetIndex: number };
@@ -57,8 +58,11 @@
   $: busy = $liveStore.status === 'authenticating' || $liveStore.status === 'connecting';
   $: displayedEntries = reorderEntries($liveStore.state.entries, drag);
   $: activeEntry = $liveStore.state.entries.find((entry) => entry.id === $liveStore.state.activeEntryId);
-  $: if (activeEntry && activeEntry.songId !== selectedId && index.some((entry) => entry.id === activeEntry?.songId)) {
-    void selectSong(activeEntry.songId);
+  $: if ((activeEntry?.id ?? null) !== observedActiveEntryId) {
+    observedActiveEntryId = activeEntry?.id ?? null;
+    if (activeEntry && activeEntry.songId !== selectedId && index.some((entry) => entry.id === activeEntry.songId)) {
+      void selectSong(activeEntry.songId);
+    }
   }
 
   function reorderEntries(entries: LiveBandSnapshot['state']['entries'], currentDrag: DragState | null) {
