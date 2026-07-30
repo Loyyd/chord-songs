@@ -48,26 +48,7 @@
       {#each section.lines as line}
         {@const tokens = transposeTokens(line.tokens, transpose)}
         <div class:has-chords={tokens.some((token) => token.chord)} class="line">
-          {#each mergeTokens(tokens) as token}
-            {@const leading = token.chord ? token.lyric.match(/^\s+/)?.[0] ?? '' : ''}
-            {@const lyric = token.chord ? token.lyric.slice(leading.length) : token.lyric}
-            <span>
-              {#if leading}<span class="lyric">{leading}</span>{/if}
-              <span class="token">
-                {#if token.chord}<span class="chord">{token.chord}</span>{/if}
-                <span class="lyric">
-                  {#each highlighted(lyric) as part}
-                    {#if part.match}<mark>{part.text}</mark>{:else}{part.text}{/if}
-                  {/each}
-                  {#if token.chord && !lyric}
-                    <span class="chord-flow-spacer" aria-hidden="true">{token.chord}</span>
-                  {:else if token.chord && token.chord.length > lyric.length}
-                    <span class="chord-spacer">{'\u00a0'.repeat(token.chord.length - lyric.length)}</span>
-                  {/if}
-                </span>
-              </span>
-            </span>
-          {/each}
+          {#each mergeTokens(tokens) as token}{@const leading = token.chord ? token.lyric.match(/^\s+/)?.[0] ?? '' : ''}{@const lyric = token.chord ? token.lyric.slice(leading.length) : token.lyric}<span>{#if leading}<span class="lyric">{leading}</span>{/if}<span class="token">{#if token.chord}<span class="chord">{token.chord}</span>{/if}<span class="lyric">{#each highlighted(lyric) as part}{#if part.match}<mark>{part.text}</mark>{:else}{part.text}{/if}{/each}{#if token.chord && !lyric}<span class="chord-flow-spacer" aria-hidden="true">{token.chord}</span>{:else if token.chord && token.chord.length > lyric.length}<span class="chord-spacer">{'\u00a0'.repeat(token.chord.length - lyric.length)}</span>{/if}</span></span></span>{/each}
         </div>
       {/each}
     </div>
