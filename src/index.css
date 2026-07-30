@@ -186,21 +186,28 @@ a {
   display: flex;
   min-height: 44px;
   align-items: stretch;
-  gap: 6px;
+  overflow: hidden;
+  border: 1px solid var(--border-soft);
+  border-radius: 9px;
+  background: #ffffff;
   counter-increment: live-set;
-  transition: transform 120ms ease, opacity 120ms ease;
+  transition: border-color 120ms ease, box-shadow 120ms ease, transform 120ms ease, opacity 120ms ease;
 }
 
 .live-band-list li.dragging {
   z-index: 1;
   opacity: 0.78;
+  border-color: var(--brand-gold);
+  box-shadow: 0 4px 12px rgba(0, 32, 80, 0.12);
 }
 
 .live-band-drag {
   width: 44px;
   flex: 0 0 44px;
   padding: 0;
-  border-color: transparent;
+  border: 0;
+  border-right: 1px solid rgba(0, 32, 80, 0.08);
+  border-radius: 0;
   background: transparent;
   color: rgba(0, 32, 80, 0.55);
   cursor: grab;
@@ -225,6 +232,9 @@ a {
   align-items: center;
   gap: 7px;
   padding: 7px 9px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
   text-align: left;
 }
 
@@ -256,7 +266,7 @@ a {
   text-transform: uppercase;
 }
 
-.live-band-list li.active .live-band-song {
+.live-band-list li.active {
   border-color: var(--brand-blue);
   background: var(--brand-blue);
   color: #ffffff;
@@ -266,24 +276,33 @@ a {
   background: rgba(255, 255, 255, 0.16);
 }
 
-.live-band-actions {
-  display: flex;
-  align-items: center;
-  gap: 3px;
+.live-band-list li.active .live-band-drag,
+.live-band-list li.active .live-band-song,
+.live-band-list li.active .live-band-delete {
+  color: inherit;
 }
 
-.live-band-actions button {
+.live-band-delete {
   width: 44px;
-  height: 100%;
+  flex: 0 0 44px;
   min-height: 44px;
   padding: 0;
-}
-
-.live-band-actions .danger {
-  border-color: rgba(220, 38, 38, 0.2);
-  background: #fff7f7;
+  border: 0;
+  border-left: 1px solid rgba(0, 32, 80, 0.08);
+  border-radius: 0;
+  background: transparent;
   color: #b91c1c;
   font-size: 17px;
+}
+
+.live-band-delete:hover,
+.live-band-delete:focus-visible {
+  background: rgba(220, 38, 38, 0.1);
+}
+
+.live-band-list li.active .live-band-drag,
+.live-band-list li.active .live-band-delete {
+  border-color: rgba(255, 255, 255, 0.16);
 }
 
 .edit-page-shell {

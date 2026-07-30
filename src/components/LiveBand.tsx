@@ -16,7 +16,6 @@ interface LiveBandProps {
   isSynchronized: boolean;
   connectedMembers: number;
   knownMembers: number;
-  showSet: boolean;
   children: ReactNode;
   songs: SongIndexEntry[];
   onConnect: () => void;
@@ -33,7 +32,6 @@ export function LiveBand({
   isSynchronized,
   connectedMembers,
   knownMembers,
-  showSet,
   children,
   songs,
   onConnect,
@@ -150,11 +148,9 @@ export function LiveBand({
 
       {error && <div className="live-band-error" role="alert">{error}</div>}
 
-      {children}
-
       <p className="sr-only" aria-live="polite">{reorderAnnouncement}</p>
 
-      {isConnected && showSet && (
+      {isConnected && (
         <>
           <h2 className="live-set-title">Running order</h2>
           {!isSynchronized ? (
@@ -196,17 +192,15 @@ export function LiveBand({
                           <span>{song?.title ?? entry.songId}</span>
                           {isActive && <small>Current</small>}
                         </button>
-                        <div className="live-band-actions">
-                          <button
-                            type="button"
-                            className="danger"
-                            aria-label={`Delete ${song?.title ?? entry.songId} from live set`}
-                            title="Delete from live set"
-                            onClick={() => onDeleteEntry(entry.id)}
-                          >
-                            ×
-                          </button>
-                        </div>
+                        <button
+                          type="button"
+                          className="live-band-delete"
+                          aria-label={`Delete ${song?.title ?? entry.songId} from live set`}
+                          title="Delete from live set"
+                          onClick={() => onDeleteEntry(entry.id)}
+                        >
+                          ×
+                        </button>
                       </li>
                     );
                   })}
@@ -216,6 +210,8 @@ export function LiveBand({
           )}
         </>
       )}
+
+      {children}
     </section>
   );
 }

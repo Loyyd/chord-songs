@@ -613,7 +613,6 @@ export default function App() {
           isSynchronized={liveBand.isSynchronized}
           connectedMembers={liveBand.connectedMembers}
           knownMembers={liveBand.knownMembers}
-          showSet={query.trim() === ''}
           songs={index}
           onConnect={() => void liveBand.connect()}
           onDisconnect={liveBand.disconnect}
