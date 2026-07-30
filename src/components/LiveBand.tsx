@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import type { SongIndexEntry } from '../types';
 import type { LiveState } from '../live/liveState';
 
@@ -8,11 +9,11 @@ interface LiveBandProps {
   isSynchronized: boolean;
   connectedMembers: number;
   knownMembers: number;
-  selectedSongId: string | null;
+  showSet: boolean;
+  children: ReactNode;
   songs: SongIndexEntry[];
   onConnect: () => void;
   onDisconnect: () => void;
-  onAddSong: (songId: string) => void;
   onDeleteEntry: (entryId: string) => void;
   onMoveEntry: (entryId: string, direction: -1 | 1) => void;
   onSelectEntry: (entryId: string) => void;
@@ -25,11 +26,11 @@ export function LiveBand({
   isSynchronized,
   connectedMembers,
   knownMembers,
-  selectedSongId,
+  showSet,
+  children,
   songs,
   onConnect,
   onDisconnect,
-  onAddSong,
   onDeleteEntry,
   onMoveEntry,
   onSelectEntry,
@@ -42,14 +43,25 @@ export function LiveBand({
     <section className="card live-band" aria-labelledby="live-band-title">
       <div className="live-band-header">
         <div>
-          <h2 id="live-band-title">Live set</h2>
+          <div className="brand-heading" id="live-band-title">
+            <img
+              className="brand-logo"
+              src={import.meta.env.BASE_URL + 'logo-black-96.png'}
+              alt=""
+              aria-hidden="true"
+            />
+            <h1 className="brand-title" aria-label="Holy Songs">
+              <span className="brand-title-holy">Holy</span>
+              <span className="brand-title-songs">Songs</span>
+            </h1>
+          </div>
           {isConnected ? (
             <div className="live-band-presence" role="status">
               <span className="live-band-presence-dot" aria-hidden="true" />
               {connectedMembers} / {knownMembers} band members connected
             </div>
           ) : (
-            <p>Connect to share today&apos;s running order.</p>
+            <p>Search the catalogue or connect to share a running order. <a href="https://auth.bcgen.ie/signup" target="_blank" rel="noreferrer">Create an account</a></p>
           )}
         </div>
         {isConnected ? (
@@ -63,20 +75,15 @@ export function LiveBand({
 
       {error && <div className="live-band-error" role="alert">{error}</div>}
 
-      {isConnected && (
+      {children}
+
+      {isConnected && showSet && (
         <>
+          <h2 className="live-set-title">Running order</h2>
           {!isSynchronized ? (
             <div className="live-band-sync" role="status">Adopting the current set…</div>
           ) : (
             <>
-              <button
-                type="button"
-                className="live-band-add"
-                disabled={!selectedSongId}
-                onClick={() => selectedSongId && onAddSong(selectedSongId)}
-              >
-                Add selected song
-              </button>
               {state.entries.length === 0 ? (
                 <p className="live-band-empty">The live set is empty.</p>
               ) : (

@@ -35,7 +35,6 @@ export default function App() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [transpose, setTranspose] = useState(0);
   const [isTransposeOpen, setIsTransposeOpen] = useState(false);
-  const [contextSensitive, setContextSensitive] = useState(false);
   const [categoryInput, setCategoryInput] = useState('');
   const [saveConflict, setSaveConflict] = useState<SongConflictError | null>(null);
   const [starred, setStarred] = useState<Set<string>>(() => {
@@ -197,16 +196,16 @@ export default function App() {
   const fuse = useMemo(() => {
     if (index.length === 0) return null;
     return new Fuse(index, {
-      keys: contextSensitive ? ['title', 'categories', 'sections'] : ['title', 'categories'],
+      keys: ['title', 'categories', 'sections'],
       threshold: 0.35,
       includeScore: true,
     });
-  }, [index, contextSensitive]);
+  }, [index]);
 
   const results = useMemo(() => {
-    if (!fuse || query.trim() === '') return index;
+    if (!fuse || query.trim() === '') return [];
     return fuse.search(query).map((hit) => hit.item);
-  }, [fuse, index, query]);
+  }, [fuse, query]);
 
   const sortedResults = useMemo(() => {
     const starredSongs = results.filter((entry) => starred.has(entry.id));
@@ -614,28 +613,27 @@ export default function App() {
           isSynchronized={liveBand.isSynchronized}
           connectedMembers={liveBand.connectedMembers}
           knownMembers={liveBand.knownMembers}
-          selectedSongId={selectedId}
+          showSet={query.trim() === ''}
           songs={index}
           onConnect={() => void liveBand.connect()}
           onDisconnect={liveBand.disconnect}
-          onAddSong={liveBand.addSong}
           onDeleteEntry={liveBand.deleteEntry}
           onMoveEntry={liveBand.moveEntry}
           onSelectEntry={liveBand.selectEntry}
-        />
+        >
         <SongList
           entries={sortedResults}
           selectedId={selectedId}
           starred={starred}
           query={query}
-          contextSensitive={contextSensitive}
           selectedSongButtonRef={selectedSongButtonRef}
           onQueryChange={setQuery}
-          onContextSensitiveChange={setContextSensitive}
           onCreateNewSong={handleCreateNewSong}
           onSelect={handleSelect}
           onToggleStar={toggleStar}
+          onAddToLive={liveBand.status === 'connected' ? liveBand.addSong : undefined}
         />
+        </LiveBand>
       </div>
 
       <div className="card">
@@ -657,7 +655,7 @@ export default function App() {
               onRefresh={handleRefreshFromGithub}
             />
             <div className="song-container">
-              <SongView song={song} transpose={transpose} highlightQuery={query} isContextSensitive={contextSensitive} />
+              <SongView song={song} transpose={transpose} highlightQuery={query} isContextSensitive />
             </div>
           </>
         ) : (

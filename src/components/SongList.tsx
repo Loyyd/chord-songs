@@ -7,13 +7,12 @@ interface SongListProps {
   selectedId: string | null;
   starred: Set<string>;
   query: string;
-  contextSensitive: boolean;
   selectedSongButtonRef: RefObject<HTMLButtonElement>;
   onQueryChange: (query: string) => void;
-  onContextSensitiveChange: (enabled: boolean) => void;
   onCreateNewSong: () => void;
   onSelect: (id: string) => void;
   onToggleStar: (id: string) => void;
+  onAddToLive?: (id: string) => void;
 }
 
 export function SongList({
@@ -21,29 +20,15 @@ export function SongList({
   selectedId,
   starred,
   query,
-  contextSensitive,
   selectedSongButtonRef,
   onQueryChange,
-  onContextSensitiveChange,
   onCreateNewSong,
   onSelect,
   onToggleStar,
+  onAddToLive,
 }: SongListProps) {
   return (
-    <div className="card">
-      <div className="brand-heading">
-        <img
-          className="brand-logo"
-          src={`${import.meta.env.BASE_URL}logo-black-96.png`}
-          alt=""
-          aria-hidden="true"
-        />
-        <h1 className="brand-title" aria-label="Holy Songs">
-          <span className="brand-title-holy">Holy</span>
-          <span className="brand-title-songs">Songs</span>
-        </h1>
-      </div>
-      <p style={{ margin: '0 0 12px' }}>Search, view, and transpose songs.</p>
+    <div className="song-picker">
       <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '12px' }}>
         <input
           placeholder="Search title, category, or lyrics..."
@@ -51,15 +36,6 @@ export function SongList({
           onChange={(e) => onQueryChange(e.target.value)}
           style={{ flex: 1 }}
         />
-        <label style={{ display: 'flex', alignItems: 'center', gap: '6px', whiteSpace: 'nowrap' }}>
-          <input
-            type="checkbox"
-            checked={contextSensitive}
-            onChange={(e) => onContextSensitiveChange(e.target.checked)}
-            style={{ width: 'auto', padding: 0, border: 'none', cursor: 'pointer' }}
-          />
-          <span style={{ fontSize: '14px' }}>Context sensitive</span>
-        </label>
         <button
           onClick={onCreateNewSong}
           style={{
@@ -78,33 +54,44 @@ export function SongList({
           +
         </button>
       </div>
+      {query.trim() !== '' && entries.length === 0 && (
+        <p className="song-search-empty">No matching songs.</p>
+      )}
       <ul className="song-list">
         {entries.map((entry) => (
           <li key={entry.id}>
-            <button
-              className={entry.id === selectedId ? 'active' : ''}
-              ref={entry.id === selectedId ? selectedSongButtonRef : null}
-              onClick={() => onSelect(entry.id)}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div>
-                  <div style={{ fontWeight: 700 }}>{entry.title}</div>
-                  <SongMeta song={entry} />
-                </div>
-                <div style={{ display: 'flex', gap: '4px' }}>
-                  <span
-                    className={`star-icon ${starred.has(entry.id) ? 'filled' : ''}`}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      onToggleStar(entry.id);
-                    }}
-                    title={starred.has(entry.id) ? 'Unstar song' : 'Star song'}
+            <div className='song-result-row'>
+              <button
+                className={'song-result-main' + (entry.id === selectedId ? ' active' : '')}
+                ref={entry.id === selectedId ? selectedSongButtonRef : null}
+                onClick={() => onSelect(entry.id)}
+              >
+                <span className='song-result-title'>{entry.title}</span>
+                <SongMeta song={entry} />
+              </button>
+              <div className='song-result-actions'>
+                {onAddToLive && (
+                  <button
+                    type='button'
+                    className='live-add-result'
+                    onClick={() => onAddToLive(entry.id)}
+                    title='Add to live set'
+                    aria-label={'Add ' + entry.title + ' to live set'}
                   >
-                    {starred.has(entry.id) ? '★' : '☆'}
-                  </span>
-                </div>
+                    +
+                  </button>
+                )}
+                <button
+                  type='button'
+                  className={'star-icon' + (starred.has(entry.id) ? ' filled' : '')}
+                  onClick={() => onToggleStar(entry.id)}
+                  title={starred.has(entry.id) ? 'Unstar song' : 'Star song'}
+                  aria-label={(starred.has(entry.id) ? 'Unstar ' : 'Star ') + entry.title}
+                >
+                  {starred.has(entry.id) ? '★' : '☆'}
+                </button>
               </div>
-            </button>
+            </div>
           </li>
         ))}
       </ul>

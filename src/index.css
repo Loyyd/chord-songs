@@ -63,11 +63,48 @@ a {
 }
 
 .live-band-header p,
-.live-band-empty {
+.live-band-empty,
+.song-search-empty {
   margin: 0;
   color: rgba(0, 32, 80, 0.68);
   font-size: 13px;
 }
+
+.live-band-header a {
+  color: var(--brand-blue);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.song-picker {
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-soft);
+}
+
+.live-set-title {
+  margin: 14px 0 0;
+  font-size: 15px;
+}
+
+.live-add-result {
+  display: inline-grid;
+  width: 32px;
+  min-height: 32px;
+  place-items: center;
+  border-radius: 999px;
+  background: rgba(216, 152, 16, 0.14);
+  color: var(--brand-blue);
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.live-add-result:hover {
+  background: var(--brand-gold);
+}
+
 
 .live-band .primary {
   border-color: var(--brand-blue);
@@ -119,7 +156,8 @@ a {
   font-weight: 650;
 }
 
-.live-band-empty {
+.live-band-empty,
+.song-search-empty {
   padding-top: 10px;
   text-align: center;
 }
@@ -677,8 +715,16 @@ input[type="range"]:focus::-moz-range-thumb {
   overflow-x: hidden;
 }
 
-.song-list button {
+.song-result-row {
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+}
+
+.song-result-main {
   width: 100%;
+  min-width: 0;
+  flex: 1;
   text-align: left;
   padding: 10px 12px;
   border-radius: 10px;
@@ -686,6 +732,22 @@ input[type="range"]:focus::-moz-range-thumb {
   background: #fff;
   color: var(--brand-blue);
   cursor: pointer;
+}
+
+.song-result-title {
+  display: block;
+  font-weight: 700;
+}
+
+.song-result-actions {
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+}
+
+.song-result-actions button {
+  width: 32px;
+  padding: 0;
 }
 
 button {
@@ -713,6 +775,8 @@ button:disabled {
   color: #94a3b8;
   transition: all 0.2s;
   padding: 4px;
+  border: 0;
+  background: transparent;
   line-height: 1;
 }
 
@@ -725,13 +789,13 @@ button:disabled {
   transform: scale(1.15);
 }
 
-.song-list button.active {
+.song-result-main.active {
   border-color: var(--brand-blue);
   background: var(--brand-blue);
   color: #ffffff;
 }
 
-.song-list button.active .song-subtitle {
+.song-result-main.active .song-subtitle {
   color: rgba(255, 255, 255, 0.82);
 }
 
