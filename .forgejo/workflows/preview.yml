@@ -1,4 +1,4 @@
-name: Publish React-free preview
+name: Publish Svelte + Vite preview
 
 on:
   push:
@@ -10,7 +10,7 @@ permissions:
   packages: write
 
 concurrency:
-  group: holy-songs-react-free-preview
+  group: holy-songs-svelte-vite-preview
   cancel-in-progress: true
 
 env:

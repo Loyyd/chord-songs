@@ -1,4 +1,4 @@
-import { atom } from 'nanostores';
+import { writable } from 'svelte/store';
 import {
   createLiveAction,
   mergeActions,
@@ -64,7 +64,7 @@ export function createLiveBand() {
   const knownPeerIds = new Set<string>();
   const connectedPeerIds = new Set<string>();
 
-  const $state = atom<LiveBandSnapshot>({
+  const $state = writable<LiveBandSnapshot>({
     status,
     error,
     state: EMPTY_STATE,
