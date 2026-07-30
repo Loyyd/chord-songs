@@ -46,7 +46,7 @@
         includeScore: true,
       })
     : null;
-  $: rawResults = fuse && query.trim() ? fuse.search(query, { limit: 8 }).map((hit) => hit.item) : [];
+  $: rawResults = fuse && query.trim() ? fuse.search(query, { limit: 8 }).map((hit) => hit.item) : index;
   $: results = [
     ...rawResults.filter((entry) => starred.has(entry.id)),
     ...rawResults.filter((entry) => !starred.has(entry.id)),
