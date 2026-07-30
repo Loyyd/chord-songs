@@ -32,8 +32,9 @@
   let observedActiveEntryId: string | null = null;
   let toast = { visible: false, kind: 'success' as 'success' | 'warning' | 'error', message: '' };
 
-  type DragState = { entryId: string; pointerId: number; targetIndex: number };
+  type DragState = { entryId: string; pointerId: number; targetIndex: number; startY: number; active: boolean };
   let drag: DragState | null = null;
+  let suppressSetEntryClick = false;
 
   $: fuse = index.length
     ? new Fuse(index, {
@@ -152,14 +153,16 @@
   }
 
   function startSetDrag(event: PointerEvent, entryId: string, listIndex: number) {
-    if (event.button !== 0) return;
-    event.preventDefault();
+    if (event.button !== 0 || (event.target as HTMLElement).closest(".live-band-delete")) return;
     (event.currentTarget as HTMLElement).setPointerCapture(event.pointerId);
-    drag = { entryId, pointerId: event.pointerId, targetIndex: listIndex };
+    drag = { entryId, pointerId: event.pointerId, targetIndex: listIndex, startY: event.clientY, active: false };
   }
 
   function updateSetDrag(event: PointerEvent) {
     if (!drag || drag.pointerId !== event.pointerId || !listElement) return;
+    if (!drag.active && Math.abs(event.clientY - drag.startY) < 6) return;
+    event.preventDefault();
+    if (!drag.active) drag = { ...drag, active: true };
     const rows = Array.from(listElement.querySelectorAll<HTMLElement>('[data-live-entry]'))
       .filter((row) => row.dataset.liveEntry !== drag?.entryId);
     const target = rows.findIndex((row) => {
@@ -174,9 +177,21 @@
     if (!drag || drag.pointerId !== event.pointerId) return;
     const finished = drag;
     drag = null;
+    if (!finished.active) return;
     const original = $liveStore.state.entries.findIndex((entry) => entry.id === finished.entryId);
     if (original !== finished.targetIndex) live.moveEntry(finished.entryId, finished.targetIndex);
     reorderAnnouncement = title + ' moved to position ' + (finished.targetIndex + 1);
+    suppressSetEntryClick = true;
+    window.setTimeout(() => suppressSetEntryClick = false, 0);
+  }
+
+  function selectSetEntry(event: MouseEvent, entryId: string) {
+    if (suppressSetEntryClick) {
+      event.preventDefault();
+      suppressSetEntryClick = false;
+      return;
+    }
+    live.selectEntry(entryId);
   }
 
   function moveWithKeyboard(event: KeyboardEvent, entryId: string, listIndex: number, title: string) {
@@ -310,24 +325,24 @@
               <li
                 data-live-entry={entry.id}
                 class:active={entry.id === $liveStore.state.activeEntryId}
-                class:dragging={drag?.entryId === entry.id}
+                class:dragging={drag?.entryId === entry.id && drag.active}
+                on:pointerdown={(event) => startSetDrag(event, entry.id, listIndex)}
+                on:pointermove={updateSetDrag}
+                on:pointerup={(event) => finishSetDrag(event, title)}
+                on:pointercancel={() => drag = null}
               >
                 <button
                   type="button"
                   class="live-band-drag"
                   aria-label="Drag {title} to reorder"
                   title="Drag to reorder; use arrow keys with a keyboard"
-                  on:pointerdown={(event) => startSetDrag(event, entry.id, listIndex)}
-                  on:pointermove={updateSetDrag}
-                  on:pointerup={(event) => finishSetDrag(event, title)}
-                  on:pointercancel={() => drag = null}
                   on:keydown={(event) => moveWithKeyboard(event, entry.id, listIndex, title)}
                 ><span aria-hidden="true">⠿</span></button>
                 <button
                   type="button"
                   class="live-band-song"
                   aria-current={entry.id === $liveStore.state.activeEntryId ? 'true' : undefined}
-                  on:click={() => live.selectEntry(entry.id)}
+                  on:click={(event) => selectSetEntry(event, entry.id)}
                 >
                   <span>{title}</span>
                   {#if entry.id === $liveStore.state.activeEntryId}<small>Current</small>{/if}

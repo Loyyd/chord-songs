@@ -228,6 +228,11 @@ a {
   touch-action: none;
 }
 
+.live-band-list li.dragging .live-band-drag,
+.live-band-list li.dragging .live-band-song {
+  cursor: grabbing;
+}
+
 .live-band-drag:active {
   cursor: grabbing;
   background: rgba(216, 152, 16, 0.14);
@@ -241,6 +246,8 @@ a {
 
 .live-band-song {
   display: flex;
+  cursor: grab;
+  touch-action: none;
   min-width: 0;
   flex: 1;
   align-items: center;
