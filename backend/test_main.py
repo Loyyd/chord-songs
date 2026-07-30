@@ -51,6 +51,29 @@ def test_cache_control_for_static_path(path, expected):
     assert main.cache_control_for_static_path(path) == expected
 
 
+def test_rebuild_songs_uses_configured_output_directory(monkeypatch, tmp_path):
+    output_dir = tmp_path / "generated-data"
+    songs_dir = tmp_path / "songs"
+    songs_dir.mkdir()
+    captured = {}
+
+    def run(command, **kwargs):
+        captured["command"] = command
+        captured["kwargs"] = kwargs
+        return subprocess.CompletedProcess(command, 0)
+
+    monkeypatch.setattr(main, "SONGS_OUTPUT_DIR", str(output_dir))
+    monkeypatch.setattr(main, "SONGS_DIR", str(songs_dir))
+    monkeypatch.setattr(main.subprocess, "run", run)
+
+    result = main.rebuild_songs()
+
+    assert result["ok"] is True
+    assert captured["command"] == ["npm", "run", "build:songs"]
+    assert captured["kwargs"]["env"]["SONGS_OUTPUT_DIR"] == str(output_dir)
+    assert captured["kwargs"]["env"]["SONGS_DIR"] == str(songs_dir)
+
+
 @pytest.mark.parametrize("path,expected", [
     ("/api/version", True),
     ("/assets/index-abc123.js", True),

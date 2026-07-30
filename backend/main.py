@@ -96,8 +96,10 @@ class CachedStaticFiles(StaticFiles):
 # Path to the songs directory (relative to this file)
 BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 DIST_DIR = os.path.join(BASE_DIR, "dist")
-DIST_DATA_DIR = os.path.join(DIST_DIR, "data")
-DIST_INDEX_PATH = os.path.join(DIST_DATA_DIR, "songs.index.json")
+SONGS_OUTPUT_DIR = os.path.abspath(
+    os.environ.get("SONGS_OUTPUT_DIR", os.path.join(DIST_DIR, "data"))
+)
+DIST_INDEX_PATH = os.path.join(SONGS_OUTPUT_DIR, "songs.index.json")
 GIT_SHA = os.environ.get("GIT_SHA", "unknown")
 IMAGE_REF = os.environ.get("IMAGE_REF", "unknown")
 ADMIN_TOKEN = os.environ.get("HOLY_SONGS_ADMIN_TOKEN", "").strip()
@@ -433,8 +435,7 @@ def rebuild_songs() -> dict:
         # The song builder never needs repository credentials.
         env.pop("CONTENT_REPO_TOKEN", None)
         env.pop("GITHUB_TOKEN", None)
-        if os.path.exists(DIST_DIR):
-            env["SONGS_OUTPUT_DIR"] = DIST_DATA_DIR
+        env["SONGS_OUTPUT_DIR"] = SONGS_OUTPUT_DIR
         env["SONGS_DIR"] = SONGS_DIR
         
         subprocess.run(
