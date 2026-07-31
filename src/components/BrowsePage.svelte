@@ -397,7 +397,7 @@
                   <SongMeta song={entry} />
                 </button>
                 <div class="song-result-actions">
-                  {#if position === undefined}
+                  {#if connected && position === undefined}
                     <button
                       type="button"
                       class="live-add-result"
