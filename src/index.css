@@ -1022,6 +1022,27 @@ button:disabled {
   min-width: 0;
 }
 
+.song-result-main .song-meta {
+  display: block;
+  max-width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.song-result-main .category-chips,
+.song-result-main .category-chip {
+  display: inline;
+}
+
+.song-result-main .category-chips {
+  margin-left: 6px;
+}
+
+.song-result-main .category-chip + .category-chip {
+  margin-left: 8px;
+}
+
 .category-chips {
   display: inline-flex;
   align-items: center;
