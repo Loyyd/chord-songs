@@ -48,8 +48,10 @@
       })
     : null;
   $: rawResults = fuse && query.trim() ? fuse.search(query, { limit: 8 }).map((hit) => hit.item) : index;
-  $: positions = new Map(
-    $liveStore.state.entries.map((entry, position) => [entry.songId, position + 1] as const),
+  $: connected = $liveStore.status === 'connected';
+  $: positions = new Map(connected
+    ? $liveStore.state.entries.map((entry, position) => [entry.songId, position + 1] as const)
+    : [],
   );
   $: results = query.trim()
     ? [
@@ -63,7 +65,6 @@
         ...rawResults.filter((entry) => starred.has(entry.id)),
         ...rawResults.filter((entry) => !starred.has(entry.id)),
       ];
-  $: connected = $liveStore.status === 'connected';
   $: busy = $liveStore.status === 'authenticating' || $liveStore.status === 'connecting';
   $: displayedEntries = reorderEntries($liveStore.state.entries, drag);
   $: activeEntry = $liveStore.state.entries.find((entry) => entry.id === $liveStore.state.activeEntryId);
@@ -207,6 +208,7 @@
   }
 
   function startSearchDrag(event: DragEvent, entry: SongIndexEntry) {
+    if (!connected) return;
     event.dataTransfer?.setData('application/x-holy-songs-song', entry.id);
     if (event.dataTransfer) event.dataTransfer.effectAllowed = 'copy';
   }
@@ -216,13 +218,14 @@
   }
 
   function dragOverSet(event: DragEvent) {
-    if (!acceptsSong(event)) return;
+    if (!connected || !acceptsSong(event)) return;
     event.preventDefault();
     if (event.dataTransfer) event.dataTransfer.dropEffect = 'copy';
     acceptingSongDrop = true;
   }
 
   function dropOnSet(event: DragEvent) {
+    if (!connected) return;
     const songId = event.dataTransfer?.getData('application/x-holy-songs-song');
     acceptingSongDrop = false;
     if (!songId) return;
@@ -317,9 +320,9 @@
 
         {#if connected && !$liveStore.isSynchronized}
           <div class="live-band-sync" role="status">Syncing the shared set list…</div>
-        {:else if displayedEntries.length === 0}
+        {:else if connected && displayedEntries.length === 0}
           <p class="live-band-empty">The set list is empty.</p>
-        {:else}
+        {:else if connected}
           <ol class="live-band-list" bind:this={listElement}>
             {#each displayedEntries as entry, listIndex (entry.id)}
               {@const entrySong = index.find((candidate) => candidate.id === entry.songId)}
@@ -395,8 +398,8 @@
                 <button
                   type="button"
                   class="song-result-main"
-                  draggable={position === undefined}
-                  title={position === undefined ? 'Open song; drag to add it to the set list' : 'Open song'}
+                  draggable={connected && position === undefined}
+                  title={connected && position === undefined ? 'Open song; drag to add it to the set list' : 'Open song'}
                   on:click={() => void selectSong(entry.id)}
                   on:dragstart={(event) => startSearchDrag(event, entry)}
                 >
@@ -404,18 +407,20 @@
                   <SongMeta song={entry} />
                 </button>
                 <div class="song-result-actions">
-                  {#if connected && position === undefined}
-                    <button
-                      type="button"
-                      class="live-add-result"
-                      title="Add to set list"
-                      aria-label="Add {entry.title} to set list"
-                      on:click={() => live.addSong(entry.id)}
-                    >+</button>
-                  {:else}
-                    <span class="live-position-result" title="{entry.title} is number {position} in the set list">
-                      <span class="sr-only">Position in set list: </span>{position}
-                    </span>
+                  {#if connected}
+                    {#if position === undefined}
+                      <button
+                        type="button"
+                        class="live-add-result"
+                        title="Add to set list"
+                        aria-label="Add {entry.title} to set list"
+                        on:click={() => live.addSong(entry.id)}
+                      >+</button>
+                    {:else}
+                      <span class="live-position-result" title="{entry.title} is number {position} in the set list">
+                        <span class="sr-only">Position in set list: </span>{position}
+                      </span>
+                    {/if}
                   {/if}
                   <button
                     type="button"
