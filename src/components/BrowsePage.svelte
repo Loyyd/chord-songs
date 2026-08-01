@@ -364,11 +364,18 @@
 
       <div class="song-picker">
         <div class="song-search-controls">
-          <input
-            placeholder="Search title, category, or lyrics..."
-            bind:value={query}
-            autocomplete="off"
-          />
+          <label class="song-search-field">
+            <span class="sr-only">Search songs</span>
+            <svg class="song-search-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="10.8" cy="10.8" r="6.3" stroke="currentColor" stroke-width="2.2" />
+              <path d="m16 16 4.3 4.3" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" />
+            </svg>
+            <input
+              placeholder="Search title, category, or lyrics..."
+              bind:value={query}
+              autocomplete="off"
+            />
+          </label>
           <button
             type="button"
             class="create-song-button"
